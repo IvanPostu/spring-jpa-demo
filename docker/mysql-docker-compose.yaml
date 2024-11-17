@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql_demo
+    restart: always
+    image: mysql:9.1
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'qwerty'
+      MYSQL_USER: 'test'
+      MYSQL_PASS: 'pass'
+    volumes:
+      - ./my_data:/var/lib/mysql
