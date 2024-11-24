@@ -40,6 +40,8 @@
 
         <module>demo5-jdbc-template</module>
 
+        <module>demo6-hibernate-dao</module>
+
     </modules>
 
     <properties>
@@ -121,7 +123,7 @@
             <plugins>
 
                 <!-- clean lifecycle, see
-                        https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+                                https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
 
                 <plugin>
 
@@ -132,7 +134,7 @@
                 </plugin>
 
                 <!-- default lifecycle, jar packaging: see
-                        https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+                                https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
 
                 <plugin>
 
@@ -183,7 +185,7 @@
                 </plugin>
 
                 <!-- site lifecycle, see
-                        https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+                                https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
 
                 <plugin>
 
