@@ -29,7 +29,7 @@
       
   <modules>
             
-    <module>demo1</module>
+    <module>demo1-liquibase</module>
           
     <module>demo2-flyway</module>
       
