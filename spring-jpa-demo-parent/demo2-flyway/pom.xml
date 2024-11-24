@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>parent-project</artifactId>
+        <artifactId>spring-jpa-demo-parent</artifactId>
         <groupId>com.ipostu</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.ipostu.demo1</groupId>
-    <artifactId>demo1-liquibase</artifactId>
+    <groupId>com.ipostu.demo2.flyway</groupId>
+    <artifactId>demo2-flyway</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>demo1</name>
+    <name>demo2-flyway</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,8 +22,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,27 +67,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!--            not implemented yet-->
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.2.2</version>
-                <configuration>
-                    <url>jdbc:mysql://127.0.0.1:3306/bookdb?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
-                    <username>bookadmin</username>
-                    <password>password</password>
-                    <outputChangeLogFile>changelog.xml</outputChangeLogFile>
-                    <changeSetAuthor>TestUser</changeSetAuthor>
-                    <changelogSchemaName>bookdb</changelogSchemaName>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>parent-project</artifactId>
+        <artifactId>spring-jpa-demo-parent</artifactId>
         <groupId>com.ipostu</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.ipostu.demo2.flyway</groupId>
-    <artifactId>demo2-flyway</artifactId>
+    <groupId>com.ipostu.demo3.ids</groupId>
+    <artifactId>demo3-ids</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>demo2-flyway</name>
+    <name>demo3-ids</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
