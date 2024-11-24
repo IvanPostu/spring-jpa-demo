@@ -1,4 +1,4 @@
-package com.ipostu.demo1.liquibase;
+package com.ipostu.demo2.flyway;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"com.ipostu.demo1.bootstrap"})
+@ComponentScan(basePackages = {"com.ipostu.demo1.flyway.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // in order to override default H2 config
                                                                              // provided by spring boot for test
 public class MySQLIntegrationTest {

@@ -1,4 +1,4 @@
-package com.ipostu.demo1.liquibase;
+package com.ipostu.demo2.flyway;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"com.ipostu.demo1.bootstrap"})
+@ComponentScan(basePackages = {"com.ipostu.demo1.liquibase.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // in order to override default H2 config
                                                                              // provided by spring boot for test
 public class MySQLIntegrationTest {
@@ -25,7 +25,6 @@ public class MySQLIntegrationTest {
     void testMySQL() {
         long countBefore = bookRepository.count();
         assertThat(countBefore).isEqualTo(2);
-
     }
 
 }
