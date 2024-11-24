@@ -1,7 +1,7 @@
-package com.ipostu.demo1.bootstrap;
+package com.ipostu.demo2.flyway.bootstrap;
 
-import com.ipostu.demo1.domain.Book;
-import com.ipostu.demo1.repositories.BookRepository;
+import com.ipostu.demo2.flyway.domain.Book;
+import com.ipostu.demo2.flyway.repositories.BookRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
