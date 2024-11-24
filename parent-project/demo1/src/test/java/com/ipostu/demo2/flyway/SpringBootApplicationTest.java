@@ -1,8 +1,8 @@
-package com.ipostu.demo1;
+package com.ipostu.demo2.flyway;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ipostu.demo1.repositories.BookRepository;
+import com.ipostu.demo2.flyway.repositories.BookRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

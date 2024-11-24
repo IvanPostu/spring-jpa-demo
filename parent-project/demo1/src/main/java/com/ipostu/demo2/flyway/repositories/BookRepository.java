@@ -1,6 +1,6 @@
-package com.ipostu.demo1.repositories;
+package com.ipostu.demo2.flyway.repositories;
 
-import com.ipostu.demo1.domain.Book;
+import com.ipostu.demo2.flyway.domain.Book;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

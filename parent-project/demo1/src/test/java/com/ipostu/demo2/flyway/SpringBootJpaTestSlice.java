@@ -1,9 +1,9 @@
-package com.ipostu.demo1;
+package com.ipostu.demo2.flyway;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ipostu.demo1.domain.Book;
-import com.ipostu.demo1.repositories.BookRepository;
+import com.ipostu.demo2.flyway.domain.Book;
+import com.ipostu.demo2.flyway.repositories.BookRepository;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

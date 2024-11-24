@@ -1,4 +1,4 @@
-package com.ipostu.demo1;
+package com.ipostu.demo2.flyway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

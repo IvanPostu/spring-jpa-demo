@@ -1,4 +1,4 @@
-package com.ipostu.demo1.domain;
+package com.ipostu.demo2.flyway.domain;
 
 import java.util.Objects;
 
