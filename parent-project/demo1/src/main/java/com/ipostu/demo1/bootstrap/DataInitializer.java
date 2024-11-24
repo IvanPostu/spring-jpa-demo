@@ -4,8 +4,10 @@ import com.ipostu.demo1.domain.Book;
 import com.ipostu.demo1.repositories.BookRepository;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile({"local", "default"})
 @Component
 public class DataInitializer implements CommandLineRunner {
 
