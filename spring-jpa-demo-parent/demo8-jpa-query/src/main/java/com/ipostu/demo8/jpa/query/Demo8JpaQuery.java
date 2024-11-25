@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Demo7JpaQuery {
+public class Demo8JpaQuery {
     public static void main(String[] args) {
         System.setProperty("spring.profiles.active", "local,default,clean");
-        SpringApplication.run(Demo7JpaQuery.class, args);
+        SpringApplication.run(Demo8JpaQuery.class, args);
     }
 }

@@ -26,6 +26,7 @@
         <module>demo6-hibernate-dao</module>
         <module>demo7-hibernate-queries</module>
         <module>demo8-jpa-query</module>
+        <module>demo9-pagination</module>
     </modules>
 
     <properties>
