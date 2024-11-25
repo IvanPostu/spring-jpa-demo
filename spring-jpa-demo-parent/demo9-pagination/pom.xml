@@ -8,11 +8,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.ipostu.demo8.jpa.query</groupId>
-    <artifactId>demo8-jpa-query</artifactId>
+    <groupId>com.ipostu.demo9.pagination</groupId>
+    <artifactId>demo9-pagination</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>demo8-jpa-query</name>
+    <name>demo9-pagination</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
