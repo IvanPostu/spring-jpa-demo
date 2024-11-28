@@ -27,6 +27,8 @@
         <module>demo7-hibernate-queries</module>
         <module>demo8-jpa-query</module>
         <module>demo9-pagination</module>
+        <module>demo10-hibernate_mappings</module>
+
     </modules>
 
     <properties>
