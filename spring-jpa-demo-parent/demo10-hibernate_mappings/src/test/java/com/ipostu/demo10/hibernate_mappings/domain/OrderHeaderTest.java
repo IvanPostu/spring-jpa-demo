@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
-public class OrderHeaderTest {
+class OrderHeaderTest {
+
     @Test
     void testEquals() {
         OrderHeader oh1 = new OrderHeader();

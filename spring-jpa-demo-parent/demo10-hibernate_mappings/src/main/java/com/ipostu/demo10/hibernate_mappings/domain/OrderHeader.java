@@ -1,12 +1,19 @@
 package com.ipostu.demo10.hibernate_mappings.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @AttributeOverrides({
@@ -37,7 +44,8 @@ import jakarta.persistence.Enumerated;
 })
 public class OrderHeader extends BaseEntity {
 
-    private String customer;
+    @ManyToOne
+    private Customer customer;
 
     @Embedded
     private Address shippingAddress;
@@ -48,11 +56,35 @@ public class OrderHeader extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public String getCustomer() {
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<OrderLine> orderLines;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "orderHeader")
+    private OrderApproval orderApproval;
+
+    public OrderApproval getOrderApproval() {
+        return orderApproval;
+    }
+
+    public void setOrderApproval(OrderApproval orderApproval) {
+        this.orderApproval = orderApproval;
+        orderApproval.setOrderHeader(this);
+    }
+
+    public void addOrderLine(OrderLine orderLine) {
+        if (orderLines == null) {
+            orderLines = new HashSet<>();
+        }
+
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
+    }
+
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(String customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -80,6 +112,14 @@ public class OrderHeader extends BaseEntity {
         this.orderStatus = orderStatus;
     }
 
+    public Set<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(Set<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -99,7 +139,9 @@ public class OrderHeader extends BaseEntity {
         if (getBillToAddress() != null ? !getBillToAddress().equals(that.getBillToAddress())
             : that.getBillToAddress() != null)
             return false;
-        return getOrderStatus() == that.getOrderStatus();
+        if (getOrderStatus() != that.getOrderStatus())
+            return false;
+        return getOrderLines() != null ? getOrderLines().equals(that.getOrderLines()) : that.getOrderLines() == null;
     }
 
     @Override
@@ -109,6 +151,7 @@ public class OrderHeader extends BaseEntity {
         result = 31 * result + (getShippingAddress() != null ? getShippingAddress().hashCode() : 0);
         result = 31 * result + (getBillToAddress() != null ? getBillToAddress().hashCode() : 0);
         result = 31 * result + (getOrderStatus() != null ? getOrderStatus().hashCode() : 0);
+        result = 31 * result + (getOrderLines() != null ? getOrderLines().hashCode() : 0);
         return result;
     }
 }
