@@ -3,7 +3,9 @@ package com.ipostu.demo10.hibernate_mappings.repositories;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.ipostu.demo10.hibernate_mappings.domain.Address;
 import com.ipostu.demo10.hibernate_mappings.domain.Customer;
 import com.ipostu.demo10.hibernate_mappings.domain.OrderApproval;
 import com.ipostu.demo10.hibernate_mappings.domain.OrderHeader;
@@ -11,12 +13,20 @@ import com.ipostu.demo10.hibernate_mappings.domain.OrderLine;
 import com.ipostu.demo10.hibernate_mappings.domain.Product;
 import com.ipostu.demo10.hibernate_mappings.domain.ProductStatus;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -40,6 +50,69 @@ class OrderHeaderRepositoryTest {
         newProduct.setProductStatus(ProductStatus.NEW);
         newProduct.setDescription("test product");
         product = productRepository.saveAndFlush(newProduct);
+    }
+
+    @Test
+    void testEntityValidationProgrammatically() {
+        Customer customer = new Customer();
+        customer.setCustomerName("New CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew");
+
+        var address = new Address();
+        address.setCity("Los Angels 123456789123456789123456789123456789");
+        customer.setAddress(address);
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Customer>> violations = validator.validate(customer);
+        assertThat(violations).hasSize(2);
+        assertThat(violations)
+            .anySatisfy(constraintViolation -> {
+                assertThat(constraintViolation.getInvalidValue())
+                    .isEqualTo("New CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew");
+                assertThat(constraintViolation.getPropertyPath())
+                    .hasToString("customerName");
+                assertThat(constraintViolation.getMessage())
+                    .isEqualTo("length must be between 0 and 50");
+            })
+            .anySatisfy(constraintViolation -> {
+                assertThat(constraintViolation.getInvalidValue())
+                    .isEqualTo("Los Angels 123456789123456789123456789123456789");
+                assertThat(constraintViolation.getPropertyPath())
+                    .hasToString("address.city");
+                assertThat(constraintViolation.getMessage())
+                    .isEqualTo("length must be between 0 and 30");
+            });
+    }
+
+    @Test
+    void testEntityValidation() {
+        Customer customer = new Customer();
+        customer.setCustomerName("New CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew");
+
+        var address = new Address();
+        address.setCity("Los Angels 123456789123456789123456789123456789");
+        customer.setAddress(address);
+
+        ConstraintViolationException e =
+            assertThrows(ConstraintViolationException.class, () -> customerRepository.save(customer));
+        assertThat(e.getConstraintViolations()).hasSize(2);
+        assertThat(e.getConstraintViolations())
+            .anySatisfy(constraintViolation -> {
+                assertThat(constraintViolation.getInvalidValue())
+                    .isEqualTo("New CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew CustomerNew");
+                assertThat(constraintViolation.getPropertyPath())
+                    .hasToString("customerName");
+                assertThat(constraintViolation.getMessage())
+                    .isEqualTo("length must be between 0 and 50");
+            })
+            .anySatisfy(constraintViolation -> {
+                assertThat(constraintViolation.getInvalidValue())
+                    .isEqualTo("Los Angels 123456789123456789123456789123456789");
+                assertThat(constraintViolation.getPropertyPath())
+                    .hasToString("address.city");
+                assertThat(constraintViolation.getMessage())
+                    .isEqualTo("length must be between 0 and 30");
+            });
     }
 
     @Test
