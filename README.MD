@@ -57,6 +57,10 @@ Sandbox for JPA experiments/POCs
 
 - ***Use case: on write(insert/update) data should be encrypted, on read(select) decrypted***
   - **Hibernate Interceptor** - write works, read has a bug for `EmptyInterceptor.onLoad`, the state arg is always null. Details <https://discourse.hibernate.org/t/hibernate-v6-preloadevent-getstate-always-is-null-issue/7342>
+    - One insert and one update as one transaction
   - **Hibernate Listener** - works, test is also working, precondition is to turn off the `InterceptorRegistration` config bean
-  - **Hibernate Callback** - works, test is also working, precondition is to turn off the `InterceptorRegistration,ListenerRegistration` config beans
-  
+    - One insert and one update as one transaction
+  - **JPA Callback** - works, test is also working, precondition is to turn off the `InterceptorRegistration,ListenerRegistration` config beans
+    - One insert
+  - **JPA Converter** - works, test is also working, best option!
+    - One insert
