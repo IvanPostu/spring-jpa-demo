@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.jdbc.dao"})
+@ComponentScan(basePackages = {"com.ipostu.demo9.pagination.dao"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookRepositoryTest {
 

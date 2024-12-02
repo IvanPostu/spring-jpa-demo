@@ -31,6 +31,7 @@
         <module>demo11-inheritance</module>
         <module>demo12-legacy-db-mapping</module>
         <module>demo13-credit-card-encryption</module>
+        <module>demo14-multipledatasources</module>
     </modules>
 
     <properties>
