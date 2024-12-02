@@ -1,4 +1,4 @@
-package com.ipostu.demo13.credit.card.encryption.interceptor_demo.services;
+package com.ipostu.demo13.credit.card.encryption.services;
 
 public interface EncryptionService {
 

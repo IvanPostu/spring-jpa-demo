@@ -1,4 +1,4 @@
-package com.ipostu.demo13.credit.card.encryption.interceptor_demo;
+package com.ipostu.demo13.credit.card.encryption;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

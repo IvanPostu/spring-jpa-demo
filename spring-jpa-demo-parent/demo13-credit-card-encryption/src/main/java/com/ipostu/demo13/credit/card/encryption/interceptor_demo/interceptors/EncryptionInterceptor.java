@@ -1,6 +1,6 @@
 package com.ipostu.demo13.credit.card.encryption.interceptor_demo.interceptors;
 
-import com.ipostu.demo13.credit.card.encryption.interceptor_demo.services.EncryptionService;
+import com.ipostu.demo13.credit.card.encryption.services.EncryptionService;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

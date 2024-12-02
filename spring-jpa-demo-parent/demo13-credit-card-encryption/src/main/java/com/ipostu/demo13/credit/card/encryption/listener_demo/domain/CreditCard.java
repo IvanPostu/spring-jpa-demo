@@ -1,4 +1,4 @@
-package com.ipostu.demo13.credit.card.encryption.interceptor_demo.domain;
+package com.ipostu.demo13.credit.card.encryption.listener_demo.domain;
 
 import com.ipostu.demo13.credit.card.encryption.interceptor_demo.interceptors.EncryptedString;
 
@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "InterceptorCreditCard")
+@Entity(name = "ListenerCreditCard")
 @Table(name = "credit_card")
 public class CreditCard {
 
