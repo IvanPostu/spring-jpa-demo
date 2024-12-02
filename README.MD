@@ -26,3 +26,34 @@ Sandbox for JPA experiments/POCs
 ## Maven
 
 - Generate parent/child module: `mvn -f ./pom.xml archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DgroupId=com.ipostu.service.module -DartifactId=service-module`
+
+## Summary
+
+### Demo 1
+
+### Demo 2
+
+### Demo 3
+
+### Demo 4
+
+### Demo 5
+
+### Demo 6
+
+### Demo 7
+
+### Demo 8
+
+### Demo 9
+
+### Demo 10
+
+### Demo 11
+
+### Demo 12
+
+### Demo 13 - Credit card encryption at rest
+
+- ***Use case: on write(insert/update) data should be encrypted, on read(select) decrypted***
+  - **Hibernate Interceptor** - write works, read has a bug for `EmptyInterceptor.onLoad`, the state arg is always null. Details <https://discourse.hibernate.org/t/hibernate-v6-preloadevent-getstate-always-is-null-issue/7342>

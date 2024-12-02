@@ -30,6 +30,7 @@
         <module>demo10-hibernate_mappings</module>
         <module>demo11-inheritance</module>
         <module>demo12-legacy-db-mapping</module>
+        <module>demo13-credit-card-encryption</module>
     </modules>
 
     <properties>
