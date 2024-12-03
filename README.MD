@@ -64,3 +64,44 @@ Sandbox for JPA experiments/POCs
     - One insert
   - **JPA Converter** - works, test is also working, best option!
     - One insert
+
+### Demo 14 - Multiple Data Sources
+
+### Demo 15 - Spring Data REST
+
+#### Usage
+
+```sh
+GET http://localhost:8080/api/v1/beer
+
+GET http://localhost:8080/api/v1/beer/search/findAllByBeerStyle?beerStyle=ALE
+
+GET http://localhost:8080/api/v1/beer/a5d1917a-de91-4172-aac8-a3399883d2b2
+
+# Create
+POST http://localhost:8080/api/v1/beer
+
+{
+  "beerName": "Mango Bobs - 990",
+  "beerStyle": "ALE",
+  "upc": "0631234200036",
+  "quantityOnHand": 4344,
+  "price": 10.26
+}
+
+GET http://localhost:8080/api/v1/beer/578b5f18-0a64-4a6c-a056-8d0d22e9d8ab
+
+# Update
+PUT http://localhost:8080/api/v1/beer/578b5f18-0a64-4a6c-a056-8d0d22e9d8ab
+
+{
+  "beerName": "Mango Bobs - AAA",
+  "beerStyle": "ALE",
+  "upc": "0631234200036",
+  "quantityOnHand": 4344,
+  "price": 10.26
+}
+
+# Delete
+DELETE http://localhost:8080/api/v1/beer/578b5f18-0a64-4a6c-a056-8d0d22e9d8ab
+```
