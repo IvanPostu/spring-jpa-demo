@@ -2,6 +2,10 @@
 
 Sandbox for JPA experiments/POCs
 
+## References
+
+- Maven docker plugin - <https://github.com/fabric8io/docker-maven-plugin>
+
 ## Prerequisites and setup
 
 1. jdk-21, docker, docker-compose
