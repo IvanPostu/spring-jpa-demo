@@ -207,3 +207,4 @@ test-output
 **/node_modules
 
 my_data
+mysql_data

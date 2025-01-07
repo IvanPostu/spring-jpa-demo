@@ -12,4 +12,4 @@ services:
       MYSQL_USER: 'test'
       MYSQL_PASS: 'pass'
     volumes:
-      - ./my_data:/var/lib/mysql
+      - ./mysql_data:/var/lib/mysql

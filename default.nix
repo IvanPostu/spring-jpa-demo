@@ -30,8 +30,8 @@ pkgs.stdenv.mkDerivation rec {
       export JAVA_HOME="$JAVA_HOME_17"
     fi
 
-    git config --global user.name "IvanPostu"
-    git config --global user.email ""
+    # git config --global user.name "IvanPostu"
+    # git config --global user.email ""
 
     export PATH="$PWD/scripts:$PATH"
     export PATH=$JAVA_HOME/bin:$PATH
