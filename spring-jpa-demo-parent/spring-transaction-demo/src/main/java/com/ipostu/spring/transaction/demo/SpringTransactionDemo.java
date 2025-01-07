@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
-@ImportResource("classpath:application-context.xml")
+//@ImportResource("classpath:application-context.xml")
 public class SpringTransactionDemo {
 
     public static void main(String[] args) {

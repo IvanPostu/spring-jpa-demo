@@ -7,4 +7,12 @@ public interface AccountService {
 
     //    @Transactional(propagation = Propagation.NESTED)
     void addFundsToAccount(int amount);
+
+    void updateAccountFundsUsingTransactionTemplate();
+
+    void addFundsToAccountUsingTransactionTemplate(int amount);
+
+    void updateAccountFundsUsingTransactionManager();
+
+    void addFundsToAccountUsingTransactionManager(int amount);
 }
