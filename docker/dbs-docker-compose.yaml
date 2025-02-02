@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: postgres_demo
+    restart: always
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_USER: postgres
+      POSTGRES_DB: demo_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+  mysql:
+    container_name: mysql_demo
+    restart: always
+    image: mysql:9.1
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "qwerty"
+      MYSQL_USER: "test"
+      MYSQL_PASS: "pass"
+      MYSQL_DATABASE: "demo_db"

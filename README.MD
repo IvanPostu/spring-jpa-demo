@@ -1,6 +1,6 @@
 # Spring JPA Demo
 
-Sandbox for JPA experiments/POCs
+Sandbox for JPA POCs
 
 ## References
 
@@ -9,23 +9,27 @@ Sandbox for JPA experiments/POCs
 ## Prerequisites and setup
 
 1. jdk-21, docker, docker-compose
-2. Run `docker-compose -f ./docker/mysql-docker-compose.yaml  up -d`
+2. Run `docker-compose -f ./docker/dbs-docker-compose.yaml  up -d`
 3. `mvnw -f ./spring-jpa-demo-parent/pom.xml clean install -DskipTests`
 4. To test a module like `demo1-liquibase`
    1. run manually `src/main/scripts/mysqlusers.sql`
    2. run tests from that module
+
+## Connect
+
+```sh
+docker exec -it postgres_demo bash
+docker exec -it mysql_demo bash
+
+mysql -h localhost -P 3306 --protocol=tcp -u root -p'qwerty' -D demo_db
+psql -h localhost -p 5432 -U postgres -d demo_db
+```
 
 ## Setup IDE
 
 1. For **IntelliJ** add **Adapter for Eclipse Code Formatter**
 2. Add eclipse formatter config
 3. Add import order file
-
-## MySQL
-
-- Run `docker-compose -f ./mysql-docker-compose.yaml  up -d` in docker folder
-- Connect `mysql -h localhost -P 3306 --protocol=tcp -u root -p`
-- Connect `mysql -h localhost -P 3306 --protocol=tcp -u root -p'qwerty'`
 
 ## Maven
 
@@ -42,7 +46,61 @@ mvnw -f ./spring-jpa-demo-parent/demo16-springboot-docker-layers/pom.xml clean p
 
 ### Demo 1
 
+Usage of liquibase which is triggered on spring boot startup
+
+```xml
+<!-- pom.xml -->
+<!-- is inherited from spring-boot-starter-parent -->
+<dependency>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-core</artifactId>
+</dependency>
+
+<!-- ... -->
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+        <!--            not implemented yet-->
+        <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.2.2</version>
+            <configuration>
+                <url>jdbc:mysql://127.0.0.1:3306/bookdb?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
+                <username>bookadmin</username>
+                <password>password</password>
+                <outputChangeLogFile>changelog.xml</outputChangeLogFile>
+                <changeSetAuthor>TestUser</changeSetAuthor>
+                <changelogSchemaName>bookdb</changelogSchemaName>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+```
+
+```properties
+# ...
+spring.jpa.hibernate.ddl-auto=validate
+# default false, If you want to use data.sql to populate a schema created by Hibernate, set spring.jpa.defer-datasource-initialization to true
+spring.jpa.defer-datasource-initialization=false
+
+spring.liquibase.change-log=db/changelog/changelog-master.xml
+```
+
 ### Demo 2
+
+Flyway (default config) in combination with spring boot
 
 ### Demo 3
 
