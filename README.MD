@@ -104,9 +104,17 @@ Flyway (default config) in combination with spring boot
 
 ### Demo 3
 
+- Different kind of keys (autoincrement, UUID string, UUIDD binary)
+- natural vs. surrogate key
+- composite keys
+
 ### Demo 4
 
+JDBC usage + flyway config
+
 ### Demo 5
+
+JDBC Template
 
 ### Demo 6
 
@@ -223,4 +231,54 @@ docker build  -f ./spring-jpa-demo-parent/demo16-springboot-docker-layers/src/ma
 
 # run container
 docker run demo16
+```
+
+### Other 1
+
+JDBC Template with transaction handling
+
+#### To use xml base config
+
+```java
+public interface AccountService {
+
+    //    @Transactional
+    void updateAccountFunds();
+
+    //    @Transactional(propagation = Propagation.NESTED)
+    void addFundsToAccount(int amount);
+}
+
+@SpringBootApplication
+@ImportResource("classpath:application-context.xml")
+public class SpringTransactionDemo {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringTransactionDemo.class, args);
+    }
+
+}
+```
+
+#### To use annotation driven config
+
+```java
+public interface AccountService {
+
+       @Transactional
+    void updateAccountFunds();
+
+       @Transactional(propagation = Propagation.NESTED)
+    void addFundsToAccount(int amount);
+}
+
+@SpringBootApplication
+//@ImportResource("classpath:application-context.xml")
+public class SpringTransactionDemo {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringTransactionDemo.class, args);
+    }
+
+}
 ```

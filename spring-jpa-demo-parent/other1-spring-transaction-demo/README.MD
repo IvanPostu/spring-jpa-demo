@@ -1,6 +1,6 @@
 # Spring transaction demo
 
-## To use xml base config
+### To use xml base config
 
 ```java
 public interface AccountService {
@@ -23,7 +23,7 @@ public class SpringTransactionDemo {
 }
 ```
 
-## To use annotation driven config
+### To use annotation driven config
 
 ```java
 public interface AccountService {

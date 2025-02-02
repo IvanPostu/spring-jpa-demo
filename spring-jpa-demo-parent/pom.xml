@@ -34,7 +34,7 @@
         <module>demo14-multipledatasources</module>
         <module>demo15-springdatarest</module>
         <module>demo16-springboot-docker-layers</module>
-        <module>spring-transaction-demo</module>
+        <module>other1-spring-transaction-demo</module>
     </modules>
 
     <properties>

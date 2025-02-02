@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>com.ipostu.spring.transaction.demo</groupId>
-    <artifactId>spring-transaction-demo</artifactId>
+    <artifactId>other1-spring-transaction-demo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>spring-transaction-demo</name>
