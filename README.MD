@@ -118,13 +118,33 @@ JDBC Template
 
 ### Demo 6
 
+JPA EntityManagerFactory/EntityManager and TypedQuery usage
+
 ### Demo 7
+
+JPA EntityManagerFactory/EntityManager and TypedQuery usage
+
+\+ @NamedQuery (query on entity class annotation)
 
 ### Demo 8
 
+JPA
+
 ### Demo 9
 
+Pagination (Imperative JPA (EntityManager & TypedQuery), JDBC Template, JpaRepository)
+
 ### Demo 10
+
+- Hibernate mappings OneToMany, ManyToMany, @Embedded/@Embeddable, @Version for optimistic lock
+- Before main run `testDataLoader`
+- N+1 - `@Fetch(FetchMode.SUBSELECT)` does left join
+
+  ```java
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<OrderLine> orderLines;
+  ```
 
 ### Demo 11
 

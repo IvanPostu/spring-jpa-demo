@@ -22,7 +22,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> findAllAuthorsByLastName(String lastname, Pageable pageable) {
-        return authorRepository.findAuthorByLastName(lastname, pageable).getContent();
+        return authorRepository.findAuthorsByLastName(lastname, pageable).getContent();
     }
 
     @Override

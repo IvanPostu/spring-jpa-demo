@@ -64,7 +64,7 @@ class AuthorDaoHibernateTest {
 
     @Test
     void findAllAuthorsByLastNameAllRecs() {
-        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith", PageRequest.of(0, 100));
+        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith", PageRequest.of(0, 5));
 
         assertThat(authors).isNotNull();
         assertThat(authors.size()).isEqualTo(40);
