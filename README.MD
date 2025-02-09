@@ -44,6 +44,14 @@ mvnw -f ./spring-jpa-demo-parent/demo16-springboot-docker-layers/pom.xml clean p
 
 ## Summary
 
+### Spring mvc demo1
+
+#### Demo webapp 1
+
+- Embedded tomcat
+- Accessible through: `http://localhost:8080/springapp/app`
+- Context initialization via implementing `WebApplicationInitializer`
+
 ### Demo 1
 
 Usage of liquibase which is triggered on spring boot startup
