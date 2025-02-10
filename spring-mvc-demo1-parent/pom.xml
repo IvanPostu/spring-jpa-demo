@@ -7,6 +7,7 @@
   <name>spring-mvc-demo1-parent</name>
   <modules>
     <module>demo-webapp1</module>
+    <module>demo-spring2</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
