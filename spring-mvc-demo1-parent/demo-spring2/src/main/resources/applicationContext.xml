@@ -25,4 +25,11 @@
           scope="prototype"
           class="com.ipostu.demo.spring2.PrototypeExample">
     </bean>
+
+    <bean id="beanWithFactoryMethod"
+          init-method="initExample"
+          destroy-method="destroyExample"
+          factory-method="createStaticMethod"
+          class="com.ipostu.demo.spring2.BeanWithFactoryMethod">
+    </bean>
 </beans>
