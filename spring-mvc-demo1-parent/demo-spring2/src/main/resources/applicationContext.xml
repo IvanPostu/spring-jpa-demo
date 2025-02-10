@@ -9,7 +9,12 @@
 
     <context:property-placeholder location="classpath:musicPlayer.properties"/>
 
+    <!-- if id is ommited, default id="com.ipostu.demo.spring2.RockMusic" -->
+    <bean class="com.ipostu.demo.spring2.RockMusic">
+    </bean>
+
     <bean id="musicBean"
+          primary="true"
           class="com.ipostu.demo.spring2.ClassicalMusic">
     </bean>
 
@@ -24,6 +29,13 @@
     <bean id="prototypeExample"
           scope="prototype"
           class="com.ipostu.demo.spring2.PrototypeExample">
+        <property name="music1">
+            <!-- each time creates a new instance-->
+            <bean class="com.ipostu.demo.spring2.RockMusic"/>
+        </property>
+        <property name="music2" ref="com.ipostu.demo.spring2.RockMusic">
+            <!-- uses existing singleton -->
+        </property>
     </bean>
 
     <bean id="beanWithFactoryMethod"
@@ -32,4 +44,6 @@
           factory-method="createStaticMethod"
           class="com.ipostu.demo.spring2.BeanWithFactoryMethod">
     </bean>
+
+    <context:component-scan base-package="com.ipostu.demo.spring2.package_to_scan"/>
 </beans>
