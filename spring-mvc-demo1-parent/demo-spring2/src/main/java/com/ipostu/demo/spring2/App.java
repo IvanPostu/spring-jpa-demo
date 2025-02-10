@@ -4,13 +4,20 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext xmlContext = new ClassPathXmlApplicationContext(
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml"
         );
 
-        TestBean testBean = xmlContext.getBean(TestBean.class);
-        System.out.println(testBean.getVal1());
+        // Music music = context.getBean("musicBean", Music.class);
+        // MusicPlayer musicPlayer = new MusicPlayer(music);
 
-        xmlContext.close();
+        MusicPlayer musicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
+
+        musicPlayer.playMusic();
+
+        System.out.println(musicPlayer.getName());
+        System.out.println(musicPlayer.getVolume());
+
+        context.close();
     }
 }
