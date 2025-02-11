@@ -1,4 +1,4 @@
-package com.ipostu.demo.spring2;
+package com.ipostu.demo.spring2.xml;
 
 public class PrototypeExample {
     private Music music1;

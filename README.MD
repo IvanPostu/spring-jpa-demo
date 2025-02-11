@@ -35,6 +35,7 @@ psql -h localhost -p 5432 -U postgres -d demo_db
 
 ```sh
 # generate child module
+# for webapp use: org.apache.maven.archetypes:maven-archetype-webapp
 mvnw -f ./pom.xml archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DgroupId=com.ipostu.service.module -DartifactId=service-module
 
 mvnw -f ./spring-jpa-demo-parent/pom.xml clean install -DskipTests

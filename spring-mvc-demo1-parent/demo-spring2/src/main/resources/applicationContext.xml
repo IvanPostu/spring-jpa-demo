@@ -9,17 +9,17 @@
 
     <context:property-placeholder location="classpath:musicPlayer.properties"/>
 
-    <!-- if id is ommited, default id="com.ipostu.demo.spring2.RockMusic" -->
-    <bean class="com.ipostu.demo.spring2.RockMusic">
+    <!-- if id is ommited, default id="com.ipostu.demo.spring2.xml.RockMusic" -->
+    <bean class="com.ipostu.demo.spring2.xml.RockMusic">
     </bean>
 
     <bean id="musicBean"
           primary="true"
-          class="com.ipostu.demo.spring2.ClassicalMusic">
+          class="com.ipostu.demo.spring2.xml.ClassicalMusic">
     </bean>
 
     <bean id="musicPlayer"
-          class="com.ipostu.demo.spring2.MusicPlayer">
+          class="com.ipostu.demo.spring2.xml.MusicPlayer">
         <property name="music" ref="musicBean"/>
 
         <property name="name" value="${musicPlayer.name}"/>
@@ -28,12 +28,12 @@
 
     <bean id="prototypeExample"
           scope="prototype"
-          class="com.ipostu.demo.spring2.PrototypeExample">
+          class="com.ipostu.demo.spring2.xml.PrototypeExample">
         <property name="music1">
             <!-- each time creates a new instance-->
-            <bean class="com.ipostu.demo.spring2.RockMusic"/>
+            <bean class="com.ipostu.demo.spring2.xml.RockMusic"/>
         </property>
-        <property name="music2" ref="com.ipostu.demo.spring2.RockMusic">
+        <property name="music2" ref="com.ipostu.demo.spring2.xml.RockMusic">
             <!-- uses existing singleton -->
         </property>
     </bean>
@@ -42,7 +42,7 @@
           init-method="initExample"
           destroy-method="destroyExample"
           factory-method="createStaticMethod"
-          class="com.ipostu.demo.spring2.BeanWithFactoryMethod">
+          class="com.ipostu.demo.spring2.xml.BeanWithFactoryMethod">
     </bean>
 
     <context:component-scan base-package="com.ipostu.demo.spring2.package_to_scan"/>

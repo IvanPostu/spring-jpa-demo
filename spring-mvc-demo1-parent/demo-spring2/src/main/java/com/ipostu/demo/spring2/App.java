@@ -1,11 +1,19 @@
 package com.ipostu.demo.spring2;
 
+import com.ipostu.demo.spring2.xml.Music;
+import com.ipostu.demo.spring2.xml.MusicPlayer;
+import com.ipostu.demo.spring2.xml.PrototypeExample;
+import com.ipostu.demo.spring2.xml.RockMusic;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
 
     public static void main(String[] args) {
+        xmlDemo();
+    }
+
+    private static void xmlDemo() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml"
         );
@@ -28,7 +36,7 @@ public class App {
         BeanFactory beanFactory = context.getBeanFactory();
 
         // bean without id
-        System.out.println(beanFactory.getBean("com.ipostu.demo.spring2.RockMusic", RockMusic.class));
+        System.out.println(beanFactory.getBean("com.ipostu.demo.spring2.xml.RockMusic", RockMusic.class));
 
         context.close();
     }
