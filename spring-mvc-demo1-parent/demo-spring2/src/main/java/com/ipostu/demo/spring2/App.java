@@ -1,6 +1,7 @@
 package com.ipostu.demo.spring2;
 
 import com.ipostu.demo.spring2.package_to_scan2.Example1Config;
+import com.ipostu.demo.spring2.package_to_scan3.Example2Config;
 import com.ipostu.demo.spring2.xml.Music;
 import com.ipostu.demo.spring2.xml.MusicPlayer;
 import com.ipostu.demo.spring2.xml.PrototypeExample;
@@ -13,13 +14,18 @@ public class App {
 
     public static void main(String[] args) {
 
-        javaDemo();
+        annotationDemo();
+        // javaDemo();
         // xmlDemo();
+    }
+
+    private static void annotationDemo() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Example2Config.class);
+        context.close();
     }
 
     private static void javaDemo() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Example1Config.class);
-
         context.close();
     }
 
