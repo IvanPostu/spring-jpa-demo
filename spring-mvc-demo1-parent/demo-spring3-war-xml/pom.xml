@@ -8,10 +8,12 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.ipostu.demo.webapp1</groupId>
-    <artifactId>demo-webapp1</artifactId>
+    <groupId>com.ipostu.demo.spring.war</groupId>
+    <artifactId>demo-spring3-war-xml</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>demo-webapp1</name>
+    <packaging>war</packaging>
+
+    <name>demo-spring-war Maven Webapp</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,16 +23,22 @@
     </properties>
 
     <dependencies>
+
+        <!--    also includes: aop, beans, context,core,expression,web-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.2.2</version>
+            <version>6.2.3</version>
         </dependency>
+
+        <!--        thymeleaf is a compile time dependency-->
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <version>11.0.2</version>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring6</artifactId>
+            <version>3.1.3.RELEASE</version>
         </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -40,5 +48,14 @@
     </dependencies>
 
     <build>
+        <finalName>demo-spring-war3xml</finalName>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
