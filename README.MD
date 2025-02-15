@@ -6,6 +6,7 @@ Sandbox for JPA POCs
 
 - Maven docker plugin - <https://github.com/fabric8io/docker-maven-plugin>
 - Logback config - <https://javatechonline.com/logback-xml-configuration-examples/>
+- Prepare tomcat for production - <https://contabo.com/blog/apache-tomcat-complete-guide-to-setup-and-configuration/>
 
 ## Prerequisites and setup
 
@@ -24,6 +25,9 @@ docker exec -it mysql_demo bash
 
 mysql -h localhost -P 3306 --protocol=tcp -u root -p'qwerty' -D demo_db
 psql -h localhost -p 5432 -U postgres -d demo_db
+
+# -W - to input the password
+psql -h 192.168.0.97 -p 5432 -U superadmin -d postgres -W
 ```
 
 ## Setup IDE
@@ -43,10 +47,54 @@ mvnw -f ./spring-jpa-demo-parent/pom.xml clean install -DskipTests
 
 mvnw -f ./spring-jpa-demo-parent/demo16-springboot-docker-layers/pom.xml clean package -DskipTests
 
-projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml clean package  && cp ./$projectName/target/$projectName.war ~/VMSharedD12/$projectName.war
-
 # dependency tree
 projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml dependency:tree
+```
+
+## VM Tomcat deploy (dev env)
+
+```sh
+# on VM
+nix-shell -p jdk17
+nix-shell -p postgresql_16
+
+# host machine
+projectName=demo-spring6-war-postgres \
+  && mvnw -f ./$projectName/pom.xml clean package \
+  && mkdir -p ~/VMSharedD12/_depl \
+  && cp -r ./$projectName/target/$projectName ~/VMSharedD12/_depl/$projectName \
+  && touch ~/VMSharedD12/_depl/signal1.txt
+
+#############################################
+# bash script file pool-artifact.sh
+#!/bin/bash
+
+export CATALINA_HOME=/home/test/apache-tomcat-10.1.35
+SIGNAL_FILE=~/Desktop/sharedWithHost/_depl/signal1.txt
+
+deploy_war_files() {
+  echo "Running: catalina.sh stop"
+  $CATALINA_HOME/bin/catalina.sh stop
+
+  echo "Cleaning: $CATALINA_HOME/webapps/*"
+  rm -rf $CATALINA_HOME/webapps/*
+
+  echo "Copying: ~/Desktop/sharedWithHost/_depl to $CATALINA_HOME/webapps"
+  cp -r ~/Desktop/sharedWithHost/_depl/* $CATALINA_HOME/webapps
+
+  echo "Running: catalina.sh start"
+  $CATALINA_HOME/bin/catalina.sh start
+}
+
+while true; do
+  if [ -f $SIGNAL_FILE ]; then
+    rm $SIGNAL_FILE
+    deploy_war_files
+    rm -rf ~/Desktop/sharedWithHost/_depl
+  fi
+
+  sleep 0.5
+done
 ```
 
 ## Observations
@@ -68,7 +116,43 @@ projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml depend
   - POST /posts
   - PATCH /posts/:id
   - DELETE /posts/:id
-- The `<form />` in html only supports: GET and POST, but in order to do all kind of requests spring uses `HiddenHttpMethodFilter` 
+- The `<form />` in html only supports: GET and POST, but in order to do all kind of requests spring uses `HiddenHttpMethodFilter`
+- Configure postgres on VM with Debian 12 with nix-shell
+  - `nix-shell -p postgresql_16`
+
+  - `initdb -D ./pgdata`
+  - `sudo chown <user> /run/postgresql`
+  - `pg_ctl -D ./pgdata -l logfile start`
+  - `psql -d postgres` connect via postgres user
+  - `CREATE ROLE superadmin WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'qwerty';`
+  - `psql -U superadmin -d postgres -W`
+    - `pg_hba.conf`
+
+    ```sh
+      # IPv4 local connections
+      host all all 0.0.0.0/0 scram-sha-256
+      # IPv6 local connections
+      host all all ::/0 scram-sha-256
+    ```
+
+  - `pgdata/postgresql.conf` -> `password_encryption = scram-sha-256`
+  - Enable remote TCP connections, edit `pgdata/postgresql.conf` - from `listen_addresses='localhost'` to `listen_addresses='*'`
+  - `pg_ctl -D ./pgdata -l logfile restart`
+
+- Virtualbox VM
+  - Networking: NAT -> Bridged Adapter - expose VM to network
+  - Run on guest OS `ip addr` and use this ip in host OS
+- `DriverManagerDataSource` spring's implementation of `DataSource` which creates a new connection when `getConnection` is called
+password_encryption = scram-sha-256
+
+# IPv4 local connections
+
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             0.0.0.0/0               scram-sha-256
+
+# IPv6 local connections
+
+host    all             all             ::1/128                 scram-sha-256
 
 ## Summary
 
