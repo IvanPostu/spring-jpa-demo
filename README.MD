@@ -145,15 +145,6 @@ done
 - `DriverManagerDataSource` spring's implementation of `DataSource` which creates a new connection when `getConnection` is called
 password_encryption = scram-sha-256
 
-# IPv4 local connections
-
-host    all             all             127.0.0.1/32            scram-sha-256
-host    all             all             0.0.0.0/0               scram-sha-256
-
-# IPv6 local connections
-
-host    all             all             ::1/128                 scram-sha-256
-
 ## Summary
 
 ### Spring mvc demo1

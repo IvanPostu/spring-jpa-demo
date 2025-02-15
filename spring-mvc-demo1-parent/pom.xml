@@ -14,6 +14,7 @@
         <module>demo-spring4-war-annotation</module>
         <module>demo-spring5-war-annotation</module>
         <module>demo-spring6-war-postgres</module>
+        <module>demo-spring7-war-jdbctemplate</module>
     </modules>
     <properties>
         <java.version>17</java.version>
