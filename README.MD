@@ -41,7 +41,16 @@ mvnw -f ./pom.xml archetype:generate -DarchetypeGroupId=org.apache.maven.archety
 mvnw -f ./spring-jpa-demo-parent/pom.xml clean install -DskipTests
 
 mvnw -f ./spring-jpa-demo-parent/demo16-springboot-docker-layers/pom.xml clean package -DskipTests
+
+projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml clean package  && cp ./$projectName/target/$projectName.war ~/VMSharedD12/$projectName.war
+
+# dependency tree
+projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml dependency:tree
 ```
+
+## Observations
+
+- Maven surefire plugin doesn't see non-public test classes as well as non-public test class methods
 
 ## Summary
 
