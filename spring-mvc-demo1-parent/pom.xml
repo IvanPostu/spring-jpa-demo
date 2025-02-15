@@ -10,12 +10,13 @@
     <module>demo-spring2</module>
     <module>demo-spring3-war-xml</module>
     <module>demo-spring4-war-annotation</module>
+    <module>demo-spring5-war-annotation</module>
   </modules>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
     <java.version>17</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
   <dependencyManagement>
     <dependencies/>

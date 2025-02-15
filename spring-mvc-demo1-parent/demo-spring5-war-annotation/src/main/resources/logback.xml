@@ -1,0 +1,36 @@
+<configuration>
+
+    <property name="logPattern1"
+              value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg [%M]%n"/>
+    <property name="logPattern2"
+              value="%d{HH:mm:ss.SSS} %-5level [%thread]  %logger - %msg%n"/>
+    <property name="logsPath"
+              value="${catalina.home123}/logs/com_ipostu.log"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <logger name="com.ipostu" level="DEBUG">
+        <appender-ref ref="ASYNC_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.apache" level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logPattern2}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${logsPath}</file>
+        <encoder>
+            <pattern>${logPattern2}</pattern>
+        </encoder>
+    </appender>
+</configuration>

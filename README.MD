@@ -5,6 +5,7 @@ Sandbox for JPA POCs
 ## References
 
 - Maven docker plugin - <https://github.com/fabric8io/docker-maven-plugin>
+- Logback config - <https://javatechonline.com/logback-xml-configuration-examples/>
 
 ## Prerequisites and setup
 
@@ -51,6 +52,23 @@ projectName=demo-spring4-war-annotation && mvnw -f ./$projectName/pom.xml depend
 ## Observations
 
 - Maven surefire plugin doesn't see non-public test classes as well as non-public test class methods
+- logback.xml
+  - if `${catalina.home}` is undefined, it will create `catalina.home_IS_UNDEFINED` in the path where the program is run
+- CRUD
+  - GET /posts
+  - POST /posts
+  - GET /posts/new
+  - GET /posts/:id/edit
+  - GET /posts/:id
+  - PATCH /posts/:id
+  - DELETE /posts/:id
+- REST (representational state transfer)
+  - GET /posts
+  - GET /posts/:id
+  - POST /posts
+  - PATCH /posts/:id
+  - DELETE /posts/:id
+- The `<form />` in html only supports: GET and POST, but in order to do all kind of requests spring uses `HiddenHttpMethodFilter` 
 
 ## Summary
 
