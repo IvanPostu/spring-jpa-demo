@@ -4,6 +4,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -14,7 +15,7 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
         applicationContext.register(SpringConfig.class);
-        applicationContext.setServletContext(servletContext);
+        applicationContext.setDisplayName("MyWebApplicationInitializerDisplayName");
 
         ServletRegistration.Dynamic servlet = servletContext
                 .addServlet("dispatcher", new DispatcherServlet(applicationContext));
@@ -22,6 +23,8 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
         servlet.addMapping("/");
 
         registerHiddenFieldFilter(servletContext);
+
+        servletContext.addListener(new ContextLoaderListener(applicationContext));
     }
 
     private void registerHiddenFieldFilter(ServletContext servletContext) {
