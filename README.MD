@@ -143,7 +143,7 @@ done
   - Networking: NAT -> Bridged Adapter - expose VM to network
   - Run on guest OS `ip addr` and use this ip in host OS
 - `DriverManagerDataSource` spring's implementation of `DataSource` which creates a new connection when `getConnection` is called
-password_encryption = scram-sha-256
+- `jdbcTemplate.batchUpdate` 1000x more optimized that inserting/updating records in loop
 
 ## Summary
 

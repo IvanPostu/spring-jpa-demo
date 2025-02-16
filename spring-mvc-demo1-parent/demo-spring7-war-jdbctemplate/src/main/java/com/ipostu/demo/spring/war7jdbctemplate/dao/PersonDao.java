@@ -3,10 +3,14 @@ package com.ipostu.demo.spring.war7jdbctemplate.dao;
 import com.ipostu.demo.spring.war7jdbctemplate.models.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -49,5 +53,54 @@ public class PersonDao {
         Object[] args = new Object[]{id};
         String sql = "DELETE FROM person WHERE id=?";
         jdbcTemplate.update(sql, args);
+    }
+
+    public long testMultipleUpdate() {
+        List<Person> people = create1000People();
+
+        long before = System.currentTimeMillis();
+
+        for (Person person : people) {
+            jdbcTemplate.update("INSERT INTO person (name, age, email) VALUES(?, ?, ?)",
+                    person.getName(),
+                    person.getAge(),
+                    person.getEmail());
+        }
+
+        long after = System.currentTimeMillis();
+        return after - before;
+    }
+
+    public long testBatchUpdate() {
+        List<Person> people = create1000People();
+
+        long before = System.currentTimeMillis();
+
+        jdbcTemplate.batchUpdate("INSERT INTO person (name, age, email) VALUES (?, ?, ?)",
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setString(1, people.get(i).getName());
+                        ps.setInt(2, people.get(i).getAge());
+                        ps.setString(3, people.get(i).getEmail());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return people.size();
+                    }
+                });
+
+        long after = System.currentTimeMillis();
+        return after - before;
+    }
+
+    private List<Person> create1000People() {
+        List<Person> people = new ArrayList<>(1000);
+
+        for (int i = 0; i < 1000; i++)
+            people.add(new Person(i, "Name" + i, 30, "test" + i + "@mail.ru"));
+
+        return people;
     }
 }
