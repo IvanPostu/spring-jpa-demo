@@ -152,6 +152,7 @@ done
 - In postres (and any other RDMS) `SELECT * FROM ...` without explicit order return records by order of insertion BUT `UPDATE` query breaks this order, so the only one guarantee of order is with explicit `ORDER BY`
 - There is a way to define custom `jakarta.validation` annotations with custom logic, the impl. is used automatically, client code should only use annotation
   - To use spring beans, it is necessary to use a different approach, a custom bean which implements `org.springframework.validation.Validator`, the bean should be used manually (no annotations)
+- Thymeleaf template engine by default doesn't support `UTF-8`, it is needed to run `new ThymeleafViewResolver().setCharacterEncoding("UTF-8")`
 
 ## Summary
 
