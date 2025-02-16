@@ -17,4 +17,6 @@ VALUES
 (3, 'Bob3', 21, 'bobbob3@mail.com'),
 (4, 'Bob4', 22, 'bobbob4@mail.com');
 
+ALTER TABLE person ADD COLUMN address VARCHAR(256);
+
 SELECT setval('person_id_seq', 999, true);

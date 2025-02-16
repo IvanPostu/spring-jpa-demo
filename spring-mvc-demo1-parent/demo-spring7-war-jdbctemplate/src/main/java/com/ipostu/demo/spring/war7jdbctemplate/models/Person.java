@@ -1,16 +1,15 @@
 package com.ipostu.demo.spring.war7jdbctemplate.models;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import com.ipostu.demo.spring.war7jdbctemplate.validators.NoJohnValue;
+import jakarta.validation.constraints.*;
 
 public class Person {
     private int id;
 
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @NoJohnValue(message = "Name shouldn't start with 'John' !")
     private String name;
 
     @Min(value = 0, message = "Age should be greater than 0")
@@ -20,15 +19,21 @@ public class Person {
     @Email(message = "Email should be valid")
     private String email;
 
-    public Person() {
+    // Country, City, Index (6 цифр)
+    // USA, Phoenix, 123456
+    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}",
+            message = "Your address should be in this format: Country, City, Postal Code (6 digits)")
+    private String address;
 
+    public Person() {
     }
 
-    public Person(int id, String name, int age, String email) {
+    public Person(int id, String name, int age, String email, String address) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+        this.address = address;
     }
 
     public int getId() {
@@ -61,5 +66,13 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -44,16 +44,17 @@ public class PersonDao {
     }
 
     public void save(Person person) {
-        String sql = "INSERT INTO person (name, email, age) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, person.getName(), person.getEmail(), person.getAge());
+        String sql = "INSERT INTO person (name, email, age, address) VALUES(?, ?, ?, ?)";
+        jdbcTemplate.update(sql, person.getName(), person.getEmail(), person.getAge(), person.getAddress());
     }
 
     public void update(int id, Person updatedPerson) {
-        String sql = "UPDATE person SET name=?, email=?, age=? WHERE id=?";
+        String sql = "UPDATE person SET name=?, email=?, age=?, address=? WHERE id=?";
         jdbcTemplate.update(sql,
                 updatedPerson.getName(),
                 updatedPerson.getEmail(),
                 updatedPerson.getAge(),
+                updatedPerson.getAddress(),
                 id);
     }
 
@@ -106,8 +107,9 @@ public class PersonDao {
     private List<Person> create1000People() {
         List<Person> people = new ArrayList<>(1000);
 
-        for (int i = 0; i < 1000; i++)
-            people.add(new Person(i, "Name" + i, 30, "test" + i + "@mail.ru"));
+        for (int i = 0; i < 1000; i++) {
+            people.add(new Person(i, "Name" + i, 30, "test" + i + "@mail.ru", ""));
+        }
 
         return people;
     }

@@ -7,6 +7,7 @@ Sandbox for JPA POCs
 - Maven docker plugin - <https://github.com/fabric8io/docker-maven-plugin>
 - Logback config - <https://javatechonline.com/logback-xml-configuration-examples/>
 - Prepare tomcat for production - <https://contabo.com/blog/apache-tomcat-complete-guide-to-setup-and-configuration/>
+- Regex Cheatsheet <https://www.rexegg.com/regex-quickstart.php>
 
 ## Prerequisites and setup
 
@@ -59,7 +60,7 @@ nix-shell -p jdk17
 nix-shell -p postgresql_16
 
 # host machine
-projectName=demo-spring6-war-postgres \
+projectName=demo-spring7-war-jdbctemplate \
   && mvnw -f ./$projectName/pom.xml clean package \
   && mkdir -p ~/VMSharedD12/_depl \
   && cp -r ./$projectName/target/$projectName ~/VMSharedD12/_depl/$projectName \
@@ -138,12 +139,19 @@ done
   - `pgdata/postgresql.conf` -> `password_encryption = scram-sha-256`
   - Enable remote TCP connections, edit `pgdata/postgresql.conf` - from `listen_addresses='localhost'` to `listen_addresses='*'`
   - `pg_ctl -D ./pgdata -l logfile restart`
+  - restart postgres process
+    - `sudo pkill -e postgre`
+    - `sudo chown -R test: /run/postgresql`
+    - `pg_ctl -D ./pgdata -l logfile restart`
 
 - Virtualbox VM
   - Networking: NAT -> Bridged Adapter - expose VM to network
   - Run on guest OS `ip addr` and use this ip in host OS
 - `DriverManagerDataSource` spring's implementation of `DataSource` which creates a new connection when `getConnection` is called
 - `jdbcTemplate.batchUpdate` 1000x more optimized that inserting/updating records in loop
+- In postres (and any other RDMS) `SELECT * FROM ...` without explicit order return records by order of insertion BUT `UPDATE` query breaks this order, so the only one guarantee of order is with explicit `ORDER BY`
+- There is a way to define custom `jakarta.validation` annotations with custom logic, the impl. is used automatically, client code should only use annotation
+  - To use spring beans, it is necessary to use a different approach, a custom bean which implements `org.springframework.validation.Validator`, the bean should be used manually (no annotations)
 
 ## Summary
 
@@ -155,97 +163,48 @@ done
 - Accessible through: `http://localhost:8080/springapp/app`
 - Context initialization via implementing `WebApplicationInitializer`
 
-### Demo 1
+### spring-jpa-demo-parent - demo1-liquibase
 
-Usage of liquibase which is triggered on spring boot startup
+- Liquibase + Spring Boot
+- Liquibase is triggered on spring boot startup
 
-```xml
-<!-- pom.xml -->
-<!-- is inherited from spring-boot-starter-parent -->
-<dependency>
-    <groupId>org.liquibase</groupId>
-    <artifactId>liquibase-core</artifactId>
-</dependency>
+### spring-jpa-demo-parent - demo2-flyway
 
-<!-- ... -->
+- Flyway (default config) in combination with spring boot
 
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-        </plugin>
-        <!--            not implemented yet-->
-        <plugin>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-maven-plugin</artifactId>
-            <version>4.2.2</version>
-            <configuration>
-                <url>jdbc:mysql://127.0.0.1:3306/bookdb?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
-                <username>bookadmin</username>
-                <password>password</password>
-                <outputChangeLogFile>changelog.xml</outputChangeLogFile>
-                <changeSetAuthor>TestUser</changeSetAuthor>
-                <changelogSchemaName>bookdb</changelogSchemaName>
-            </configuration>
-            <dependencies>
-                <dependency>
-                    <groupId>mysql</groupId>
-                    <artifactId>mysql-connector-java</artifactId>
-                    <version>${mysql.version}</version>
-                </dependency>
-            </dependencies>
-        </plugin>
-    </plugins>
-</build>
-```
-
-```properties
-# ...
-spring.jpa.hibernate.ddl-auto=validate
-# default false, If you want to use data.sql to populate a schema created by Hibernate, set spring.jpa.defer-datasource-initialization to true
-spring.jpa.defer-datasource-initialization=false
-
-spring.liquibase.change-log=db/changelog/changelog-master.xml
-```
-
-### Demo 2
-
-Flyway (default config) in combination with spring boot
-
-### Demo 3
+### spring-jpa-demo-parent - demo3-ids
 
 - Different kind of keys (autoincrement, UUID string, UUIDD binary)
 - natural vs. surrogate key
 - composite keys
 
-### Demo 4
+### spring-jpa-demo-parent - demo4-jdbc
 
 JDBC usage + flyway config
 
-### Demo 5
+### spring-jpa-demo-parent - demo5-jdbc-template
 
 JDBC Template
 
-### Demo 6
+### spring-jpa-demo-parent - demo6-hibernate-dao
 
 JPA EntityManagerFactory/EntityManager and TypedQuery usage
 
-### Demo 7
+### spring-jpa-demo-parent - demo7-hibernate-queries
 
 JPA EntityManagerFactory/EntityManager and TypedQuery usage
 
 \+ @NamedQuery (query on entity class annotation)
 
-### Demo 8
+### spring-jpa-demo-parent - demo8-jpa-query
 
 JPA
 
-### Demo 9
+### spring-jpa-demo-parent - demo9-pagination
 
 Pagination (Imperative JPA (EntityManager & TypedQuery), JDBC Template, JpaRepository)
 
-### Demo 10
+### spring-jpa-demo-parent - demo10-hibernate_mappings
 
 - Hibernate mappings OneToMany, ManyToMany, @Embedded/@Embeddable, @Version for optimistic lock
 - Before main run `testDataLoader`
@@ -257,11 +216,13 @@ Pagination (Imperative JPA (EntityManager & TypedQuery), JDBC Template, JpaRepos
     private Set<OrderLine> orderLines;
   ```
 
-### Demo 11
+### spring-jpa-demo-parent - demo11-inheritance
 
-### Demo 12
+- q
 
-### Demo 13 - Credit card encryption at rest
+### spring-jpa-demo-parent - demo12-legacy-db-mapping
+
+### spring-jpa-demo-parent - demo13-credit-card-encryption
 
 - ***Use case: on write(insert/update) data should be encrypted, on read(select) decrypted***
   - **Hibernate Interceptor** - write works, read has a bug for `EmptyInterceptor.onLoad`, the state arg is always null. Details <https://discourse.hibernate.org/t/hibernate-v6-preloadevent-getstate-always-is-null-issue/7342>
@@ -273,9 +234,9 @@ Pagination (Imperative JPA (EntityManager & TypedQuery), JDBC Template, JpaRepos
   - **JPA Converter** - works, test is also working, best option!
     - One insert
 
-### Demo 14 - Multiple Data Sources
+### spring-jpa-demo-parent - demo14-multipledatasources
 
-### Demo 15 - Spring Data REST
+### spring-jpa-demo-parent - demo15-springdatarest
 
 #### Usage
 
