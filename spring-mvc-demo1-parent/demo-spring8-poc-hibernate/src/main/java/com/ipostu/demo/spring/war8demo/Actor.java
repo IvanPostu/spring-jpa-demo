@@ -29,6 +29,9 @@ public class Actor {
     )
     private List<Movie> movies;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
+
     public Actor() {
     }
 
@@ -67,5 +70,13 @@ public class Actor {
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }
