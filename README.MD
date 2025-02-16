@@ -153,6 +153,23 @@ done
 - There is a way to define custom `jakarta.validation` annotations with custom logic, the impl. is used automatically, client code should only use annotation
   - To use spring beans, it is necessary to use a different approach, a custom bean which implements `org.springframework.validation.Validator`, the bean should be used manually (no annotations)
 - Thymeleaf template engine by default doesn't support `UTF-8`, it is needed to run `new ThymeleafViewResolver().setCharacterEncoding("UTF-8")`
+- To use hibernate, add jdbc driver, hibernate-core and `hibernate.properties`
+- Hibernate usage: create hibernate `Configuration` instance (internally reads `hibernate.properties`), create `sessionFactory` (expensive op.), create session, `session.beginTransaction(); op. session.getTransaction().commit();`
+- Hibernate caches items inside the transaction
+- It is required in case of OneToMany to set item on both sides in order to avoid cache inconsistencies, e.g. Person -> List<Items>, if a new item is created, `person.getItems().add(item); item.setPerson(person);`
+- Hibernate life-cycles:
+  - Transient - entity type object created by client code, becomes Persistent after `session.save(entityObject)`
+  - Persistent (Managed) - `session.get` is Persistent, in other words if client code calls setters, then hibernate will notice it and will execute related sql on `session.getTransaction().commit()`
+  - Detached - `session.detach` or when `session` is closed, can be linked to Persistent Context through `session.merge(...)`
+  - Removed - entity object after `session.remove()`
+
+## Todo
+
+- Bean pre|post processor
+- AOP xml|java
+- Sql stored procedure with transaction & CallableStatement
+- Spring web + JaxRS (Jersey)
+- grpc
 
 ## Summary
 
