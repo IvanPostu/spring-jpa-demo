@@ -37,6 +37,10 @@ public class Actor {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Passport passport;
 
+    @OneToOne(mappedBy = "actor")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Passport2 passport2;
+
     public Actor() {
     }
 
@@ -91,5 +95,13 @@ public class Actor {
 
     public void setPassport(Passport passport) {
         this.passport = passport;
+    }
+
+    public Passport2 getPassport2() {
+        return passport2;
+    }
+
+    public void setPassport2(Passport2 passport2) {
+        this.passport2 = passport2;
     }
 }

@@ -15,6 +15,7 @@ public class App {
                 .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(Movie.class)
                 .addAnnotatedClass(Passport.class)
+                .addAnnotatedClass(Passport2.class)
                 .addAnnotatedClass(Item.class);
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -25,15 +26,27 @@ public class App {
 //            createMovieWithTwoActors(session);
 //            selectActors(session);
 //            insertActorWithItems(session);
-
-            Actor actor = new Actor("name example", 22);
-            Passport passport = new Passport(actor, 12345);
-            actor.setPassport(passport);
-
-            session.save(actor);
+//            insertActorWithPassport(session);
+//            insertActorWithPassport2(session);
 
             session.getTransaction().commit();
         }
+    }
+
+    private static void insertActorWithPassport2(Session session) {
+        Actor actor = new Actor("name example", 22);
+        Passport2 passport2 = new Passport2(actor, 12345);
+        actor.setPassport2(passport2);
+
+        session.save(actor);
+    }
+
+    private static void insertActorWithPassport(Session session) {
+        Actor actor = new Actor("name example", 22);
+        Passport passport = new Passport(actor, 12345);
+        actor.setPassport(passport);
+
+        session.save(actor);
     }
 
     private static void insertActorWithItems(Session session) {
