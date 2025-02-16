@@ -2,6 +2,7 @@ package com.ipostu.demo.spring.war7jdbctemplate.controllers;
 
 import com.ipostu.demo.spring.war7jdbctemplate.dao.PersonDao;
 import com.ipostu.demo.spring.war7jdbctemplate.models.Person;
+import com.ipostu.demo.spring.war7jdbctemplate.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class PeopleController {
 
     private final PersonDao personDao;
+    private final PersonValidator personValidator;
 
-    public PeopleController(PersonDao personDao) {
+    public PeopleController(PersonDao personDao, PersonValidator personValidator) {
         this.personDao = personDao;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -38,8 +41,11 @@ public class PeopleController {
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
+
+        personValidator.validate(person, bindingResult);
+        if (bindingResult.hasErrors()) {
             return "people/new";
+        }
 
         personDao.save(person);
         return "redirect:/people";

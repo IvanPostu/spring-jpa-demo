@@ -27,6 +27,14 @@ public class PersonDao {
         return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
+    public Person selectByEmail(String email) {
+        Object[] args = new Object[]{email};
+        return jdbcTemplate.query("SELECT * FROM person WHERE email=?",
+                        new BeanPropertyRowMapper<>(Person.class),
+                        args)
+                .stream().findAny().orElse(null);
+    }
+
     public Person show(int id) {
         Object[] args = new Object[]{id};
         return jdbcTemplate.query("SELECT * FROM person WHERE id=?",
