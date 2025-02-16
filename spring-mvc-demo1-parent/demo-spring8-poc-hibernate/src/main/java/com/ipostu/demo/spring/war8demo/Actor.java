@@ -2,6 +2,7 @@ package com.ipostu.demo.spring.war8demo;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class Actor {
 
     @OneToMany(mappedBy = "owner")
     private List<Item> items;
+
+    @OneToOne(mappedBy = "actor")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Passport passport;
 
     public Actor() {
     }
@@ -78,5 +83,13 @@ public class Actor {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
     }
 }

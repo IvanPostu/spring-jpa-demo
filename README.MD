@@ -162,6 +162,7 @@ done
   - Persistent (Managed) - `session.get` is Persistent, in other words if client code calls setters, then hibernate will notice it and will execute related sql on `session.getTransaction().commit()`
   - Detached - `session.detach` or when `session` is closed, can be linked to Persistent Context through `session.merge(...)`
   - Removed - entity object after `session.remove()`
+- Owning side (entity) is an entity which doesn't have @One|ManyToOne|Many(mapedBy="..."), in other words it is the opposite entity
 
 ## Todo
 

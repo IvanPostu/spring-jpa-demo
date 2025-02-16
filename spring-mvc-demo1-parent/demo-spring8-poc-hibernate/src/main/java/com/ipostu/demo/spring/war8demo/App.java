@@ -14,6 +14,7 @@ public class App {
         Configuration configuration = new Configuration()
                 .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(Movie.class)
+                .addAnnotatedClass(Passport.class)
                 .addAnnotatedClass(Item.class);
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -24,6 +25,12 @@ public class App {
 //            createMovieWithTwoActors(session);
 //            selectActors(session);
 //            insertActorWithItems(session);
+
+            Actor actor = new Actor("name example", 22);
+            Passport passport = new Passport(actor, 12345);
+            actor.setPassport(passport);
+
+            session.save(actor);
 
             session.getTransaction().commit();
         }
