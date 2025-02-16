@@ -4,6 +4,8 @@ import com.ipostu.demo.spring.war7jdbctemplate.dao.PersonDao;
 import com.ipostu.demo.spring.war7jdbctemplate.models.Person;
 import com.ipostu.demo.spring.war7jdbctemplate.util.PersonValidator;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
+    private static final Logger LOG = LoggerFactory.getLogger(PeopleController.class);
 
     private final PersonDao personDao;
     private final PersonValidator personValidator;
@@ -42,6 +45,8 @@ public class PeopleController {
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
 
+        LOG.debug("Attempt to create a person with name: {}", person.getName());
+
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/new";
@@ -60,8 +65,12 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
                          @PathVariable("id") int id) {
-        if (bindingResult.hasErrors())
+
+        LOG.debug("Attempt to update a person with name: {}", person.getName());
+
+        if (bindingResult.hasErrors()){
             return "people/edit";
+        }
 
         personDao.update(id, person);
         return "redirect:/people";
