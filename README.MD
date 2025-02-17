@@ -60,7 +60,7 @@ nix-shell -p jdk17
 nix-shell -p postgresql_16
 
 # host machine
-projectName=demo-spring7-war-jdbctemplate \
+projectName=demo-spring9-war-hibernate \
   && mvnw -f ./$projectName/pom.xml clean package \
   && mkdir -p ~/VMSharedD12/_depl \
   && cp -r ./$projectName/target/$projectName ~/VMSharedD12/_depl/$projectName \
