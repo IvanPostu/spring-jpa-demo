@@ -163,6 +163,11 @@ done
   - Detached - `session.detach` or when `session` is closed, can be linked to Persistent Context through `session.merge(...)`
   - Removed - entity object after `session.remove()`
 - Owning side (entity) is an entity which doesn't have @One|ManyToOne|Many(mapedBy="..."), in other words it is the opposite entity
+- `fetch = FetchType.LAZY|EAGER`
+  - OneToMany and ManyToMany by default are Lazy
+  - OneToOne and ManyToOne by default is Eager
+- `Hibernate.initialize(person.getItems())` is used to load lazy entities, after this call we can use `person.getItems()` in detached `person`
+- Persistence context = Level 1 cache
 
 ## Todo
 
