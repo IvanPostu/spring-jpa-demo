@@ -9,8 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -31,7 +29,7 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
-//@EnableJpaRepositories(SpringConfig.PROJECT_ROOT_PACKAGE)
+@EnableJpaRepositories(SpringConfig.PROJECT_ROOT_PACKAGE)
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     static final String PROJECT_ROOT_PACKAGE = "com.ipostu.demo.spring.war10datajpa";
@@ -75,35 +73,35 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(PROJECT_ROOT_PACKAGE);
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
-    }
-
 //    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-//        entityManagerFactory.setDataSource(dataSource());
-//        entityManagerFactory.setPackagesToScan(PROJECT_ROOT_PACKAGE);
+//    public LocalSessionFactoryBean sessionFactory() {
+//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//        sessionFactory.setDataSource(dataSource());
+//        sessionFactory.setPackagesToScan(PROJECT_ROOT_PACKAGE);
+//        sessionFactory.setHibernateProperties(hibernateProperties());
 //
-//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//        entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
-//        entityManagerFactory.setJpaProperties(hibernateProperties());
-//
-//        return entityManagerFactory;
+//        return sessionFactory;
 //    }
 
     @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactory.setDataSource(dataSource());
+        entityManagerFactory.setPackagesToScan(PROJECT_ROOT_PACKAGE);
+
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+        entityManagerFactory.setJpaProperties(hibernateProperties());
+
+        return entityManagerFactory;
+    }
+
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+//        transactionManager.setSessionFactory(sessionFactory().getObject());
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 

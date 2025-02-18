@@ -1,7 +1,7 @@
 package com.ipostu.demo.spring.war10datajpa.controllers;
 
-import com.ipostu.demo.spring.war10datajpa.dao.PersonDao;
 import com.ipostu.demo.spring.war10datajpa.models.Person;
+import com.ipostu.demo.spring.war10datajpa.services.PeopleService;
 import com.ipostu.demo.spring.war10datajpa.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -17,23 +17,24 @@ import org.springframework.web.bind.annotation.*;
 public class PeopleController {
     private static final Logger LOG = LoggerFactory.getLogger(PeopleController.class);
 
-    private final PersonDao personDao;
+    private final PeopleService peopleService;
     private final PersonValidator personValidator;
 
-    public PeopleController(PersonDao personDao, PersonValidator personValidator) {
-        this.personDao = personDao;
+    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
+        this.peopleService = peopleService;
         this.personValidator = personValidator;
     }
 
+
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", personDao.index());
+        model.addAttribute("people", peopleService.findAll());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDao.show(id));
+        model.addAttribute("person", peopleService.findOne(id));
         return "people/show";
     }
 
@@ -53,13 +54,13 @@ public class PeopleController {
             return "people/new";
         }
 
-        personDao.save(person);
+        peopleService.save(person);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("person", personDao.show(id));
+        model.addAttribute("person", peopleService.findOne(id));
         return "people/edit";
     }
 
@@ -73,13 +74,13 @@ public class PeopleController {
             return "people/edit";
         }
 
-        personDao.update(id, person);
+        peopleService.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDao.delete(id);
+        peopleService.delete(id);
         return "redirect:/people";
     }
 }
