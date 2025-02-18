@@ -170,6 +170,40 @@ done
 - `Hibernate.initialize(person.getItems())` is used to load lazy entities, after this call we can use `person.getItems()` in detached `person`
 - Persistence context = Level 1 cache
 - Hibernate core(main hibernate dependency) by default provides and implement `javax.persistence.*` renamed to `jakarta.persistence.*` which is JPA specification
+- N+1 problem
+
+  ```java
+  // 1 Query
+  List<Person> people = session.createQuery("SELECT p FROM Person p", Person.class);
+
+  // N Queries
+  for(Person person : people) {
+    LOG.info("Person {} has: {}", person.getName(), person.getItems());
+  }
+
+  // Result:
+  // 1 time:  SELECT * FROM person;
+  // N times: SELECT * FROM items WHERE person_id=?
+  ```
+
+  - `FetchType.EAGER` do not help!
+  - Solution 1 - HQL with LEFT JOIN FETCH
+
+    ```java
+    List<Person> people = session.createQuery("SELECT p FROM Person p LEFT JOIN FETCH p.items", Person.class);
+    ```
+
+- Difference between `session.get` and `session.load`
+  - `session.get` does `SELECT ...` on call
+  - `session.load` returns a proxy object with only one populated field, `id`
+  - usage of `session.load`
+
+  ```java
+  Item item = new Item("...");
+  Person personProxy = session.load(id, Person.class);
+  item.setOwner(personProxy);
+  session.save(item);
+  ```
 
 ## Todo
 
@@ -178,6 +212,7 @@ done
 - Sql stored procedure with transaction & CallableStatement
 - Spring web + JaxRS (Jersey)
 - grpc
+- column based on `Enum` ordinal|string|custom value (Converter usage)
 
 ## Summary
 
