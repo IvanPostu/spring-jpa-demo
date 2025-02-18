@@ -20,3 +20,9 @@ VALUES
 ALTER TABLE person ADD COLUMN address VARCHAR(256);
 
 SELECT setval('person_id_seq', 999, true);
+
+-- e.g. 03.04.2001
+ALTER TABLE person ADD COLUMN date_of_birth DATE;
+
+-- e.g. datetime type which holds seconds after/before 01.01.2000
+ALTER TABLE person ADD COLUMN created_at TIMESTAMP;

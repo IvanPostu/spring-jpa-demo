@@ -1,7 +1,7 @@
 package com.ipostu.demo.spring.war10datajpa.util;
 
-import com.ipostu.demo.spring.war10datajpa.dao.PersonDao;
 import com.ipostu.demo.spring.war10datajpa.models.Person;
+import com.ipostu.demo.spring.war10datajpa.repositories.PeopleRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -9,10 +9,10 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDao personDao;
+    private final PeopleRepository peopleRepository;
 
-    public PersonValidator(PersonDao personDao) {
-        this.personDao = personDao;
+    public PersonValidator(PeopleRepository peopleRepository) {
+        this.peopleRepository = peopleRepository;
     }
 
 
@@ -25,7 +25,7 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
 
-        if (personDao.selectByEmail(person.getEmail()) != null) {
+        if (peopleRepository.findByEmail(person.getEmail()).isPresent()) {
             errors.rejectValue("email", "", "This email is already in use");
         }
 

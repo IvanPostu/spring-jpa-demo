@@ -8,6 +8,7 @@ Sandbox for JPA POCs
 - Logback config - <https://javatechonline.com/logback-xml-configuration-examples/>
 - Prepare tomcat for production - <https://contabo.com/blog/apache-tomcat-complete-guide-to-setup-and-configuration/>
 - Regex Cheatsheet <https://www.rexegg.com/regex-quickstart.php>
+- JPA Query Methods <https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html>
 
 ## Prerequisites and setup
 
@@ -60,7 +61,7 @@ nix-shell -p jdk17
 nix-shell -p postgresql_16
 
 # host machine
-projectName=demo-spring9-war-hibernate \
+projectName=demo-spring10-war-data-jpa \
   && mvnw -f ./$projectName/pom.xml clean package \
   && mkdir -p ~/VMSharedD12/_depl \
   && cp -r ./$projectName/target/$projectName ~/VMSharedD12/_depl/$projectName \
@@ -168,6 +169,7 @@ done
   - OneToOne and ManyToOne by default is Eager
 - `Hibernate.initialize(person.getItems())` is used to load lazy entities, after this call we can use `person.getItems()` in detached `person`
 - Persistence context = Level 1 cache
+- Hibernate core(main hibernate dependency) by default provides and implement `javax.persistence.*` renamed to `jakarta.persistence.*` which is JPA specification
 
 ## Todo
 
