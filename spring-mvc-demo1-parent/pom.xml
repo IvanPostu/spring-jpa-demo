@@ -19,6 +19,7 @@
         <module>demo-spring9-war-hibernate</module>
         <module>demo-spring10-war-data-jpa</module>
         <module>demo-spring11-jar-boot</module>
+        <module>demo-spring12-jar-boot-security</module>
     </modules>
     <properties>
         <java.version>17</java.version>

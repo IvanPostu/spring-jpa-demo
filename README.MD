@@ -225,15 +225,17 @@ done
     - `Cookie/Sessions == Map<String, Object>`
     - After successful login, `Principal` is stored in session and linked to cookie which is returned to user
     - Spring security provides a filter which gets by cookie principal object and keeps it in thread local for the current request
+- Spring Boot Security Starter
+  - By default all mappings are secured, default username is `user`, the password is shown in cli: `Using generated security password: d7d4e2e1-7caf-467c-a54b-4fe48ffc30c9`
 
-## Todo
+## TODO
 
 - Bean pre|post processor
 - AOP xml|java
 - Sql stored procedure with transaction & CallableStatement
 - Spring web + JaxRS (Jersey)
 - grpc
-- column based on `Enum` ordinal|string|custom value (Converter usage)
+- JPA: column based on `Enum` ordinal|string|custom value (Converter usage)
 
 ## Summary
 
