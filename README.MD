@@ -218,6 +218,13 @@ done
 - Build and run spring-boot app: 
   - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml clean package && java -jar ./demo-spring11-jar-boot/target/demo-spring11-jar-boot-1.0-SNAPSHOT.jar`
   - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml  spring-boot:run`
+- Spring Security - general
+  - client code should implement `AuthenticationProvider`
+    - it takes as an input `Authentication+Credentials`
+    - returns as an output `Authentication+Principal`
+    - `Cookie/Sessions == Map<String, Object>`
+    - After successful login, `Principal` is stored in session and linked to cookie which is returned to user
+    - Spring security provides a filter which gets by cookie principal object and keeps it in thread local for the current request
 
 ## Todo
 
