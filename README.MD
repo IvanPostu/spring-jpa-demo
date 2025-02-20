@@ -61,7 +61,7 @@ nix-shell -p jdk17
 nix-shell -p postgresql_16
 
 # host machine
-projectName=demo-spring10-war-data-jpa \
+projectName=demo-spring11-jar-boot \
   && mvnw -f ./$projectName/pom.xml clean package \
   && mkdir -p ~/VMSharedD12/_depl \
   && cp -r ./$projectName/target/$projectName ~/VMSharedD12/_depl/$projectName \
@@ -123,6 +123,7 @@ done
   - `nix-shell -p postgresql_16`
 
   - `initdb -D ./pgdata`
+  - `sudo chown test /run/postgresql`
   - `sudo chown <user> /run/postgresql`
   - `pg_ctl -D ./pgdata -l logfile start`
   - `psql -d postgres` connect via postgres user
@@ -214,6 +215,9 @@ done
   ```
 
 - `@jakarta.persistence.Transient` tells hibernate to ignore this field
+- Build and run spring-boot app: 
+  - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml clean package && java -jar ./demo-spring11-jar-boot/target/demo-spring11-jar-boot-1.0-SNAPSHOT.jar`
+  - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml  spring-boot:run`
 
 ## Todo
 
