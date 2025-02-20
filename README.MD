@@ -195,7 +195,7 @@ done
 
 - Difference between `session.get` and `session.load`
   - `session.get` does `SELECT ...` on call
-  - `session.load` returns a proxy object with only one populated field, `id`
+  - `session.load` returns a proxy object with only one populated field, `id`, if client code calls any `get` method on the column field, then the proxy will do `SELECT ...`
   - usage of `session.load`
 
   ```java
@@ -204,6 +204,16 @@ done
   item.setOwner(personProxy);
   session.save(item);
   ```
+
+- Spring Data JPA exposes an API for paging and sorting, e.g.:
+
+  ```java
+  peopleRepository.findAll(PageRequest.of(0, 20,
+          Sort.by(List.of(new Sort.Order(Sort.Direction.DESC, "name"),
+                  new Sort.Order(Sort.Direction.DESC, "age")))));
+  ```
+
+- `@jakarta.persistence.Transient` tells hibernate to ignore this field
 
 ## Todo
 
