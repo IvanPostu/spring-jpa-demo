@@ -215,7 +215,7 @@ done
   ```
 
 - `@jakarta.persistence.Transient` tells hibernate to ignore this field
-- Build and run spring-boot app: 
+- Build and run spring-boot app:
   - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml clean package && java -jar ./demo-spring11-jar-boot/target/demo-spring11-jar-boot-1.0-SNAPSHOT.jar`
   - `projectName=demo-spring11-jar-boot   && mvnw -f ./$projectName/pom.xml  spring-boot:run`
 - Spring Security - general
@@ -227,6 +227,14 @@ done
     - Spring security provides a filter which gets by cookie principal object and keeps it in thread local for the current request
 - Spring Boot Security Starter
   - By default all mappings are secured, default username is `user`, the password is shown in cli: `Using generated security password: d7d4e2e1-7caf-467c-a54b-4fe48ffc30c9`
+- Spring Security
+
+  ```java
+  @Component
+  public class AuthProviderImpl implements AuthenticationProvider
+  ```
+
+  - `AuthenticationProvider` isn't required, spring provides its own one, the client code should only define new one if an additional logic is needed
 
 ## TODO
 
@@ -458,3 +466,7 @@ public class SpringTransactionDemo {
 
 }
 ```
+
+### Other 2 Spring Security POC
+
+- <img src="./_forReadme/img1.png" style="width: 500px" />
