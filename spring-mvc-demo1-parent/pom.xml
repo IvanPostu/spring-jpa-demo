@@ -22,6 +22,8 @@
         <module>demo-spring12-jar-boot-security</module>
         <module>demo-spring13-jar-boot-security2</module>
         <module>demo-spring14-jar-boot-security3</module>
+        <module>demo-spring15-rest1</module>
+        <module>demo-spring16-jar-boot-rest-api</module>
     </modules>
     <properties>
         <java.version>17</java.version>

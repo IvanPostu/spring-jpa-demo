@@ -243,6 +243,8 @@ done
   - Authority - allowed action, e.g. `BAN_USER`, `WITHDRAW_MONEY`, `SEND_MONEY`
   - Role `ADMIN`, `USER`
 - `.hasRole("ADMIN")` is exactly same as `.hasAuthority("ROLE_ADMIN")`
+- `@Controller` can return json response only if method is annotated with `@ResponseBody`, by default it tries to resolve view
+  - `@RestController` doesn't require `@ResponseBody`, it returns JSON by default
 
 ## TODO
 
@@ -478,3 +480,4 @@ public class SpringTransactionDemo {
 ### Other 2 Spring Security POC
 
 - <img src="./_forReadme/img1.png" style="width: 500px" />
+- <img src="./_forReadme/img2.png" style="width: 500px" />
