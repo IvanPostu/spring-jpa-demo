@@ -235,6 +235,11 @@ done
   ```
 
   - `AuthenticationProvider` isn't required, spring provides its own one, the client code should only define new one if an additional logic is needed
+- CSRF - Cross Site Request Forgery
+  - Protection for endpoints that change data, such as PUT/POST/DELETE
+  - Backend generates one time token which is injected into the html and is hidden for user
+  - On request this token is also added into the body of request and backend verifies it
+
 
 ## TODO
 

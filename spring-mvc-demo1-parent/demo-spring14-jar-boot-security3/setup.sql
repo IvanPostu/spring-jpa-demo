@@ -1,5 +1,5 @@
 -- CREATE DATABASE security_app_db1;
--- \c security_app_db1
+-- \c security_app_db1;
 
 DROP TABLE IF EXISTS person;
 
@@ -14,3 +14,9 @@ INSERT INTO person (username, password, year_of_birth)
 VALUES
 ('test_user1', 'qwerty', 2020),
 ('test_user2', 'qwerty', 2020);
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+UPDATE person
+SET password=crypt(password, gen_salt('bf', 8))
+WHERE password NOT LIKE '$%';
