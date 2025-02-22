@@ -239,7 +239,10 @@ done
   - Protection for endpoints that change data, such as PUT/POST/DELETE
   - Backend generates one time token which is injected into the html and is hidden for user
   - On request this token is also added into the body of request and backend verifies it
-
+- Authorization in pring security
+  - Authority - allowed action, e.g. `BAN_USER`, `WITHDRAW_MONEY`, `SEND_MONEY`
+  - Role `ADMIN`, `USER`
+- `.hasRole("ADMIN")` is exactly same as `.hasAuthority("ROLE_ADMIN")`
 
 ## TODO
 

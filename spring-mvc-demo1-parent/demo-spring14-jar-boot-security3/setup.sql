@@ -20,3 +20,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 UPDATE person
 SET password=crypt(password, gen_salt('bf', 8))
 WHERE password NOT LIKE '$%';
+
+ALTER TABLE person ADD COLUMN role VARCHAR(256);
+
+UPDATE PERSON SET role='ROLE_USER';
+
+INSERT INTO person (username, password, year_of_birth, role)
+VALUES
+('user1', crypt('qwerty', gen_salt('bf', 8)), 2020, 'ROLE_USER'),
+('admin1', crypt('qwerty', gen_salt('bf', 8)), 2020, 'ROLE_ADMIN');

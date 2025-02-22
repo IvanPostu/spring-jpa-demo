@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegisterService {
+    private static final String DEFAULT_INITIAL_ROLE = "ROLE_USER";
 
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
@@ -21,6 +22,8 @@ public class RegisterService {
     public void register(Person person) {
         String hashedPassword = passwordEncoder.encode(person.getPassword());
         person.setPassword(hashedPassword);
+        person.setRole(DEFAULT_INITIAL_ROLE);
+
         personRepository.save(person);
     }
 }
