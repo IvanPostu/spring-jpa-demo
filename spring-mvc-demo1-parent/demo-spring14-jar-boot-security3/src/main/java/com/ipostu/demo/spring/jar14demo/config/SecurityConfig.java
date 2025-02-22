@@ -41,6 +41,4 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/auth/login");
         return httpSecurity.build();
     }
-
-
 }
