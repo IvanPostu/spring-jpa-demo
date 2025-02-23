@@ -1,50 +1,39 @@
-package com.ipostu.demo.spring.jar16demo.models;
-
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import org.springframework.format.annotation.DateTimeFormat;
+package com.ipostu.demo.spring.jar16demo.controllers.rest;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "person")
-public class Person {
+public class PersonResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
     private int age;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "address")
     private String address;
 
-    @Column(name = "date_of_birth")
-    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    public Person() {
-    }
-
-    public Person(int id, String name, int age, String email, String address) {
+    public PersonResponse(int id, String name, int age, String email, String address, Date dateOfBirth, Date createdAt) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
         this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.createdAt = createdAt;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getId() {
@@ -63,14 +52,6 @@ public class Person {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -87,19 +68,19 @@ public class Person {
         this.address = address;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

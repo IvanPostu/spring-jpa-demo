@@ -2,5 +2,25 @@
 
 GET http://localhost:8080/api/first
 
+
 GET http://localhost:8080/api/second
 
+
+GET http://localhost:8080/api/people
+
+
+GET http://localhost:8080/api/people/1
+
+
+GET http://localhost:8080/api/people/111
+
+
+POST http://localhost:8080/api/people
+Content-Type: application/json
+
+{
+    "name": "Jim123",
+    "age": 29,
+    "email": "testtest1324r@mail.com",
+    "address": "Abc, Abc, 123456"
+}

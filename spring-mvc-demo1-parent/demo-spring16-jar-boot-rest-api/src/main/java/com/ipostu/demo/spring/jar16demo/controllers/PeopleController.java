@@ -1,11 +1,17 @@
 package com.ipostu.demo.spring.jar16demo.controllers;
 
+import com.ipostu.demo.spring.jar16demo.controllers.rest.PersonNotCreatedException;
 import com.ipostu.demo.spring.jar16demo.controllers.rest.PersonNotFoundResponse;
+import com.ipostu.demo.spring.jar16demo.controllers.rest.PersonRequest;
+import com.ipostu.demo.spring.jar16demo.controllers.rest.PersonResponse;
 import com.ipostu.demo.spring.jar16demo.models.Person;
 import com.ipostu.demo.spring.jar16demo.services.PeopleService;
 import com.ipostu.demo.spring.jar16demo.services.PersonNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +27,70 @@ public class PeopleController {
     }
 
     @GetMapping
-    public List<Person> getPeople() {
-        return peopleService.findAll();
+    public List<PersonResponse> getPeople() {
+        List<Person> personList = peopleService.findAll();
+        return personList
+                .stream()
+                .map(this::mapToPersonResponse)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Person getPerson(@PathVariable("id") int id) {
-        return peopleService.findOne(id);
+    public PersonResponse getPerson(@PathVariable("id") int id) {
+        Person person = peopleService.findOne(id);
+        return mapToPersonResponse(person);
+    }
+
+    @PostMapping
+    public ResponseEntity<PersonResponse> create(@RequestBody @Valid PersonRequest personRequest,
+                                                 BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder();
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                errorMessage.append(error.getField())
+                        .append(" - ")
+                        .append(error.getDefaultMessage())
+                        .append(";");
+            }
+
+            throw new PersonNotCreatedException(errorMessage.toString());
+        }
+
+        Person person = mapToRequestToPerson(personRequest);
+        peopleService.save(person);
+        return new ResponseEntity<>(mapToPersonResponse(person), HttpStatus.CREATED);
+    }
+
+    private Person mapToRequestToPerson(PersonRequest personRequest) {
+        return new Person(0,
+                personRequest.getName(), personRequest.getAge(), personRequest.getEmail(), personRequest.getAddress());
+    }
+
+    private PersonResponse mapToPersonResponse(Person person) {
+        return new PersonResponse(person.getId(),
+                person.getName(),
+                person.getAge(),
+                person.getEmail(), person.getAddress(),
+                person.getDateOfBirth(),
+                person.getCreatedAt());
     }
 
     @ExceptionHandler
     private ResponseEntity<PersonNotFoundResponse> handleException(PersonNotFoundException e) {
         PersonNotFoundResponse personNotFoundResponse = new PersonNotFoundResponse(
                 "Person not found",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity(personNotFoundResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<PersonNotFoundResponse> handleException(PersonNotCreatedException e) {
+        PersonNotFoundResponse personNotFoundResponse = new PersonNotFoundResponse(
+                e.getMessage(),
                 System.currentTimeMillis()
         );
         return new ResponseEntity(personNotFoundResponse, HttpStatus.NOT_FOUND);
