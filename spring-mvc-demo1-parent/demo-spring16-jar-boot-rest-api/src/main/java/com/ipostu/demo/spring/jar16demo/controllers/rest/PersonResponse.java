@@ -18,6 +18,9 @@ public class PersonResponse {
 
     private Date createdAt;
 
+    public PersonResponse() {
+    }
+
     public PersonResponse(int id, String name, int age, String email, String address, Date dateOfBirth, Date createdAt) {
         this.id = id;
         this.name = name;

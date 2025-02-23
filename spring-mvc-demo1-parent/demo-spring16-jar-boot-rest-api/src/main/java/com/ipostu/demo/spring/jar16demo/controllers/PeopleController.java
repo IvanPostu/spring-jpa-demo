@@ -8,6 +8,7 @@ import com.ipostu.demo.spring.jar16demo.models.Person;
 import com.ipostu.demo.spring.jar16demo.services.PeopleService;
 import com.ipostu.demo.spring.jar16demo.services.PersonNotFoundException;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +22,11 @@ import java.util.List;
 public class PeopleController {
 
     private final PeopleService peopleService;
+    private final ModelMapper modelMapper;
 
-    public PeopleController(PeopleService peopleService) {
+    public PeopleController(PeopleService peopleService, ModelMapper modelMapper) {
         this.peopleService = peopleService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -65,17 +68,12 @@ public class PeopleController {
     }
 
     private Person mapToRequestToPerson(PersonRequest personRequest) {
-        return new Person(0,
-                personRequest.getName(), personRequest.getAge(), personRequest.getEmail(), personRequest.getAddress());
+        return modelMapper.getTypeMap(PersonRequest.class, Person.class)
+                .map(personRequest);
     }
 
     private PersonResponse mapToPersonResponse(Person person) {
-        return new PersonResponse(person.getId(),
-                person.getName(),
-                person.getAge(),
-                person.getEmail(), person.getAddress(),
-                person.getDateOfBirth(),
-                person.getCreatedAt());
+        return modelMapper.getTypeMap(Person.class, PersonResponse.class).map(person);
     }
 
     @ExceptionHandler
