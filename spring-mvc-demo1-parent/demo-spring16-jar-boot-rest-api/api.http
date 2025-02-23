@@ -24,3 +24,29 @@ Content-Type: application/json
     "email": "testtest1324r@mail.com",
     "address": "Abc, Abc, 123456"
 }
+
+# ----
+
+GET http://localhost:8080/api/people
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJ1c2VybmFtZSI6InRlc3Q5IiwiaWF0IjoxNzQwMzQ0OTg1LCJpc3MiOiJJc3N1ZXIgQXBwIiwiZXhwIjoxNzQwMzQ4NTg1fQ.tD-RDNuo06DdFITHx_tKMitylA8UOcXavBcNfTg04f4
+
+
+POST http://localhost:8080/api/people
+Content-Type: application/json
+
+{
+    "username": "test10",
+    "yearOfBirth": 2020,
+    "role": "ROLE_USER",
+    "password": "qwerty"
+}
+
+
+POST http://localhost:8080/api/people/login
+Content-Type: application/json
+
+{
+    "username": "test10",
+    "password": "qwerty"
+}
+

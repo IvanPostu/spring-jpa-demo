@@ -9,6 +9,7 @@ Sandbox for JPA POCs
 - Prepare tomcat for production - <https://contabo.com/blog/apache-tomcat-complete-guide-to-setup-and-configuration/>
 - Regex Cheatsheet <https://www.rexegg.com/regex-quickstart.php>
 - JPA Query Methods <https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html>
+- <https://jwt.io/>
 
 ## Prerequisites and setup
 
@@ -245,6 +246,8 @@ done
 - `.hasRole("ADMIN")` is exactly same as `.hasAuthority("ROLE_ADMIN")`
 - `@Controller` can return json response only if method is annotated with `@ResponseBody`, by default it tries to resolve view
   - `@RestController` doesn't require `@ResponseBody`, it returns JSON by default
+  - JWT JsonWebToken
+    - Header, Payload, Signature
 
 ## TODO
 

@@ -24,6 +24,7 @@
         <module>demo-spring14-jar-boot-security3</module>
         <module>demo-spring15-rest1</module>
         <module>demo-spring16-jar-boot-rest-api</module>
+        <module>demo-spring17-jar-boot-rest-api-jwt</module>
     </modules>
     <properties>
         <java.version>17</java.version>
