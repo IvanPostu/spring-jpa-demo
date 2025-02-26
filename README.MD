@@ -10,6 +10,7 @@ Sandbox for JPA POCs
 - Regex Cheatsheet <https://www.rexegg.com/regex-quickstart.php>
 - JPA Query Methods <https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html>
 - <https://jwt.io/>
+- <https://www.baeldung.com/kafka-consumer-offset>
 
 ## Prerequisites and setup
 
@@ -484,3 +485,80 @@ public class SpringTransactionDemo {
 
 - <img src="./_forReadme/img1.png" style="width: 500px" />
 - <img src="./_forReadme/img2.png" style="width: 500px" />
+
+## Apache Kafka
+
+Event streaming platform
+Main capabilities:
+
+- Publish(Produce)/Subscribe(Consume) to streams of events, including continuous import/export of data from another system
+- To store streams of events
+- To process streams of events as they occur or retrospectively
+
+### Terminology
+
+- **Kafka Cluster** - set of brokers which consume/produce events, if one broker is down, the job is taken by another one
+- **Kafka Topic** - FIFO structure to which event is assigned, it has a name
+  - **Partition** - Storage Room which is a part of a topic
+    - Each partition will save incoming message in the same order according to the sequence in which they come
+      - Partition is a way to achieve parralelism
+      - Messages are stored in order for each partition
+      - Order across partition is not guaranteed
+      - Each message has offset started from zero
+    - **Offset** - a number assigned to each partition which references to an event, if event is processed the offset is incremented
+      - Each consumer in the group maintains a specific offset
+- **Retention Period** - messages are stored on the hard drive for a certain amount of time
+  - Default is **7 days** (configurable)
+- Message is **immutable**
+- Define partition when creates topic
+- Can add partition later
+- Can't delete partition later (delete partition = delete data)
+
+### Kafka Producer
+
+- Producer sends message to Kafka
+- Sends to a specific topic + message content
+- Kafka will automatically select partition (partition can be selected programatically if needed)
+- Kafka Producer Key - a value for which the hash is calculated and selected a partition, if a new partition is added, the message can go to another partition
+
+### Kafka Consumer
+
+- Consumer guaranteed to read data in order for each partition
+- Order is incrementing by offset (low offset to high), cannot reverse
+- Each partition maximum one consumer per consumer group
+  - If there are 2 partitions and 3 consumers, 1 consumer will be idle
+- One consumer can read from more than one partition
+- Consumer group is a set of consumers which can consume from the same topic/partition same events but to process them differently (Each consumer in the group maintains a specific offset)
+- Consumer groups (for the same topic/partition) process events in parallel
+- Consumer Offset
+  - Kafka Saves this value
+  - Unique for each partition
+  - Checkpoint that indicates last read
+
+### Delivery Semantic
+
+- Consumer chose when to saving(commit) offset
+- At most once
+  - Zero (unprocessed) or once (processed)
+  - Possible message loss (on error process)
+- At least once
+  - Once or more
+  - Something wrong, able to re-process
+  - Create idempotent consumer
+- Exactly once
+  - Once only
+  - Hard to implement
+
+### Zookeper (old versions of Kafka)
+
+- Kafka designed for high availability
+- Kafka cluster: group of kafka brokers (servers)
+- Zookeper manages those brokers
+  - Add, Remove(if broker dies), Sync data
+
+### POCs
+
+- `docker-compose -f [script-file] -p [project] up -d`
+- <img src="./_forReadme/img3.png" style="width: 500px" />
+- <img src="./_forReadme/img4.png" style="width: 500px" />
+- <img src="./_forReadme/img5.png" style="width: 500px" />
