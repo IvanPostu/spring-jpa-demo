@@ -556,6 +556,22 @@ Main capabilities:
 - Zookeper manages those brokers
   - Add, Remove(if broker dies), Sync data
 
+### Spring Boot
+
+- Spring for Apache Kafka (starter)
+
+### Core Kafka Quickstart
+
+- `docker-compose -f ./spring-kafka-scripts/docker-compose-core.yml -p core up -d`
+- `docker-compose -p core down`
+
+### Other
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-hello --partitions 1`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --list`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic t-hello`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic t-hello`
+
 ### POCs
 
 - `docker-compose -f [script-file] -p [project] up -d`

@@ -1,0 +1,4 @@
+rootProject.name = 'kafka-demo1-parent'
+
+include 'demo1-consumer'
+include 'demo1-producer'
