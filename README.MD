@@ -11,6 +11,7 @@ Sandbox for JPA POCs
 - JPA Query Methods <https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html>
 - <https://jwt.io/>
 - <https://www.baeldung.com/kafka-consumer-offset>
+- Gradle spring boot multimodule <https://tmsvr.com/gradle-multi-module-build/>
 
 ## Prerequisites and setup
 
@@ -562,15 +563,15 @@ Main capabilities:
 
 ### Core Kafka Quickstart
 
-- `docker-compose -f ./spring-kafka-scripts/docker-compose-core.yml -p core up -d`
+- `docker-compose -f ./spring-kafka-scripts/docker-compose-core.yml -p core up -d --force-recreate`
+- `sudo chmod -R g+rwX ./spring-kafka-scripts/data/`
 - `docker-compose -p core down`
-
-### Other
-
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-hello --partitions 1`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --list`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic t-hello`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic t-hello`
+
+### Other
 
 ### POCs
 

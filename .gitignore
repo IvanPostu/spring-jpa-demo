@@ -209,3 +209,4 @@ test-output
 my_data
 mysql_data
 postgres_data
+spring-kafka-scripts/data
