@@ -570,6 +570,7 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --list`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic t-hello`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic t-hello`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-hello --from-beginning`
 
 ### Other
 

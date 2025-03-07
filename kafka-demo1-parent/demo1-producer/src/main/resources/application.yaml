@@ -7,3 +7,5 @@ spring:
     banner-mode: OFF
   jackson:
     date-format: yyyy-MMM-dd
+  kafka:
+    bootstrap-servers: localhost:9092

@@ -1,3 +1,8 @@
-//dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter'
-//}
+plugins {
+    id 'multimodule-config'
+    id 'spring-conventions'
+}
+
+dependencies {
+    implementation 'org.springframework.kafka:spring-kafka'
+}
