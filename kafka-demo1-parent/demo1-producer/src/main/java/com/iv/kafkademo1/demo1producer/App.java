@@ -26,14 +26,13 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        int i = 0;
         while (true) {
-            i++;
-            String message = "Test " + ThreadLocalRandom.current().nextInt(100);
-            String key = "key-" + i;
+            int randomInt = ThreadLocalRandom.current().nextInt(100);
+            String message = "Test " + randomInt;
+            String key = "key-" + randomInt;
             kafkaKeyProducer.send(key, message);
             LOG.info("Produced key: {}, message: {}", key, message);
-            Thread.sleep(1200);
+            Thread.sleep(100);
         }
     }
 }

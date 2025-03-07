@@ -12,6 +12,7 @@ Sandbox for JPA POCs
 - <https://jwt.io/>
 - <https://www.baeldung.com/kafka-consumer-offset>
 - Gradle spring boot multimodule <https://tmsvr.com/gradle-multi-module-build/>
+  - <https://github.com/tmsvr/tmsvr-blog/blob/master/multi-modules/service/build.gradle>
 
 ## Prerequisites and setup
 
@@ -590,7 +591,21 @@ Main capabilities:
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-multi-partitions --offset earliest --partition 1`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-multi-partitions --offset earliest --partition 2`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-multi-partitions --partitions 4`
+
 ### Other
+
+- Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, on consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
+
+### Deleting Partition
+
+- Delete topic = delete all partitions
+- Can not delete partition
+  - Can cause data loss
+  - Wrong key distribution
+- The only way to decrease partitions is to delete & create a new topic
 
 ### POCs
 
