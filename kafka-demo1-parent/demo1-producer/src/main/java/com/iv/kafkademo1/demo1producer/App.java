@@ -1,6 +1,6 @@
 package com.iv.kafkademo1.demo1producer;
 
-import com.iv.kafkademo1.demo1producer.producer.HelloKafkaProducer;
+import com.iv.kafkademo1.demo1producer.producer.KafkaKeyProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,19 @@ public class App implements CommandLineRunner {
         SpringApplication.run(App.class, args);
     }
 
-//    @Autowired
-//    private HelloKafkaProducer helloKafkaProducer;
+    @Autowired
+    private KafkaKeyProducer kafkaKeyProducer;
 
     @Override
     public void run(String... args) throws Exception {
-//        while (true) {
-//            String message = "Test " + ThreadLocalRandom.current().nextInt(100);
-//            helloKafkaProducer.sendHello(message);
-//            LOG.info("Produced message: {}", message);
-//            Thread.sleep(1200);
-//        }
+        int i = 0;
+        while (true) {
+            i++;
+            String message = "Test " + ThreadLocalRandom.current().nextInt(100);
+            String key = "key-" + i;
+            kafkaKeyProducer.send(key, message);
+            LOG.info("Produced key: {}, message: {}", key, message);
+            Thread.sleep(1200);
+        }
     }
 }

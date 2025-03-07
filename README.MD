@@ -561,6 +561,11 @@ Main capabilities:
 
 - Spring for Apache Kafka (starter)
 
+### Config
+
+- `auto.offset.reset=latest` - ignore old messages, even if they weren't processed
+- `auto.offset.reset=earliest` - continue processing unprocessed
+
 ### Core Kafka Quickstart
 
 - `docker-compose -f ./spring-kafka-scripts/docker-compose-core.yml -p core up -d --force-recreate`
@@ -576,6 +581,14 @@ Main capabilities:
 ---
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-fixedrate --partitions 1`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-multi-partitions --partitions 3`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic t-multi-partitions`
+
+---
+
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-multi-partitions --offset earliest --partition 0`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-multi-partitions --offset earliest --partition 1`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-multi-partitions --offset earliest --partition 2`
 
 ### Other
 
