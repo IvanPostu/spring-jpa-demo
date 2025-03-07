@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
+@EnableScheduling
 public class App implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
@@ -19,16 +21,16 @@ public class App implements CommandLineRunner {
         SpringApplication.run(App.class, args);
     }
 
-    @Autowired
-    private HelloKafkaProducer helloKafkaProducer;
+//    @Autowired
+//    private HelloKafkaProducer helloKafkaProducer;
 
     @Override
     public void run(String... args) throws Exception {
-        while (true) {
-            String message = "Test " + ThreadLocalRandom.current().nextInt(100);
-            helloKafkaProducer.sendHello(message);
-            LOG.info("Produced message: {}", message);
-            Thread.sleep(1200);
-        }
+//        while (true) {
+//            String message = "Test " + ThreadLocalRandom.current().nextInt(100);
+//            helloKafkaProducer.sendHello(message);
+//            LOG.info("Produced message: {}", message);
+//            Thread.sleep(1200);
+//        }
     }
 }

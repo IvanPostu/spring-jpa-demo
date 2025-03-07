@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-//@Service
-public class HelloKafkaConsumer {
+@Service
+public class FixedRateConsumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HelloKafkaConsumer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FixedRateConsumer.class);
 
-    @KafkaListener(topics = "t-hello")
+    @KafkaListener(topics = "t-fixedrate")
     public void consume(String message) {
-        LOG.info("Consumed message: {}", message);
+        LOG.info("Consuming : {}", message);
     }
 
 }
