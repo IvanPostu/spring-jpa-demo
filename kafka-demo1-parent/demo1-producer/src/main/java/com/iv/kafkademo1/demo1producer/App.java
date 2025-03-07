@@ -27,7 +27,7 @@ public class App implements CommandLineRunner {
         while (true) {
             String message = "Test " + ThreadLocalRandom.current().nextInt(100);
             helloKafkaProducer.sendHello(message);
-            LOG.info("Consumed message: {}", message);
+            LOG.info("Produced message: {}", message);
             Thread.sleep(1200);
         }
     }
