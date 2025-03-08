@@ -1,6 +1,6 @@
 package com.iv.kafkademo1.demo1producer.api;
 
-import com.iv.kafkademo1.demo1producer.entity.Commodity;
+import com.iv.kafkademo1.demo1common.entity.Commodity;
 import com.iv.kafkademo1.demo1producer.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

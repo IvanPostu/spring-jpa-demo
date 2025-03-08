@@ -1,9 +1,9 @@
 package com.iv.kafkademo1.demo1producer;
 
-import com.iv.kafkademo1.demo1producer.entity.Employee;
-import com.iv.kafkademo1.demo1producer.entity.PaymentRequest;
-import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest;
-import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest2;
+import com.iv.kafkademo1.demo1common.entity.Employee;
+import com.iv.kafkademo1.demo1common.entity.PaymentRequest;
+import com.iv.kafkademo1.demo1common.entity.PurchaseRequest;
+import com.iv.kafkademo1.demo1common.entity.PurchaseRequest2;
 import com.iv.kafkademo1.demo1producer.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

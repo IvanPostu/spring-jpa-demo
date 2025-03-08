@@ -2,7 +2,7 @@ package com.iv.kafkademo1.demo1producer.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iv.kafkademo1.demo1producer.entity.CarLocation;
+import com.iv.kafkademo1.demo1common.entity.CarLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

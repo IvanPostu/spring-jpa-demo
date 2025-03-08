@@ -2,8 +2,7 @@ package com.iv.kafkademo1.demo1producer.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest;
-import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest2;
+import com.iv.kafkademo1.demo1common.entity.PurchaseRequest2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class PurchaseRequestProducer2 {
 
     public void send(PurchaseRequest2 purchaseRequest) throws JsonProcessingException {
         var json = objectMapper.writeValueAsString(purchaseRequest);
-        kafkaTemplate.send("t-purchase-request2", purchaseRequest.getPrNumber(), json);
+        kafkaTemplate.send("t-purchase-request2", json);
         LOG.info("Sent : {}", purchaseRequest);
     }
 

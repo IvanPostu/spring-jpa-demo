@@ -1,4 +1,4 @@
-package com.iv.kafkademo1.demo1consumer.entity;
+package com.iv.kafkademo1.demo1common.entity;
 
 public class CarLocation {
 

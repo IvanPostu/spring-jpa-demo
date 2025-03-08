@@ -1,12 +1,11 @@
 package com.iv.kafkademo1.demo1producer.scheduler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.iv.kafkademo1.demo1producer.entity.Commodity;
+import com.iv.kafkademo1.demo1common.entity.Commodity;
 import com.iv.kafkademo1.demo1producer.producer.CommodityProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

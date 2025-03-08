@@ -1,6 +1,6 @@
 package com.iv.kafkademo1.demo1producer.service;
 
-import com.iv.kafkademo1.demo1producer.entity.Commodity;
+import com.iv.kafkademo1.demo1common.entity.Commodity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

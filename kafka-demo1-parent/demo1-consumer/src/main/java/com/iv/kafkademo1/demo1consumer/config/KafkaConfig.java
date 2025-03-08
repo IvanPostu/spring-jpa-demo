@@ -3,9 +3,9 @@ package com.iv.kafkademo1.demo1consumer.config;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.iv.kafkademo1.demo1consumer.entity.CarLocation;
-import com.iv.kafkademo1.demo1consumer.entity.PurchaseRequest2;
-import com.iv.kafkademo1.demo1consumer.util.Hash;
+import com.iv.kafkademo1.demo1common.entity.CarLocation;
+import com.iv.kafkademo1.demo1common.entity.PurchaseRequest2;
+import com.iv.kafkademo1.demo1common.util.Hash;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -85,14 +85,15 @@ public class KafkaConfig {
                     String idempotencyKey = Hash.calculateSha256(""
                             + purchaseRequest.getPrNumber() + ";" + purchaseRequest.getAmount()
                             + ";" + purchaseRequest.getPrNumber());
-                    boolean shouldBeProcessed = Optional
+                    boolean isCached = Optional
                             .ofNullable(cachePurchaseRequest2.getIfPresent(idempotencyKey)).orElse(false);
 
-                    if (!shouldBeProcessed) {
+                    if (isCached) {
                         LOG.info("Skipped: {}", purchaseRequest);
+                        return true;
                     }
 
-                    return shouldBeProcessed;
+                    return false;
                 } catch (JsonProcessingException e) {
                     return false;
                 }

@@ -6,17 +6,9 @@ test {
     useJUnitPlatform()
 }
 
-ext {
-    set('jacksonVersion', "2.18.3")
-}
-
 dependencies {
     implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
     implementation 'org.springframework.boot:spring-boot-starter'
-
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

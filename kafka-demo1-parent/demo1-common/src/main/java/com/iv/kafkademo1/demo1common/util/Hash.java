@@ -1,4 +1,4 @@
-package com.iv.kafkademo1.demo1consumer.util;
+package com.iv.kafkademo1.demo1common.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

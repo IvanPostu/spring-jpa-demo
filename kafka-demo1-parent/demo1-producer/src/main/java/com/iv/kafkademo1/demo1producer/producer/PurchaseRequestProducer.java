@@ -2,7 +2,7 @@ package com.iv.kafkademo1.demo1producer.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest;
+import com.iv.kafkademo1.demo1common.entity.PurchaseRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
