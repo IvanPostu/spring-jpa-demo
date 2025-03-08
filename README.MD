@@ -607,7 +607,8 @@ Main capabilities:
 
 ### Other
 
-- Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, on consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
+- Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
+- 2 or more `@KafkaListener`s assigned to the same topic but with different `groupId` will process events isolately
 
 ### Deleting Partition
 
