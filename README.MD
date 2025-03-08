@@ -633,6 +633,14 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-location --partitions 1`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-purchase-request --partitions 1`
+
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-payment-request --partitions 1`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -840,6 +848,14 @@ Kafka clients (producers and consumers) will cache metadata about topics and bro
 - Match criteria: processed
 - Not match criteria: ignored, but present in the topic
 - Filter for each listener
+
+### Idempotency - handle duplicated messages
+
+A mechanism which guarante that even if a message will be consumed 2 or more times, it will have an effect only once
+
+### Delivery Semantics
+
+- At least once
 
 ### POCs
 

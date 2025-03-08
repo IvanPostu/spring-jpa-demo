@@ -3,6 +3,11 @@ plugins {
     id 'spring-conventions'
 }
 
+ext {
+    set('caffeineVersion', "3.0.6")
+}
+
 dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation "com.github.ben-manes.caffeine:caffeine:${caffeineVersion}"
 }

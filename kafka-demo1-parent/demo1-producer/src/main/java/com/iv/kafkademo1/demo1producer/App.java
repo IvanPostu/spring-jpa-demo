@@ -1,9 +1,9 @@
 package com.iv.kafkademo1.demo1producer;
 
 import com.iv.kafkademo1.demo1producer.entity.Employee;
-import com.iv.kafkademo1.demo1producer.producer.CounterProducer;
-import com.iv.kafkademo1.demo1producer.producer.EmployeeJsonProducer;
-import com.iv.kafkademo1.demo1producer.producer.KafkaKeyProducer;
+import com.iv.kafkademo1.demo1producer.entity.PaymentRequest;
+import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest;
+import com.iv.kafkademo1.demo1producer.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +35,44 @@ public class App implements CommandLineRunner {
     @Autowired
     private CounterProducer counterProducer;
 
+    @Autowired
+    private PurchaseRequestProducer purchaseRequestProducer;
+
+    @Autowired
+    private PaymentRequestProducer paymentRequestProducer;
+
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
 //        generateAndPublishEmployees(5);
-        counterProducer.sendMessage(100);
+//        counterProducer.sendMessage(100);
+//        sendPurchaseRequests();
+
+        sendPaymentRequests();
+    }
+
+    private void sendPaymentRequests() throws Exception {
+        PaymentRequest request1 = new PaymentRequest(UUID.randomUUID().toString(), 100, "USD", "test1", "debit");
+        PaymentRequest request2 = new PaymentRequest(UUID.randomUUID().toString(), 200, "EUR", "test2", "debit");
+        PaymentRequest request3 = new PaymentRequest(UUID.randomUUID().toString(), 300, "GBP", "test3", "debit");
+
+        paymentRequestProducer.send(request1);
+        paymentRequestProducer.send(request2);
+        paymentRequestProducer.send(request3);
+
+        paymentRequestProducer.send(request1);
+    }
+
+    private void sendPurchaseRequests() throws Exception {
+        PurchaseRequest purchaseRequest1 = new PurchaseRequest(1, "REQ-001", 100, "USD");
+        PurchaseRequest purchaseRequest2 = new PurchaseRequest(2, "REQ-002", 200, "EUR");
+        PurchaseRequest purchaseRequest3 = new PurchaseRequest(3, "REQ-003", 300, "GBP");
+
+        purchaseRequestProducer.send(purchaseRequest1);
+        purchaseRequestProducer.send(purchaseRequest2);
+        purchaseRequestProducer.send(purchaseRequest3);
+
+        purchaseRequestProducer.send(purchaseRequest1);
     }
 
     private void sendMessagesInLoop() throws InterruptedException {

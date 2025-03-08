@@ -29,7 +29,7 @@ public class CarLocationScheduler {
         carThree = new CarLocation("car-three", now, 95);
     }
 
-    @Scheduled(fixedRate = 10000)
+//    @Scheduled(fixedRate = 10000)
     public void generateCarLocation() throws JsonProcessingException {
         var now = System.currentTimeMillis();
 
