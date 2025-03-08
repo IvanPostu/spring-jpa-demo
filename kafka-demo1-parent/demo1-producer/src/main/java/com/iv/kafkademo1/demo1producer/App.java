@@ -3,6 +3,7 @@ package com.iv.kafkademo1.demo1producer;
 import com.iv.kafkademo1.demo1common.entity.*;
 import com.iv.kafkademo1.demo1producer.producer.*;
 import com.iv.kafkademo1.demo1producer.service.ImageService;
+import com.iv.kafkademo1.demo1producer.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,14 @@ public class App implements CommandLineRunner {
     private ImageProducer imageProducer;
 
     @Autowired
+    private InvoiceProducer invoiceProducer;
+
+    @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private InvoiceService invoiceService;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,8 +72,19 @@ public class App implements CommandLineRunner {
 //        sendPurchaseRequests2();
 //        sendFoodRecords();
 //        sendFoodsAndSimpleNumbers();
+//        sendGeneratedImages();
 
-        sendGeneratedImages();
+        generateAndSendInvoices();
+    }
+
+    private void generateAndSendInvoices() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            var invoice = invoiceService.generateInvoice();
+            if (i > 5) {
+                invoice.setAmount(0);
+            }
+            invoiceProducer.send(invoice);
+        }
     }
 
     private void sendGeneratedImages() throws Exception {

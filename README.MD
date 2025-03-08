@@ -658,6 +658,13 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-image --partitions 2`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-invoice --partitions 2`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-invoice-dead --partitions 2`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-invoice --offset earliest --partition 0`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-invoice --offset earliest --partition 1`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -899,6 +906,22 @@ Example image consumer/froducer
 - I4, I5, I6 -> topic 1
 
 I2 is retried 3 times, and after that I3 is processed
+
+### Dead Letter Topic
+
+See: `Invoice Demo consumer/producer + container factory for consumer`
+
+- Combination of retry mechanism + producer which moves problematic event after N retries into a specific topic
+
+Default impl. `DeadLetterPublishingRecoverer` moves message with error from `t-original` -> `t-original.DLT`
+
+#### Scenario
+
+- Publish to `t-invoice`
+- If amount is less than 1 throw an exception
+- Retry 5 times
+- After 5 failed retry attempts, publish to `t-invoice-dead`
+- Another consumer will consume from `t-invoice-dead`
 
 ### POCs
 
