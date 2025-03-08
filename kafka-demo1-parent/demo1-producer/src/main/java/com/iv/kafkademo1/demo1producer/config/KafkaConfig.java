@@ -20,6 +20,7 @@ public class KafkaConfig {
     ProducerFactory<String, String> producerFactory(SslBundles sslBundles) {
         var properties = kafkaProperties.buildProducerProperties(sslBundles);
         properties.put(ProducerConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG, "50000");
+        properties.put(ProducerConfig.METADATA_MAX_AGE_CONFIG, "5000");
         return new DefaultKafkaProducerFactory<>(properties);
     }
 

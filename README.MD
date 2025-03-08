@@ -618,6 +618,17 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-alpha --partitions 4 --replication-factor 2`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-beta --replication-factor 3`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-alpha --partitions 3 --config min.insync.replicas=2`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-beta --add-config min.insync.replicas=3`
+
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-rebalance-alpha --partitions 2`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-rebalance-beta --partitions 2`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-rebalance-alpha --partitions 5`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -718,9 +729,108 @@ Consumer consumes events from the nearest replica (geographically) to reduce lat
 - Consumer setting
   - `client.rack=XYZ`
 
+### Producer Acknowledgment (Ack)
+
+- Producer can choose to receive **acknowlengement (akc)** of data writes
+  - `ack 0` - producer won't wait for acknowledgement (possible data loss), consumer doesn't wait for success status, it is automatically considered successful
+  - `ack 1`(default) - producer will wait for leader acknowledgement (limited data loss), the only risk is error on the phase of replication
+  - `ack -1 / all` - producer will wait for leader + replicas acknowledgement (no data loss)
+
+### `min.insync.replicas`
+
+- if `min.insync.replicas=2` and `replication factor = 3`
+- if 2 replicas are down
+- producer tries to write data
+- it fails with exception `Not enough replica`
+
+### Rebalancing
+
+- Rebalancing - redistributing partitions across consumers
+- Triggers:
+  - Consumer joining or leaving particular consumer group
+  - Partition count on topic changes
+- Impact
+  - Temporary unavailability
+  - Resource overhead
+
+#### Eager Rebalance
+
+2 consumers, 3 partitions. Add a new consumer. All relationships between consumers and partitions are recreated. For a short period of time events aren't consumed at all
+
+##### Range assignor
+
+- `group-aflpa` C1, C2, C3
+- `t-aflpa` p0, p1
+- `t-beta` p0, p1
+
+---
+
+- C1 - t-aflpa p0, t-beta p0
+- C2 - t-aflpa p1, t-beta p1
+
+##### Round Robin assignor
+
+- `group-aflpa` C1, C2, C3
+- `t-aflpa` p0, p1
+- `t-beta` p0, p1
+
+---
+
+- C1 - t-alfa p0
+- C2 - t-alfa p1
+- C3 - t-beta p0
+- C1 - t-beta p1
+
+If consumer is removed, (all assignments are revoked - no consume process during this period), relationships between consumers and partitions are re-created
+
+- C1 - t-alfa p0
+- C2 - t-alfa p1
+- C3 - t-beta p0
+- C1 - t-beta p1
+
+C2 is removed
+
+- C1 - t-alfa p0
+- C1 - t-beta p0
+- C3 - t-alfa p1
+- C3 - t-beta p1
+
+##### Sticky assignor
+
+Similar to round robin, the only difference is it minimizes partitions movements when consumer is removed
+
+- `group-aflpa` C1, C2, C3
+- `t-aflpa` p0, p1
+- `t-beta` p0, p1
+
+---
+
+- C1 - t-alfa p0
+- C2 - t-alfa p1
+- C3 - t-beta p0
+- C1 - t-beta p1
+
+C2 is removed
+
+- C1 - t-alfa p0
+- C3 - t-alfa p1
+- C3 - t-beta p0
+- C1 - t-beta p1
+
+#### Cooperative (Incremental) Rebalance
+
+Cooperative Sticky
+
+C1->P1, C2->P2,P3. Add C3. Rebalance. C1->P1, C2->P2, C3 -> P3
+
+Consumers keep consuming during rebalance
+
+#### Default strategy in kafka3: [range, cooperative-sticky]
+
+### `metadata.max.age.ms` default 300000
+
+Kafka clients (producers and consumers) will cache metadata about topics and brokers before they check for fresh metadata
+
 ### POCs
 
 - `docker-compose -f [script-file] -p [project] up -d`
-- <img src="./_forReadme/img3.png" style="width: 500px" />
-- <img src="./_forReadme/img4.png" style="width: 500px" />
-- <img src="./_forReadme/img5.png" style="width: 500px" />

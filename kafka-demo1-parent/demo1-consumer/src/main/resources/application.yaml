@@ -20,5 +20,8 @@ spring:
       metrics:
         num:
           samples: 4
+      partition:
+        assignment:
+          strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
   jackson:
     date-format: yyyy-MMM-dd

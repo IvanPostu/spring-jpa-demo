@@ -19,7 +19,7 @@ public class KafkaConfig {
     public ConsumerFactory<Object, Object> consumerFactory() {
         var properties = kafkaProperties.buildConsumerProperties();
 
-        properties.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, "120000");
+        properties.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, "5000");
         properties.put(ConsumerConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG, "40000");
 
         return new DefaultKafkaConsumerFactory<>(properties);
