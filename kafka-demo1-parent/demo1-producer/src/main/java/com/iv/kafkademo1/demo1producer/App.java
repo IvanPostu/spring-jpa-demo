@@ -3,6 +3,7 @@ package com.iv.kafkademo1.demo1producer;
 import com.iv.kafkademo1.demo1producer.entity.Employee;
 import com.iv.kafkademo1.demo1producer.entity.PaymentRequest;
 import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest;
+import com.iv.kafkademo1.demo1producer.entity.PurchaseRequest2;
 import com.iv.kafkademo1.demo1producer.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ public class App implements CommandLineRunner {
 
     @Autowired
     private PurchaseRequestProducer purchaseRequestProducer;
+    @Autowired
+    private PurchaseRequestProducer2 purchaseRequestProducer2;
 
     @Autowired
     private PaymentRequestProducer paymentRequestProducer;
@@ -47,8 +50,20 @@ public class App implements CommandLineRunner {
 //        generateAndPublishEmployees(5);
 //        counterProducer.sendMessage(100);
 //        sendPurchaseRequests();
+//        sendPaymentRequests();
+        sendPurchaseRequests2();
+    }
 
-        sendPaymentRequests();
+    private void sendPurchaseRequests2() throws Exception {
+        PurchaseRequest2 purchaseRequest1 = new PurchaseRequest2(1, "REQ-001", 100, "USD");
+        PurchaseRequest2 purchaseRequest2 = new PurchaseRequest2(2, "REQ-002", 200, "EUR");
+        PurchaseRequest2 purchaseRequest3 = new PurchaseRequest2(3, "REQ-003", 300, "GBP");
+
+        purchaseRequestProducer2.send(purchaseRequest1);
+        purchaseRequestProducer2.send(purchaseRequest2);
+        purchaseRequestProducer2.send(purchaseRequest3);
+
+        purchaseRequestProducer2.send(purchaseRequest1);
     }
 
     private void sendPaymentRequests() throws Exception {

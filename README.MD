@@ -641,6 +641,10 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-payment-request --partitions 1`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-payment-request2 --partitions 1`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
