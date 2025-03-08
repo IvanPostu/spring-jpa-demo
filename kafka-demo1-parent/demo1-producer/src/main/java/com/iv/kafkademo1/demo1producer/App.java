@@ -1,9 +1,6 @@
 package com.iv.kafkademo1.demo1producer;
 
-import com.iv.kafkademo1.demo1common.entity.Employee;
-import com.iv.kafkademo1.demo1common.entity.PaymentRequest;
-import com.iv.kafkademo1.demo1common.entity.PurchaseRequest;
-import com.iv.kafkademo1.demo1common.entity.PurchaseRequest2;
+import com.iv.kafkademo1.demo1common.entity.*;
 import com.iv.kafkademo1.demo1producer.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +41,9 @@ public class App implements CommandLineRunner {
     @Autowired
     private PaymentRequestProducer paymentRequestProducer;
 
+    @Autowired
+    private FoodOrderProducer foodOrderProducer;
+
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
@@ -51,7 +51,19 @@ public class App implements CommandLineRunner {
 //        counterProducer.sendMessage(100);
 //        sendPurchaseRequests();
 //        sendPaymentRequests();
-        sendPurchaseRequests2();
+//        sendPurchaseRequests2();
+
+        sendFoodRecords();
+    }
+
+    private void sendFoodRecords() throws Exception {
+        FoodOrder foodOrder1 = new FoodOrder(5, "Pizza");
+        FoodOrder foodOrder2 = new FoodOrder(8, "Fish");
+        FoodOrder foodOrder3 = new FoodOrder(111, "Bread");
+
+        foodOrderProducer.send(foodOrder1);
+        foodOrderProducer.send(foodOrder2);
+        foodOrderProducer.send(foodOrder3);
     }
 
     private void sendPurchaseRequests2() throws Exception {

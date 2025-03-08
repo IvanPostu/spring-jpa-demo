@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class PurchaseRequestConsumer2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseRequestConsumer2.class);
