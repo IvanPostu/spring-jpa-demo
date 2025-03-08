@@ -595,6 +595,11 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-multi-partitions --partitions 4`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-employee --partitions 1`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-employee --offset earliest --partition 0`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, on consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
