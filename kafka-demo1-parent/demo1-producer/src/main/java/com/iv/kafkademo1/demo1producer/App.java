@@ -34,7 +34,7 @@ public class App implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
-        generateAndPublishEmployees(5);
+//        generateAndPublishEmployees(5);
     }
 
     private void sendMessagesInLoop() throws InterruptedException {
