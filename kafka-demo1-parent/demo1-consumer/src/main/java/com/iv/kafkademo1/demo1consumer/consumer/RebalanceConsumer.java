@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
-@Service
+//@Service
 public class RebalanceConsumer {
 
     private static final Logger LOG = LoggerFactory.getLogger(RebalanceConsumer.class);
