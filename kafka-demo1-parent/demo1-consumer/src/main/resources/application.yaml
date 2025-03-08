@@ -3,8 +3,11 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
 spring:
+  application:
+    name: kafka-core-consumer
   main:
     banner-mode: OFF
+    log-startup-info: false
   kafka:
     bootstrap-servers: localhost:9092
     listener:
@@ -13,5 +16,9 @@ spring:
       group-id: default-spring-consumer
       auto-offset-reset: earliest
       max-poll-records: 10
+    properties:
+      metrics:
+        num:
+          samples: 4
   jackson:
     date-format: yyyy-MMM-dd

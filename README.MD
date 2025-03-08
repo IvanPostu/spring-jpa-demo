@@ -669,6 +669,20 @@ Spring Boot 3 by default uses false. It commits only when offset reached the las
 - `manual`
 - `manual_immediate`
 
+### Kafka Configuration in Spring Boot
+
+On startup spring boot shows kafka configuration
+
+```
+2025-03-08 14:48:23 [main] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+ ...
+ metrics.num.samples = 2
+ metrics.recording.level = INFO
+ metrics.sample.window.ms = 30000
+```
+
+In order to change `metrics.num.samples` set in application.properties `spring.kafka.properties.metrics.num.samples` or via `KafkaConfig` configuration bean
+
 ### POCs
 
 - `docker-compose -f [script-file] -p [project] up -d`
