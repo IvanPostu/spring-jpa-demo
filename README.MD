@@ -654,6 +654,10 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-simple-number --partitions 1`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --list | grep -E 'food|number'`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-image --partitions 2`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -872,6 +876,29 @@ A mechanism which guarante that even if a message is consumed 2 or more times, i
 - Exception goes first to the explicit handler (if present)
   - `@KafkaListener(topics = "t-food-order", errorHandler = "myFoodOrderErrorHandler")`
 - Whether there is no explicit handler or exceptions is re-thrown, it is handled by global handler
+
+### Retry Mechanism - Scenario
+
+- Topic: `t-image`, 2 partitions
+- Publish message represents image
+- Consumer:
+  - Simulate API call to convert image
+  - Simulate failed API call
+  - Retry after 10 seconds
+  - Retry 3 times
+
+### Blocking Retry
+
+- M1 -> M2 -> M3
+
+If M2 fails, it will be retried up to N times. M3 will only be handled after M2 has either succeeded or reached the retry limit.
+
+Example image consumer/froducer
+
+- I1, I2(problematic), I3 -> topic 0
+- I4, I5, I6 -> topic 1
+
+I2 is retried 3 times, and after that I3 is processed
 
 ### POCs
 

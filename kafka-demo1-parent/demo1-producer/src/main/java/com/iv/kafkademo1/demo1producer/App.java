@@ -2,6 +2,7 @@ package com.iv.kafkademo1.demo1producer;
 
 import com.iv.kafkademo1.demo1common.entity.*;
 import com.iv.kafkademo1.demo1producer.producer.*;
+import com.iv.kafkademo1.demo1producer.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,12 @@ public class App implements CommandLineRunner {
     @Autowired
     private SimpleNumberProducer simpleNumberProducer;
 
+    @Autowired
+    private ImageProducer imageProducer;
+
+    @Autowired
+    private ImageService imageService;
+
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
@@ -56,9 +63,26 @@ public class App implements CommandLineRunner {
 //        sendPaymentRequests();
 //        sendPurchaseRequests2();
 //        sendFoodRecords();
+//        sendFoodsAndSimpleNumbers();
 
+        sendGeneratedImages();
+    }
 
-        sendFoodsAndSimpleNumbers();
+    private void sendGeneratedImages() throws Exception {
+        Image image1 = imageService.generateImage("JPG");
+        Image image2 = imageService.generateImage("SVG");
+        Image image3 = imageService.generateImage("PNG");
+        Image image4 = imageService.generateImage("GIF");
+        Image image5 = imageService.generateImage("BMP");
+        Image image6 = imageService.generateImage("TIFF");
+
+        imageProducer.send(image1, 0);
+        imageProducer.send(image2, 0);
+        imageProducer.send(image3, 0);
+
+        imageProducer.send(image4, 1);
+        imageProducer.send(image5, 1);
+        imageProducer.send(image6, 1);
     }
 
     private void sendFoodsAndSimpleNumbers() throws Exception {
