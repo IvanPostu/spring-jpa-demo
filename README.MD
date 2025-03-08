@@ -613,6 +613,11 @@ Main capabilities:
 - `kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group counter-group-fast --describe`
 - `kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group counter-group-slow --describe`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-alpha --partitions 4 --replication-factor 2`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic t-beta --replication-factor 3`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -682,6 +687,36 @@ On startup spring boot shows kafka configuration
 ```
 
 In order to change `metrics.num.samples` set in application.properties `spring.kafka.properties.metrics.num.samples` or via `KafkaConfig` configuration bean
+
+### Kafka Cluster
+
+- Kafka for data communication backbone
+- Single kafka broker for dev.
+- At least 3 kafka brokers for prod.
+- Kafka cluster: multiple brokers work as unity
+
+### Replication
+
+- Copy data from one broker to another
+- Data redundancy benifit
+- Increase replication factor (1,2,...) - means how many copies of the same data will be done
+- If a broker is down, other broker will still have the copy of data
+
+- Partition leader - partiton which is used by producer (producer writes to it), and listener reads from it
+- ISR - InSyncReplica
+
+Replication factor can be set globally or when the topic is created
+
+### Consumer Replica Fetching
+
+Consumer consumes events from the nearest replica (geographically) to reduce latency and networking costs
+
+- Kafka 2.4 or newer
+- Broker setting
+  - `rack.id = XYZ`
+  - `replica.selector.class`
+- Consumer setting
+  - `client.rack=XYZ`
 
 ### POCs
 
