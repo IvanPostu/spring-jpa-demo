@@ -20,7 +20,7 @@ public class CommodityScheduler {
     @Autowired
     private CommodityProducer producer;
 
-    @Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 5000)
     public void fetchCommodities() {
         var commodities = restTemplate.exchange("http://localhost:8080/api/commodity/v1/all", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Commodity>>() {

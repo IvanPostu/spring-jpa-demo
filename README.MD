@@ -564,8 +564,9 @@ Main capabilities:
 
 ### Config
 
-- `auto.offset.reset=latest` - ignore old messages, even if they weren't processed
-- `auto.offset.reset=earliest` - continue processing unprocessed
+- `spring.kafka.auto-offset-reset=latest`(default) - ignore old messages, even if they weren't processed
+- `spring.kafka.auto-offset-reset=earliest` - continue from the last commited offset of the topic
+- `spring.kafka.auto-offset-reset=none` - throws exception if there is no offset or if offset is out of range (ensures that consumer does not consumes any message if offset is invalid)
 
 ### Core Kafka Quickstart
 
@@ -605,6 +606,13 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-commodity --partitions 1`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity --offset earliest --partition 0`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-counter --partitions 1`
+- `kafka-console-consumer.sh --from-beginning --bootstrap-server localhost:9092 --property print.key=false --property print.value=false --topic t-counter --timeout-ms 5000 | tail -n 10 | grep "Processed a total of"` - show total topic messages
+- `kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group counter-group-fast --describe`
+- `kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group counter-group-slow --describe`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -617,6 +625,49 @@ Main capabilities:
   - Can cause data loss
   - Wrong key distribution
 - The only way to decrease partitions is to delete & create a new topic
+
+### Retention Period
+
+- Consumer expected to read sequentially
+- Kafka default retention period is 7 days
+  - Offset is invalid since data no longer exists after 7 days
+- Set retention period using broker config `offset.retention.minutes`
+
+### Lag & Manual Offset Reset
+
+- Difference between latest message vs. message consumer group has processed
+- Monitor and identify potential bottlenecks, to improve the situation:
+  - Increase number of partitions and consumers
+  - Improve performance for consumers
+- `Lag = IndexOfTheLatestEvent - Offset`
+
+### Replay Data
+
+- Reprocess previously consumed messages
+- Use cases:
+  - Correcting errors
+  - Data recovery
+  - Historical analisys
+  - Testing
+
+### `spring.kafka.enable.auto.commit`
+
+- true - auto commit according to broker config
+- false set manually
+
+Spring Boot 3 by default uses false. It commits only when offset reached the last message in the topic, a.k.a lag is 0
+
+### Commiting Offset
+
+`spring.kafka.listener.ack-mode`
+
+- `record` - commit after a record is processed
+- `batch` process N=`spring.kafka.consumer.max-poll-records` and commit
+- `time`
+- `count`
+- `count_time`
+- `manual`
+- `manual_immediate`
 
 ### POCs
 

@@ -1,6 +1,7 @@
 package com.iv.kafkademo1.demo1producer;
 
 import com.iv.kafkademo1.demo1producer.entity.Employee;
+import com.iv.kafkademo1.demo1producer.producer.CounterProducer;
 import com.iv.kafkademo1.demo1producer.producer.EmployeeJsonProducer;
 import com.iv.kafkademo1.demo1producer.producer.KafkaKeyProducer;
 import org.slf4j.Logger;
@@ -31,10 +32,14 @@ public class App implements CommandLineRunner {
     @Autowired
     private EmployeeJsonProducer employeeJsonProducer;
 
+    @Autowired
+    private CounterProducer counterProducer;
+
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
 //        generateAndPublishEmployees(5);
+        counterProducer.sendMessage(100);
     }
 
     private void sendMessagesInLoop() throws InterruptedException {
