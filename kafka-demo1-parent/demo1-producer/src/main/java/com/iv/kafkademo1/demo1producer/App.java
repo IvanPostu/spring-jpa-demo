@@ -44,6 +44,9 @@ public class App implements CommandLineRunner {
     @Autowired
     private FoodOrderProducer foodOrderProducer;
 
+    @Autowired
+    private SimpleNumberProducer simpleNumberProducer;
+
     @Override
     public void run(String... args) throws Exception {
 //        sendMessagesInLoop();
@@ -52,8 +55,23 @@ public class App implements CommandLineRunner {
 //        sendPurchaseRequests();
 //        sendPaymentRequests();
 //        sendPurchaseRequests2();
+//        sendFoodRecords();
 
-        sendFoodRecords();
+
+        sendFoodsAndSimpleNumbers();
+    }
+
+    private void sendFoodsAndSimpleNumbers() throws Exception {
+        FoodOrder foodOrder1 = new FoodOrder(11, "Pizza");
+        FoodOrder foodOrder2 = new FoodOrder(111, "Bread");
+        foodOrderProducer.send(foodOrder1);
+        foodOrderProducer.send(foodOrder2);
+
+        SimpleNumber simpleNumber1 = new SimpleNumber(11);
+        SimpleNumber simpleNumber2 = new SimpleNumber(12);
+        simpleNumberProducer.send(simpleNumber1);
+        simpleNumberProducer.send(simpleNumber2);
+
     }
 
     private void sendFoodRecords() throws Exception {

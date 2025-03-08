@@ -649,6 +649,11 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-food-order --partitions 1`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-simple-number --partitions 1`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --list | grep -E 'food|number'`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -860,11 +865,13 @@ Kafka clients (producers and consumers) will cache metadata about topics and bro
 
 ### Idempotency - handle duplicated messages
 
-A mechanism which guarante that even if a message will be consumed 2 or more times, it will have an effect only once
+A mechanism which guarante that even if a message is consumed 2 or more times, it will be processed only once
 
-### Delivery Semantics
+### Error Handling
 
-- At least once
+- Exception goes first to the explicit handler (if present)
+  - `@KafkaListener(topics = "t-food-order", errorHandler = "myFoodOrderErrorHandler")`
+- Whether there is no explicit handler or exceptions is re-thrown, it is handled by global handler
 
 ### POCs
 
