@@ -698,6 +698,35 @@ Both are excelent solutions for messaging systems
   - Kafka for event sourcing, big data processing, sensitive data handling
   - RabbitMQ event driven architecture
 
+### Kafka - Use Case
+
+- Commodity Trading Company with multiple branches
+- Branch submit purchase order to head office
+- After process
+  - Pattern analysis
+  - Reward
+  - Big Data Storage
+- Speed is the key
+- Branch office submit each order once
+- HEad office process using kafka
+
+### Hexagonal Architecture
+
+Hexagonal Architecture, also known as **Ports and Adapters**, is a software design pattern that promotes separation of concerns by structuring an application around a core business logic (the hexagon) and defining ports (interfaces) that connect to the outside world via adapters.
+
+- Inbound Adapter - REST Controllers
+- Outbound Adapter - DB, External Endpoints
+
+- Benifit: decouple business logic with data access
+- Testability
+
+### CQRS Command Query Responsibility Segregation
+
+Separated writes from reads
+
+- Command - write
+- Query - read
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
