@@ -669,6 +669,11 @@ Main capabilities:
 
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-image-2 --partitions 2`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-general-ledger --partitions 1`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-general-ledger --from-beginning`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -932,6 +937,20 @@ Default impl. `DeadLetterPublishingRecoverer` moves message with error from `t-o
 - Retry 5 times
 - After 5 failed retry attempts, publish to `t-invoice-dead`
 - Another consumer will consume from `t-invoice-dead`
+
+### Scheduling Consumer To Run
+
+#### Scenario
+
+Payment App (Android/iOS,web) -> Payment App API -> publish -> Kafka -> consume -> General Ledger App Server
+
+- 24/7 Payment App (Android/iOS,web)
+- 24/7 Payment App API
+- 12/7 General Ledger App Server
+
+### Terminology
+
+- **General Ledger Accounting Entry** - is a financial record that captures a business transaction within an organization's accounting system. It consists of debits and credits that affect different general ledger accounts, ensuring that the accounting equation (Assets = Liabilities + Equity) remains balanced.
 
 ### POCs
 

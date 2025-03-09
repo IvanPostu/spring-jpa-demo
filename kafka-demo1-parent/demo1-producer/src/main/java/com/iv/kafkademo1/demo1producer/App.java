@@ -76,8 +76,8 @@ public class App implements CommandLineRunner {
 //        sendFoodsAndSimpleNumbers();
 //        sendGeneratedImages();
 //        generateAndSendInvoices();
+//        sendGeneratedImages2();
 
-        sendGeneratedImages2();
     }
 
     private void generateAndSendInvoices() throws Exception {
