@@ -9,17 +9,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.kafka.retrytopic.TopicSuffixingStrategy;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Service;
 
-//@Service
-public class ImageConsumer {
+@Service
+public class Image2Consumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ImageConsumer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Image2Consumer.class);
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "t-image", containerFactory = "imageRetryContainerFactory", concurrency = "2")
+    @RetryableTopic(
+            autoCreateTopics = "true",
+            attempts = "4",
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+            backoff = @Backoff(
+                    delay = 3000,
+                    maxDelay = 10_000,
+                    multiplier = 1.5,
+                    random = true),
+            dltTopicSuffix = "-dead"
+    )
+    @KafkaListener(topics = "t-image-2", concurrency = "2")
     public void consume(ConsumerRecord<String, String> consumerRecord) throws JsonMappingException, JsonProcessingException {
         var image = objectMapper.readValue(consumerRecord.value(), Image.class);
 

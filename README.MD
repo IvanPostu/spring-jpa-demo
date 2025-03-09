@@ -665,6 +665,10 @@ Main capabilities:
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-invoice --offset earliest --partition 0`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-invoice --offset earliest --partition 1`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-image-2 --partitions 2`
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -906,6 +910,12 @@ Example image consumer/froducer
 - I4, I5, I6 -> topic 1
 
 I2 is retried 3 times, and after that I3 is processed
+
+### Non-Blocking Retry
+
+- M1 -> M2 -> M3
+
+If M2 fails, M3 will be handled immediately.
 
 ### Dead Letter Topic
 

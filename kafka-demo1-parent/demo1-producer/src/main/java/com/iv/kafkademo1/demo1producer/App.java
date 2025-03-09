@@ -51,6 +51,8 @@ public class App implements CommandLineRunner {
 
     @Autowired
     private ImageProducer imageProducer;
+    @Autowired
+    private Image2Producer image2Producer;
 
     @Autowired
     private InvoiceProducer invoiceProducer;
@@ -73,8 +75,9 @@ public class App implements CommandLineRunner {
 //        sendFoodRecords();
 //        sendFoodsAndSimpleNumbers();
 //        sendGeneratedImages();
+//        generateAndSendInvoices();
 
-        generateAndSendInvoices();
+        sendGeneratedImages2();
     }
 
     private void generateAndSendInvoices() throws Exception {
@@ -85,6 +88,23 @@ public class App implements CommandLineRunner {
             }
             invoiceProducer.send(invoice);
         }
+    }
+
+    private void sendGeneratedImages2() throws Exception {
+        Image image1 = imageService.generateImage("JPG");
+        Image image2 = imageService.generateImage("SVG");
+        Image image3 = imageService.generateImage("PNG");
+        Image image4 = imageService.generateImage("GIF");
+        Image image5 = imageService.generateImage("BMP");
+        Image image6 = imageService.generateImage("TIFF");
+
+        image2Producer.send(image1, 0);
+        image2Producer.send(image2, 0);
+        image2Producer.send(image3, 0);
+
+        image2Producer.send(image4, 1);
+        image2Producer.send(image5, 1);
+        image2Producer.send(image6, 1);
     }
 
     private void sendGeneratedImages() throws Exception {
