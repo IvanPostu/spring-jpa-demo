@@ -1,6 +1,6 @@
 package com.iv.kafkademo2order.broker.consumer;
 
-import com.iv.kafkademo2order.broker.message.OrderReplyMessage;
+import com.iv.kafkademo2common.broker.message.OrderReplyMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;

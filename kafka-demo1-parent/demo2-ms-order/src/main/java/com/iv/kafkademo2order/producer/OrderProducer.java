@@ -1,6 +1,6 @@
 package com.iv.kafkademo2order.producer;
 
-import com.iv.kafkademo2order.broker.message.OrderMessage;
+import com.iv.kafkademo2common.broker.message.OrderMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;

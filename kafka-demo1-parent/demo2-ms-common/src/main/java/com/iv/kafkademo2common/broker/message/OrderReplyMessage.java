@@ -1,4 +1,4 @@
-package com.iv.kafkademo2order.broker.message;
+package com.iv.kafkademo2common.broker.message;
 
 public class OrderReplyMessage {
 

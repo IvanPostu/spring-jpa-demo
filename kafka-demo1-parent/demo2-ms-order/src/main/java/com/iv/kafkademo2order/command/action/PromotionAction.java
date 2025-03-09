@@ -1,7 +1,7 @@
 package com.iv.kafkademo2order.command.action;
 
+import com.iv.kafkademo2common.broker.message.PromotionMessage;
 import com.iv.kafkademo2order.api.request.PromotionRequest;
-import com.iv.kafkademo2order.broker.message.PromotionMessage;
 import com.iv.kafkademo2order.producer.PromotionProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

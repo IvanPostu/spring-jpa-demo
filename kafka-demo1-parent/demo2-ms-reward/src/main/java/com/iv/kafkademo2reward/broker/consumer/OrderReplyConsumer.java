@@ -1,7 +1,7 @@
 package com.iv.kafkademo2reward.broker.consumer;
 
-import com.iv.kafkademo2order.broker.message.OrderMessage;
-import com.iv.kafkademo2order.broker.message.OrderReplyMessage;
+import com.iv.kafkademo2common.broker.message.OrderMessage;
+import com.iv.kafkademo2common.broker.message.OrderReplyMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

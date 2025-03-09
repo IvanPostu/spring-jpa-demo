@@ -1,5 +1,4 @@
-package com.iv.kafkademo2order.broker.message;
-
+package com.iv.kafkademo2common.broker.message;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -82,4 +81,3 @@ public class OrderMessage {
     }
 
 }
-

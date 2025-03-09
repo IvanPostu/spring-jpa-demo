@@ -1,8 +1,8 @@
 package com.iv.kafkademo2order.command.action;
 
+import com.iv.kafkademo2common.broker.message.OrderMessage;
 import com.iv.kafkademo2order.api.request.OrderItemRequest;
 import com.iv.kafkademo2order.api.request.OrderRequest;
-import com.iv.kafkademo2order.broker.message.OrderMessage;
 import com.iv.kafkademo2order.entity.Order;
 import com.iv.kafkademo2order.entity.OrderItem;
 import com.iv.kafkademo2order.producer.OrderProducer;

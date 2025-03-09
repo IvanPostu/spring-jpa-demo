@@ -1,11 +1,10 @@
 package com.iv.kafkademo2reward.broker.consumer;
 
-import com.iv.kafkademo2order.broker.message.OrderMessage;
+import com.iv.kafkademo2common.broker.message.OrderMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 //@Service

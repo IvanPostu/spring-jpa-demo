@@ -1,7 +1,7 @@
 package com.iv.kafkademo2storage.broker.consumer;
 
-import com.iv.kafkademo2order.broker.message.DiscountMessage;
-import com.iv.kafkademo2order.broker.message.PromotionMessage;
+import com.iv.kafkademo2common.broker.message.DiscountMessage;
+import com.iv.kafkademo2common.broker.message.PromotionMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaHandler;

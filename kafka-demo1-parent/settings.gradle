@@ -4,6 +4,7 @@ include 'demo1-common'
 include 'demo1-consumer'
 include 'demo1-producer'
 
+include 'demo2-ms-common'
 include 'demo2-ms-order'
 include 'demo2-ms-pattern'
 include 'demo2-ms-reward'
