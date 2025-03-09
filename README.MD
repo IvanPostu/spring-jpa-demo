@@ -674,6 +674,30 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-general-ledger --partitions 1`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-general-ledger --from-beginning`
 
+### RabbitMQ vs. Apache Kafka
+
+Both are excelent solutions for messaging systems
+
+- **Message Retention**
+  - Kafka stores all messages on disk even if they were processed, default TTL is 7 days
+  - RabbitMQ stores on disk or memory and as soon as the message is consumed, it is gone
+    - If we need to re-process the same message, the publisher must re-publish the message
+- **Message Routing**
+  - Kafka - no routing mechanism
+    - Publisher tells topic and optionally partition
+  - RabbitMQ - routing mechanism using exchange
+    - Publisher attach routing key and RabbitMQ decides into what queue will it go
+- **Multiple Consumers**
+  - Kafka: topic - partition - one consumer per partition
+  - RabbitMQ: multiple conumer per queue, not guaranteed order
+- **Push/Pull Model**
+  - Kafka: consumer pull from kafka topic
+  - Rabbitmq: push message to consumer
+
+- **Which one to chose?**
+  - Kafka for event sourcing, big data processing, sensitive data handling
+  - RabbitMQ event driven architecture
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer

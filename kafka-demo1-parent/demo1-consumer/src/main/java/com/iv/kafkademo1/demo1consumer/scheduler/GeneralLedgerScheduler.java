@@ -23,7 +23,7 @@ public class GeneralLedgerScheduler {
      * │ │ │ │ ┌──── Month (1-12)
      * │ │ │ │ │ ┌── Day of Week (1-7 or SUN-SAT)
      * │ │ │ │ │ │ ┌── (Optional) Year
-     * 0  7  15 *  *  ?
+     *     7  15 *  *  ?
      */
     @Scheduled(cron = "0 30 15 * * ?")
     public void stop() {
