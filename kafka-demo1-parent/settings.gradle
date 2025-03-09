@@ -3,3 +3,8 @@ rootProject.name = 'kafka-demo1-parent'
 include 'demo1-common'
 include 'demo1-consumer'
 include 'demo1-producer'
+
+include 'demo2-ms-order'
+include 'demo2-ms-pattern'
+include 'demo2-ms-reward'
+include 'demo2-ms-storage'

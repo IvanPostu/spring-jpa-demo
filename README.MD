@@ -727,6 +727,26 @@ Separated writes from reads
 - Command - write
 - Query - read
 
+### Idempotent Producer
+
+- Set `enable.idempotency=true`
+- Kafka will use this configuration,
+  - producer sends a message
+  - kafka persists and commits it
+  - kafka return `akcnowledged`
+  - due to networking issue, result isn't got from sender
+  - sender retries message transmision
+  - kafka does not persist the second time, but it returns `akcnowledged`
+
+### Kafka Message Structure
+
+- Header: key value pairs
+- Body/Payload: usually JSON
+
+### Asynchronous Request / Reply
+
+- Method of communication among microservices, when M1 sends E which is consumed by M2, M2 sends E(confirm) that is confirmation of success/failure which is consumed by M1
+
 ### Other
 
 - Ideally number of consumers should be equal to the number of partitions, in case of 3 partitions and 4 consumers, one consumer will be idle, but there is an option to add a new partition which will automatically be assigned by kafka to a consumer
@@ -1000,6 +1020,12 @@ Payment App (Android/iOS,web) -> Payment App API -> publish -> Kafka -> consume 
 - 24/7 Payment App (Android/iOS,web)
 - 24/7 Payment App API
 - 12/7 General Ledger App Server
+
+### Spring Boot - Kafka - Observation
+
+Deserialization error if full class name is different, e.g. producer uses `com.abc1.OrderMessage` and consumer has a class with exactly same signature, but with difference package name `com.abc2.OrderMessage`
+
+**Solution:** shared module with classes for messages
 
 ### Terminology
 

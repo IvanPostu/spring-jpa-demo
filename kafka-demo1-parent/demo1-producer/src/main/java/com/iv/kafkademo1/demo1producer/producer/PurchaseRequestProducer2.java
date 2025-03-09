@@ -21,8 +21,13 @@ public class PurchaseRequestProducer2 {
 
     public void send(PurchaseRequest2 purchaseRequest) throws JsonProcessingException {
         var json = objectMapper.writeValueAsString(purchaseRequest);
-        kafkaTemplate.send("t-purchase-request2", json);
-        LOG.info("Sent : {}", purchaseRequest);
+        kafkaTemplate.send("t-purchase-request2", json).whenComplete((result, exception) -> {
+            if (exception == null) {
+                LOG.info("Sent successfully : {}", purchaseRequest);
+            } else {
+                LOG.info("Couldn't send the message : {}", purchaseRequest);
+            }
+        });
     }
 
 }

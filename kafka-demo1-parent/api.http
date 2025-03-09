@@ -1,3 +1,35 @@
 
 GET http://localhost:8080/api/commodity/v1/all
 
+
+POST http://localhost:9001/api/discount
+Content-Type: application/json
+
+{
+    "discountCode": "q123",
+    "discountPercentage": 12
+}
+
+
+POST http://localhost:9001/api/order
+Content-Type: application/json
+
+{
+    "orderLocation": "test1",
+    "creditCardNumber": "test2",
+    "items": [
+        {
+            "itemName": "item1",
+            "price": 123,
+            "quantity": 123
+        }
+    ]
+}
+
+
+POST http://localhost:9001/api/promotion
+Content-Type: application/json
+
+{
+    "promotionCode": "test1" 
+}
