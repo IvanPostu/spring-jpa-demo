@@ -1027,6 +1027,57 @@ Deserialization error if full class name is different, e.g. producer uses `com.a
 
 **Solution:** shared module with classes for messages
 
+### Kafka Message Compression
+
+- Configurable in producer or broker
+- Available compression types: none, gzip, lz4, snappy, zstd
+- Disadvantages: CPU Cycles on consumer/producer
+- `spring.kafka.producer.compression-type`
+
+### Linger ms & Batch Size
+
+- `linger.ms` how long to send a batch
+  - defaut: 0 means immediately send message
+- `batch.size` maximum batch size (bytes) before start sending (if linger has not been elapsed)
+
+### Batch Size
+
+- Maximum byte size for each batch
+  - default: 16384 (16KB) 
+    - 64KB could be better
+- Increase batch size leads to eficiency
+- Message bigger than batch size won't be batched
+- Set batch size to 0 turn off batching
+- `spring.kafka.producer-batch-size`
+
+### Batch + Compression + Linger
+
+```yaml
+spring:
+  kafka:
+    compression-type: snappy
+    batch-size: 32768
+    properties:
+      request:
+        timeout:
+          ms: 10000
+      delivery:
+        timeout:
+          ms: 30000
+      enable:
+        idempotence: true
+      linger:
+        ms: 15000
+```
+
+Generate 3 events with delay of 1 second 
+
+```
+2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order 2UNAG8PP, item item1 published succesfully
+2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order HB23BI0E, item item1 published succesfully
+2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order MAGYCCRL, item item1 published succesfully
+```
+
 ### Terminology
 
 - **General Ledger Accounting Entry** - is a financial record that captures a business transaction within an organization's accounting system. It consists of debits and credits that affect different general ledger accounts, ensuring that the accounting equation (Assets = Liabilities + Equity) remains balanced.

@@ -21,6 +21,19 @@ spring:
         - localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      compression-type: snappy
+      batch-size: 32768
+      properties:
+        request:
+          timeout:
+            ms: 10000
+        delivery:
+          timeout:
+            ms: 30000
+        enable:
+          idempotence: true
+        linger:
+          ms: 15000
     consumer:
       group-id: kafka-order-cg
       enable-auto-commit: true
