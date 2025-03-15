@@ -31,5 +31,5 @@ POST http://localhost:9001/api/promotion
 Content-Type: application/json
 
 {
-    "promotionCode": "test1" 
+    "promotionCode": "test123" 
 }

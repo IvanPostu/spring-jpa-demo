@@ -1,0 +1,20 @@
+plugins {
+    id 'multimodule-config'
+    id 'spring-conventions'
+}
+
+ext {
+    set('apacheCommonsLang3Version', "3.12.0")
+    set('jacksonVersion', "2.13.2")
+}
+
+dependencies {
+    implementation project(":demo2-ms-common")
+
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.apache.kafka:kafka-streams'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}

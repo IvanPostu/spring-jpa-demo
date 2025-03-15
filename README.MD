@@ -674,6 +674,15 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create --topic t-general-ledger --partitions 1`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-general-ledger --from-beginning`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-promotion`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-promotion-uppercase`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-promotion --from-beginning --timeout-ms 5000`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-promotion-uppercase --from-beginning --timeout-ms 5000`
+
+---
+
 ### RabbitMQ vs. Apache Kafka
 
 Both are excelent solutions for messaging systems
