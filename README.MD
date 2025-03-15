@@ -1043,7 +1043,7 @@ Deserialization error if full class name is different, e.g. producer uses `com.a
 ### Batch Size
 
 - Maximum byte size for each batch
-  - default: 16384 (16KB) 
+  - default: 16384 (16KB)
     - 64KB could be better
 - Increase batch size leads to eficiency
 - Message bigger than batch size won't be batched
@@ -1070,13 +1070,106 @@ spring:
         ms: 15000
 ```
 
-Generate 3 events with delay of 1 second 
+Generate 3 events with delay of 1 second
 
 ```
 2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order 2UNAG8PP, item item1 published succesfully
 2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order HB23BI0E, item item1 published succesfully
 2025-03-10 23:43:55 [kafka-producer-network-thread | producer-1] INFO  c.i.k.producer.OrderProducer - Order MAGYCCRL, item item1 published succesfully
 ```
+
+### Kafka Segment
+
+Each partition is divided into segments, and the active segment is the last segment to which writes occur.
+
+Partition 0: seg1(0..X events) -> seg2(X..X2) -> seg3(X2..last)
+
+Each segment is a file on the disk
+
+- `log.segment.bytes` maximum size of segments in bytes, default 1GB, closed when the size limit is reached
+- `log.segment.ms` how long before a segment is closed, default 1 week
+  - Closed when exceed one week (albeit size is less than configured segment bytes), new segment created
+
+Kafka log is series of segments
+
+### Kafka Log
+
+- Apped only data sequence stored as segments
+- All published data stored in kafka log
+- Retain messages (records) for certain period
+- Stored at disk, size can grow
+- Immutable
+- High throughput & fault tolerance
+
+### Log Cleanup
+
+- Managing data & retention size
+- Removing outdated / unnecessary data on predefined policies
+- Policies:
+  - delete (remove data)
+    - default policy for user topics
+    - data will be deleted based on log retention period
+      - `log.retention.period`
+        - `log.retention.minutes`
+        - `log.retention.ms`
+      - default (168 hours - 1 week)
+    - data can also be deleted by the maximum segment size
+      - `log.retention.bytes`
+      - default -1 (infinite)
+  - compact
+    - (retain only latest value per key in partition)
+    - default policy for kafka internal topic
+    - When to use? Chat app where N latest messages are used for user notification
+    - Discard redundant records and maintain compact data representation
+    - `min.compaction.lag.ms` default 0, how long to wait before the message can be compacted
+    - `delete.retention.ms` default  (24hours) how long to wait before compacted data is deleted
+    - `min.clenable.dirty.ratio` default 0.5, higher means less frequent cleaning, lower means more frequent clean
+    - compaction frequency is affected by traffic, `segment.ms` and `segment.bytes`
+      - log compaction precess will open segment file
+      - risk to cause "too many open files" if too many segments compacted
+
+- <img src="./_forReadme/img3.png" style="width: 500px" />
+
+### Kafka Stream
+
+- Kafka Stream - client library for building real-time stream processing applications on top of Apache Kafka
+  - It process data in real time as it flows through kafka topics
+  - Steam Processing - processing of data that continuously flows in as a stream
+  - Data is processed in batches
+  - Latency between data arrives and is processed
+
+**Example of usage:** Steps Counter App
+
+- Mobile device counters steps and propagates that information through web interface to a specific topic
+- Once in N period of time that data is collected and using it are calculated statictics per user (`t_user_<userId>`) and general statistics `t_general`
+
+---
+
+**Example of usage:** Marathon App + Dashboard
+
+---
+
+**Example of usage:** Stock Trading
+
+---
+
+**Example of usage:** Credit Card Fraud (if in one minute from the same card there are 2 transactions from completely different locations)
+
+### Kafka Stream Topology
+
+- Source Processor
+  - Consumes data from one or more kafka topics
+  - Forwarding data to downstream
+
+- Sink Processor
+  - Does not have a downstream
+  - Sends data to specific kafka topic
+
+### Kafka Stream Processor
+
+- Low Level API
+- Kafka Stream DSL (Domain Specific Language)
+- Serde means (serializer/deserializer)
 
 ### Terminology
 
