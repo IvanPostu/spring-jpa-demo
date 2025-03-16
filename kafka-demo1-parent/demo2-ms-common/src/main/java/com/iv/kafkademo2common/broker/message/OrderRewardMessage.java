@@ -1,25 +1,25 @@
 package com.iv.kafkademo2common.broker.message;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public class OrderMessage {
+public class OrderRewardMessage {
 
-    private String orderLocation;
-    private String orderNumber;
-    private String creditCardNumber;
+    private String itemName;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime orderDateTime;
 
-    private String itemName;
+    private String orderLocation;
+
+    private String orderNumber;
+
     private int price;
+
     private int quantity;
 
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
 
     public String getItemName() {
         return itemName;
@@ -43,10 +43,6 @@ public class OrderMessage {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
     }
 
     public void setItemName(String itemName) {
@@ -75,23 +71,8 @@ public class OrderMessage {
 
     @Override
     public String toString() {
-        return "OrderMessage [orderLocation=" + orderLocation + ", orderNumber=" + orderNumber + ", creditCardNumber="
-                + creditCardNumber + ", orderDateTime=" + orderDateTime + ", itemName=" + itemName + ", price=" + price
-                + ", quantity=" + quantity + "]";
-    }
-
-    public OrderMessage copy() {
-        var copy = new OrderMessage();
-
-        copy.setCreditCardNumber(this.getCreditCardNumber());
-        copy.setItemName(this.getItemName());
-        copy.setOrderDateTime(this.getOrderDateTime());
-        copy.setOrderLocation(this.getOrderLocation());
-        copy.setOrderNumber(this.getOrderNumber());
-        copy.setPrice(this.getPrice());
-        copy.setQuantity(this.getQuantity());
-
-        return copy;
+        return "OrderRewardMessage [itemName=" + itemName + ", orderDateTime=" + orderDateTime + ", orderLocation="
+                + orderLocation + ", orderNumber=" + orderNumber + ", price=" + price + ", quantity=" + quantity + "]";
     }
 
 }

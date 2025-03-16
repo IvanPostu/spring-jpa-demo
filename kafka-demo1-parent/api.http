@@ -19,7 +19,37 @@ Content-Type: application/json
     "creditCardNumber": "test2",
     "items": [
         {
-            "itemName": "item1",
+            "itemName": "plastic gloves",
+            "price": 123,
+            "quantity": 201
+        }
+    ]
+}
+
+POST http://localhost:9001/api/order
+Content-Type: application/json
+
+{
+    "orderLocation": "test1",
+    "creditCardNumber": "test2",
+    "items": [
+        {
+            "itemName": "leather gloves",
+            "price": 123,  
+            "quantity": 123
+        }
+    ]
+}
+
+POST http://localhost:9001/api/order
+Content-Type: application/json
+
+{
+    "orderLocation": "Country Fraud",
+    "creditCardNumber": "test2",
+    "items": [
+        {
+            "itemName": "leather gloves",
             "price": 123,
             "quantity": 123
         }

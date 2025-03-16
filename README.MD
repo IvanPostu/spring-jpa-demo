@@ -679,9 +679,13 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-promotion`
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-promotion-uppercase`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-promotion --from-beginning --timeout-ms 5000`
-- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-promotion-uppercase --from-beginning --timeout-ms 5000`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-promotion-uppercase --from-beginning --property print.key=true  --timeout-ms 5000`
 
 ---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-pattern-six-plastic`
+- `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-pattern-six-notplastic`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-pattern-six-plastic --from-beginning  --property print.key=true --timeout-ms 5000`
 
 ### RabbitMQ vs. Apache Kafka
 
@@ -1179,6 +1183,26 @@ Kafka log is series of segments
 - Low Level API
 - Kafka Stream DSL (Domain Specific Language)
 - Serde means (serializer/deserializer)
+
+### Kafka Strean vs. Kafka Table
+
+- KStream
+  - Ordered sequence of messages
+  - Unbounded (does not have ends)
+  - Insert operation only
+- KTable
+  - Unbounded
+  - Upsert operation (insert or update based on key)
+  - Delete on null value
+
+### Intermediate vs. Terminal Operation
+
+- Intermediate
+  - KStream -> KStream
+  - KTable -> KTable
+- Terminal
+  - KStream -> void
+  - KTable -> void
 
 ### Terminology
 
