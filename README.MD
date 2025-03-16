@@ -570,6 +570,11 @@ Main capabilities:
 
 ### Core Kafka Quickstart
 
+- `sudo nix-channel --update`
+- `sudo nixos-rebuild switch --upgrade`
+
+---
+
 - `docker-compose -f ./spring-kafka-scripts/docker-compose-core.yml -p core up -d --force-recreate`
 - `sudo chmod -R g+rwX ./spring-kafka-scripts/data/`
 - `docker-compose -p core down`
