@@ -1,4 +1,4 @@
-package com.iv.demo2.kafka.stream.commodity;
+package com.iv.demo2.kafka.stream.stream.commodity;
 
 import com.iv.kafkademo2common.broker.message.OrderMessage;
 import com.iv.kafkademo2common.broker.message.OrderPatternMessage;

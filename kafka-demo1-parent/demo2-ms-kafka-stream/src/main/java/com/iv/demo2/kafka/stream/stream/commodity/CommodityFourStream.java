@@ -1,4 +1,4 @@
-package com.iv.demo2.kafka.stream.commodity;
+package com.iv.demo2.kafka.stream.stream.commodity;
 
 import com.iv.kafkademo2common.broker.message.OrderMessage;
 import com.iv.kafkademo2common.broker.message.OrderPatternMessage;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.support.KafkaStreamBrancher;
 import org.springframework.kafka.support.serializer.JsonSerde;
 
-public class CommodityThreeStream {
+public class CommodityFourStream {
 
     @Bean
     public KStream<String, OrderMessage> kstreamCommodityTrading(StreamsBuilder builder) {
@@ -28,16 +28,16 @@ public class CommodityThreeStream {
 
         new KafkaStreamBrancher<String, OrderPatternMessage>()
                 .branch(CommodityStreamUtil.isPlastic(),
-                        kstream -> kstream.to("t-commodity-pattern-three-plastic", branchProducer))
-                .defaultBranch(kstream -> kstream.to("t-commodity-pattern-three-notplastic", branchProducer))
+                        kstream -> kstream.to("t-commodity-pattern-four-plastic", branchProducer))
+                .defaultBranch(kstream -> kstream.to("t-commodity-pattern-four-notplastic", branchProducer))
                 .onTopOf(maskedCreditCardStream.mapValues(CommodityStreamUtil::mapToOrderPattern));
 
         var rewardStream = maskedCreditCardStream.filter(CommodityStreamUtil.isLargeQuantity())
-                .filterNot(CommodityStreamUtil.isCheap()).mapValues(CommodityStreamUtil::mapToOrderReward);
-        rewardStream.to("t-commodity-reward-three", Produced.with(stringSerde, orderRewardSerde));
+                .filterNot(CommodityStreamUtil.isCheap()).map(CommodityStreamUtil.mapToOrderRewardChangeKey());
+        rewardStream.to("t-commodity-reward-four", Produced.with(stringSerde, orderRewardSerde));
 
         var storageStream = maskedCreditCardStream.selectKey(CommodityStreamUtil.generateStorageKey());
-        storageStream.to("t-commodity-storage-three", Produced.with(stringSerde, orderSerde));
+        storageStream.to("t-commodity-storage-four", Produced.with(stringSerde, orderSerde));
 
         return maskedCreditCardStream;
     }

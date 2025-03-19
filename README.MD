@@ -692,6 +692,34 @@ Main capabilities:
 - `kafka-topics.sh --bootstrap-server localhost:9092 --create  --partitions 1 --replication-factor 1 --topic t-commodity-pattern-six-notplastic`
 - `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-pattern-six-plastic --from-beginning  --property print.key=true --timeout-ms 5000`
 
+---
+
+- `kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic t-commodity-feedback`
+- `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic t-commodity-feedback --from-beginning  --property print.key=true --timeout-ms 5000`
+
+```sh
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-bad
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-bad-count
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-bad-count-word
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-good
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-good-count
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-feedback-six-good-count-word
+
+# ---
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer --timeout-ms 5000 --topic t-commodity-feedback-six-bad-count
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer --timeout-ms 5000 --topic t-commodity-feedback-six-bad-count-word
+
+```
+
+<img src="./_forReadme/img4.png" style="width: 500px" />
+
 ### RabbitMQ vs. Apache Kafka
 
 Both are excelent solutions for messaging systems

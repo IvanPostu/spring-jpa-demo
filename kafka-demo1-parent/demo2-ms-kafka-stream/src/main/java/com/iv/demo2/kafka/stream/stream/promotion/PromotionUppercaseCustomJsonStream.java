@@ -1,4 +1,4 @@
-package com.iv.demo2.kafka.stream.promotion;
+package com.iv.demo2.kafka.stream.stream.promotion;
 
 import com.iv.demo2.kafka.stream.serde.PromotionSerde;
 import com.iv.kafkademo2common.broker.message.PromotionMessage;

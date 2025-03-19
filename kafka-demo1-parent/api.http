@@ -63,3 +63,28 @@ Content-Type: application/json
 {
     "promotionCode": "test123" 
 }
+
+
+POST http://localhost:9001/api/feedback
+Content-Type: application/json
+
+{
+    "feedback": "Good feedback example 123",
+    "location": "Location Example 123"
+}
+
+POST http://localhost:9001/api/feedback
+Content-Type: application/json
+
+{
+    "feedback": "Bad feedback example 123",
+    "location": "Location Example 123"
+}
+
+POST http://localhost:9001/api/feedback
+Content-Type: application/json
+
+{
+    "feedback": "Neutral feedback example 123",
+    "location": "Location Example 123"
+}
