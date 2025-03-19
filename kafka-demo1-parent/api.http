@@ -88,3 +88,24 @@ Content-Type: application/json
     "feedback": "Neutral feedback example 123",
     "location": "Location Example 123"
 }
+
+// 000
+
+POST http://localhost:9001/api/customer/preference/shopping-cart
+Content-Type: application/json
+
+{
+    "customerId": "123",
+    "itemName": "Apple333",
+    "cartAmount": 22
+}
+
+
+POST http://localhost:9001/api/customer/preference/wishlist
+Content-Type: application/json
+
+{
+    "customerId": "123",
+    "itemName": "Apple123"
+}
+

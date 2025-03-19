@@ -720,6 +720,28 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --
 
 <img src="./_forReadme/img4.png" style="width: 500px" />
 
+---
+
+```sh
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-customer-preference-wishlist
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-customer-preference-shopping-cart
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-customer-preference-all
+
+#
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-customer-preference-wishlist
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-customer-preference-shopping-cart
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-customer-preference-all
+```
+
+<img src="./_forReadme/img5.png" style="width: 500px" />
+
+---
+
 ### RabbitMQ vs. Apache Kafka
 
 Both are excelent solutions for messaging systems

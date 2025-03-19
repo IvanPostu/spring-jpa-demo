@@ -9,6 +9,29 @@ spring:
   kafka:
     listener:
       missing-topics-fatal: false
+    consumer:
+      group-id: kafka-stream-cg
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      bootstrap-servers:
+        - localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.JsonSerializer
+    streams:
+      application-id: kafka-stream-sample-${random.uuid}
+      bootstrap-servers:
+        - localhost:9092
+      properties:
+        default:
+          key:
+            serde: org.apache.kafka.common.serialization.Serde$StringSerde
+          value:
+            serde: org.apache.kafka.common.serialization.Serde$StringSerde
+        commit:
+          interval:
+            ms: 3000
+        processing:
+          guarantee: exactly_once_v2
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
