@@ -1,4 +1,4 @@
-package com.iv.kafkademo2order.producer;
+package com.iv.kafkademo2order.broker.producer;
 
 import com.iv.kafkademo2common.broker.message.OrderMessage;
 import org.apache.commons.lang3.StringUtils;

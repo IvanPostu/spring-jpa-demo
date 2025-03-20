@@ -5,7 +5,7 @@ import com.iv.kafkademo2order.api.request.OrderItemRequest;
 import com.iv.kafkademo2order.api.request.OrderRequest;
 import com.iv.kafkademo2order.entity.Order;
 import com.iv.kafkademo2order.entity.OrderItem;
-import com.iv.kafkademo2order.producer.OrderProducer;
+import com.iv.kafkademo2order.broker.producer.OrderProducer;
 import com.iv.kafkademo2order.repository.OrderItemRepository;
 import com.iv.kafkademo2order.repository.OrderRepository;
 import org.apache.commons.lang3.RandomStringUtils;

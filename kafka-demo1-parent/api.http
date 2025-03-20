@@ -109,3 +109,29 @@ Content-Type: application/json
     "itemName": "Apple123"
 }
 
+
+///
+
+POST http://localhost:9001/api/flashsale/vote
+Content-Type: application/json
+
+{
+    "customerId": "1",
+    "itemName": "Apple"
+}
+
+POST http://localhost:9001/api/flashsale/vote
+Content-Type: application/json
+
+{
+    "customerId": "2",
+    "itemName": "Apple"
+}
+
+POST http://localhost:9001/api/flashsale/vote
+Content-Type: application/json
+
+{
+    "customerId": "3",
+    "itemName": "Banana"
+}

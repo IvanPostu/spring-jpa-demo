@@ -742,6 +742,22 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --
 
 ---
 
+```sh
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-flashsale-vote
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-flashsale-vote
+
+// --
+
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-flashsale-vote-user-item
+kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --replication-factor 1 --topic t-commodity-flashsale-vote-two-result
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-flashsale-vote-user-item
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer --timeout-ms 5000 --topic t-commodity-flashsale-vote-two-result
+
+```
+
 ### RabbitMQ vs. Apache Kafka
 
 Both are excelent solutions for messaging systems
@@ -1258,6 +1274,16 @@ Kafka log is series of segments
 - Terminal
   - KStream -> void
   - KTable -> void
+
+### State Store
+
+State is the ability to connect previous information to the current data, this information is placed in **state store** (persistent storage, key-value)
+
+- State Store is on the same machine with processor, it is not shared through the network
+
+- `stream.malValues()` - stateless
+- (deptecated)`stream.transformValues()` - statefull (has an access to the state store)
+- (best)`stream.processValues()` - statefull (has an access to the state store)
 
 ### Terminology
 

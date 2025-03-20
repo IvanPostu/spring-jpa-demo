@@ -2,7 +2,7 @@ package com.iv.kafkademo2order.command.action;
 
 import com.iv.kafkademo2common.broker.message.FeedbackMessage;
 import com.iv.kafkademo2order.api.request.FeedbackRequest;
-import com.iv.kafkademo2order.producer.FeedbackProducer;
+import com.iv.kafkademo2order.broker.producer.FeedbackProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
