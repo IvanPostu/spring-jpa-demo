@@ -765,6 +765,12 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --p
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback-rating-one
 ```
 
+---
+
+```sh
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback-rating-two
+```
+
 
 ### RabbitMQ vs. Apache Kafka
 
