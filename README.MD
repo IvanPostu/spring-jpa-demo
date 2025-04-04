@@ -755,8 +755,16 @@ kafka-topics.sh --bootstrap-server localhost:9092 --create --partitions 1 --repl
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer --timeout-ms 5000 --topic t-commodity-flashsale-vote-user-item
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --property print.key=true --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer --timeout-ms 5000 --topic t-commodity-flashsale-vote-two-result
-
 ```
+
+---
+
+```sh
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback-rating-one
+```
+
 
 ### RabbitMQ vs. Apache Kafka
 

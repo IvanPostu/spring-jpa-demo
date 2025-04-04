@@ -135,3 +135,21 @@ Content-Type: application/json
     "customerId": "3",
     "itemName": "Banana"
 }
+
+POST http://localhost:9001/api/feedback
+Content-Type: application/json
+
+{
+    "feedback": "nothing",
+    "location": "Egypt",
+    "rating": 3
+}
+
+POST http://localhost:9001/api/feedback
+Content-Type: application/json
+
+{
+    "feedback": "nothing",
+    "location": "UK",
+    "rating": 4
+}
