@@ -770,6 +770,11 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --p
 ```sh
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback-rating-two
 ```
+---
+
+```sh
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --property print.timestamp=true --timeout-ms 5000 --topic t-commodity-feedback-rating-two
+```
 
 
 ### RabbitMQ vs. Apache Kafka
@@ -1288,6 +1293,10 @@ Kafka log is series of segments
 - Terminal
   - KStream -> void
   - KTable -> void
+
+### Kafka Stream Join
+
+A powerful operation that lets combining records from two streams or tables based on some common key — similar to SQL joins.
 
 ### State Store
 
