@@ -1,11 +1,24 @@
 FROM ubuntu:20.04
 
 RUN apt-get update
-RUN apt-get install -y wget git gpg
+RUN apt-get install -y wget \
+    git \
+    gpg \
+    bash
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-17-jdk    
+
+RUN apt-get clean
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
 
 # create a simple user
 RUN useradd app_user -m
 WORKDIR /home/app_user
+
+USER app_user
 
 RUN wget https://dlcdn.apache.org/kafka/4.0.0/kafka_2.13-4.0.0.tgz
 
@@ -43,5 +56,26 @@ EOF
 # Verify hash of the file
 RUN gpg --print-md SHA512 kafka_2.13-4.0.0.tgz | diff - kafka_2.13-4.0.0.tgz.sha512
 
-# USER app_user
-CMD [ "/bin/bash" ]
+RUN tar -xzvf kafka_2.13-4.0.0.tgz
+
+WORKDIR /home/app_user/kafka_2.13-4.0.0
+
+RUN cat <<EOF > setup.sh
+#!/bin/bash
+
+FILE="KAFKA_CLUSTER_ID.txt"
+
+if [ ! -f "\$FILE" ]; then
+    bin/kafka-storage.sh random-uuid > "\$FILE"
+    echo "File created: \$FILE, Content: \$(cat \$FILE)"
+    KAFKA_CLUSTER_ID=\$(cat \$FILE)
+
+    bin/kafka-storage.sh format --standalone -t \$KAFKA_CLUSTER_ID -c config/server.properties
+else
+    echo "File already exists: \$FILE, Content: \$(cat \"\$FILE\")"
+fi
+
+EOF
+
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && bin/kafka-server-start.sh config/server.properties"]
+

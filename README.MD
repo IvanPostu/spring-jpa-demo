@@ -1330,3 +1330,4 @@ Kafka Connect is designed to simplify the process of moving large amounts of dat
 
 - `docker-compose -f [script-file] -p [project] up -d`
 - `docker build  -f spring-kafka-scripts/kafka.Dockerfile -t my-kafka-image .`
+- `docker run -u root -it my-kafka-image`
