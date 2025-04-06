@@ -540,16 +540,21 @@ Main capabilities:
 ### Delivery Semantic
 
 - Consumer chose when to saving(commit) offset
-- At most once
+- **At most once**
   - Zero (unprocessed) or once (processed)
   - Possible message loss (on error process)
-- At least once
+- **At least once**
   - Once or more
   - Something wrong, able to re-process
   - Create idempotent consumer
-- Exactly once
+- **Exactly once**
   - Once only
   - Hard to implement
+  - Can be achieved through:
+    - Idempotent producer
+    - Atomic transaction
+    - `spring.kafka.producer.properties.enable.idempotence: true`
+    - `spring.kafka.streams.properties.processing.guarantee: exactly_once_v2`
 
 ### Zookeper (old versions of Kafka)
 
@@ -770,12 +775,12 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --p
 ```sh
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --timeout-ms 5000 --topic t-commodity-feedback-rating-two
 ```
+
 ---
 
 ```sh
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --property print.key=true --property print.timestamp=true --timeout-ms 5000 --topic t-commodity-feedback-rating-two
 ```
-
 
 ### RabbitMQ vs. Apache Kafka
 
