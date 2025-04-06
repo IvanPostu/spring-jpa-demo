@@ -1313,6 +1313,15 @@ State is the ability to connect previous information to the current data, this i
 - (deptecated)`stream.transformValues()` - statefull (has an access to the state store)
 - (best)`stream.processValues()` - statefull (has an access to the state store)
 
+### Kafka Connector (confluent.io/hub)
+
+A component of kafka ecosystem which allows pulling data from external systems and pushing it into the kafka topic.
+
+Kafka Connect is designed to simplify the process of moving large amounts of data between Kafka and external sources or sinks
+
+- **Source connector** - a plugin to read (ingest) data into the kafka (producer)
+- **Sink connector** - a plugin for writing from kafka to non-kafka
+
 ### Terminology
 
 - **General Ledger Accounting Entry** - is a financial record that captures a business transaction within an organization's accounting system. It consists of debits and credits that affect different general ledger accounts, ensuring that the accounting equation (Assets = Liabilities + Equity) remains balanced.
