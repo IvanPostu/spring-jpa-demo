@@ -1326,9 +1326,45 @@ Kafka Connect is designed to simplify the process of moving large amounts of dat
 
 - **General Ledger Accounting Entry** - is a financial record that captures a business transaction within an organization's accounting system. It consists of debits and credits that affect different general ledger accounts, ensuring that the accounting equation (Assets = Liabilities + Equity) remains balanced.
 
+### Demo based on <https://kafka.apache.org/quickstart>
+
+- `docker build -f spring-kafka-scripts/my-kafka-image.Dockerfile -t my-kafka-image .`
+- `docker run -it my-kafka-image`
+- `bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092`
+
+#### File connector demo
+
+- In container with standalone kafka:
+
+  ```sh
+  echo "plugin.path=libs/connect-file-4.0.0.jar" >> config/connect-standalone.properties
+  
+  echo -e "foo\nbar" > test.txt
+
+  bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+
+  more test.sink.txt 
+  foo
+  bar
+
+  bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+  {"schema":{"type":"string","optional":false},"payload":"foo"}
+  {"schema":{"type":"string","optional":false},"payload":"bar"}
+
+  echo "Another line" >> test.txt
+
+  more test.sink.txt 
+  foo
+  bar
+  Another line
+  ```
+
 ### POCs
 
 - `docker-compose -f [script-file] -p [project] up -d`
 - `docker build -f spring-kafka-scripts/my-kafka-image.Dockerfile -t my-kafka-image .`
-- `docker -it my-kafka-image`
+- `docker run -it my-kafka-image`
 - `docker run -u root -it my-kafka-image`
+- Replace string in a file: <https://stackoverflow.com/a/27276110>
+  - `sed -i 's@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/kafka_2.13-4.0.0/data@g' ./config/server.properties`
+- `docker-compose -f ./ -p [project] up -d`

@@ -60,6 +60,13 @@ RUN tar -xzvf kafka_2.13-4.0.0.tgz
 
 WORKDIR /home/app_user/kafka_2.13-4.0.0
 
+RUN mkdir _kafka_data
+
+# https://stackoverflow.com/a/27276110
+RUN sed -i \
+    's@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/kafka_2.13-4.0.0/_kafka_data@g' \
+    ./config/server.properties
+
 RUN cat <<EOF > setup.sh
 #!/bin/bash
 

@@ -1,0 +1,19 @@
+
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+
+services:
+  kafka:
+    build:
+      context: .
+      dockerfile: my-kafka-image.Dockerfile
+    container_name: kafka
+    restart: unless-stopped
+    networks:
+      - kafka-net
+    ports:
+      - "9092:9092"
+    volumes:
+      - "./data/_kafka_data:/home/app_user/kafka_2.13-4.0.0/_kafka_data"
