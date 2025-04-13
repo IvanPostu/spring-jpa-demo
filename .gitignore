@@ -211,3 +211,4 @@ mysql_data
 postgres_data
 spring-kafka-scripts/data
 spring-kafka-scripts/connect_data
+docker/data

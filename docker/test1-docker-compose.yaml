@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  test1svc:
+    container_name: test1_c
+    # restart: unless-stopped
+    restart: no
+    build:
+      context: .
+      dockerfile: test1.Dockerfile
+    volumes:
+      - test1volume:/home/app_user/app
+
+# https://stackoverflow.com/questions/40905761/how-do-i-mount-a-host-directory-as-a-volume-in-docker-compose
+volumes:
+  test1volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/iv127/Projects/spring-jpa-demo/docker/data/d1
