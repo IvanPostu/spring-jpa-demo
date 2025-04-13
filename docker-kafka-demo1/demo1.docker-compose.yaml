@@ -1,0 +1,26 @@
+services:
+  kafka_server:
+    container_name: kafka_server
+    restart: no
+    networks:
+      - kafka-net
+    ports:
+      - "9092:9092"
+    build:
+      context: .
+      dockerfile: kafka_server.Dockerfile
+    volumes:
+      - kafka_server_volume:/home/app_user/_kafka_data
+
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+
+volumes:
+  kafka_server_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PROJECT_PATH}/docker-kafka-demo1/_data/kafka_server
