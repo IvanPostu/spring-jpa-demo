@@ -35,7 +35,9 @@ pkgs.stdenv.mkDerivation rec {
 
     export PATH="$PWD/scripts:$PATH"
     export PATH=$JAVA_HOME/bin:$PATH
-    export PROJECT_DIR="$PWD"
+    export PROJECT_PATH="$PWD"
+
+    echo "Project path: $PROJECT_PATH"
 
     chmod +x $PWD/scripts/*
   '';
