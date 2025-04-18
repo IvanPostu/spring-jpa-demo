@@ -10,6 +10,8 @@ in
 pkgs.stdenv.mkDerivation rec {
   name = "nix-shell";
   buildInputs = [
+    kubectl
+    apacheKafka
     jdk17 
     mysql84
     jdk21

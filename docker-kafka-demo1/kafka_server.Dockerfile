@@ -46,6 +46,7 @@ RUN wget https://dlcdn.apache.org/kafka/KEYS -O - | gpg --import
 
 # Verify signature
 RUN gpg --verify kafka_2.13-4.0.0.tgz.asc kafka_2.13-4.0.0.tgz
+RUN rm kafka_2.13-4.0.0.tgz.asc
 
 RUN cat <<EOF > kafka_2.13-4.0.0.tgz.sha512
 kafka_2.13-4.0.0.tgz: 00722AB0 A6B954E0 006994B8 D589DCD8 F26E1827 C47F70B6
@@ -55,25 +56,26 @@ EOF
 
 # Verify hash of the file
 RUN gpg --print-md SHA512 kafka_2.13-4.0.0.tgz | diff - kafka_2.13-4.0.0.tgz.sha512
+RUN rm kafka_2.13-4.0.0.tgz.sha512
 
 RUN tar -xzvf kafka_2.13-4.0.0.tgz
+RUN rm kafka_2.13-4.0.0.tgz
 
-RUN mkdir _kafka_data
+RUN mkdir -p /home/app_user/_kafka_data/kafka
 
+ENV KAFKA_DATA=/home/app_user/_kafka_data
 ENV KAFKA_HOME=/home/app_user/kafka_2.13-4.0.0
 ENV PATH=$KAFKA_HOME:$PATH
 
-# WORKDIR /home/app_user/kafka_2.13-4.0.0
-
 # https://stackoverflow.com/a/27276110
 RUN sed -i \
-    "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/_kafka_data@g" \
+    "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/_kafka_data/kafka@g" \
     $KAFKA_HOME/config/server.properties
 
 RUN cat <<EOF > setup.sh
 #!/bin/bash
 
-FILE="KAFKA_CLUSTER_ID.txt"
+FILE="$KAFKA_DATA/KAFKA_CLUSTER_ID.txt"
 
 if [ ! -f "\$FILE" ]; then
     $KAFKA_HOME/bin/kafka-storage.sh random-uuid > "\$FILE"
@@ -82,7 +84,7 @@ if [ ! -f "\$FILE" ]; then
 
     $KAFKA_HOME/bin/kafka-storage.sh format --standalone -t \$KAFKA_CLUSTER_ID -c $KAFKA_HOME/config/server.properties
 else
-    echo "File already exists: \$FILE, Content: \$(cat \"\$FILE\")"
+    echo "File already exists: \$FILE, Content: \$(cat \$FILE)"
 fi
 
 EOF
