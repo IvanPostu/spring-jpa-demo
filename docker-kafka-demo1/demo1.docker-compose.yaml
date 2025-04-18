@@ -1,7 +1,7 @@
 services:
   kafka_server:
     container_name: kafka_server
-    restart: no
+    restart: unless-stopped
     networks:
       - kafka-net
     ports:
@@ -11,6 +11,20 @@ services:
       dockerfile: kafka_server.Dockerfile
     volumes:
       - kafka_server_volume:/home/app_user/_kafka_data
+  kafka_connect:
+    container_name: kafka_connect
+    restart: no
+    environment:
+      - CONNECT_BOOTSTRAP_SERVERS=kafka_server:9092
+    networks:
+      - kafka-net
+    build:
+      context: .
+      dockerfile: kafka_connect.Dockerfile
+    volumes:
+      - kafka_connect_volume:/home/app_user/_kafka_data
+    depends_on:
+      - kafka_server
 
 networks:
   kafka-net:
@@ -24,3 +38,9 @@ volumes:
       o: bind
       type: none
       device: ${PROJECT_PATH}/docker-kafka-demo1/_data/kafka_server
+  kafka_connect_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PROJECT_PATH}/docker-kafka-demo1/_data/kafka_connect
