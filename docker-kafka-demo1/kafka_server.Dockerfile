@@ -1,10 +1,5 @@
 FROM ubuntu:20.04
 
-# defaults are taken from config file
-ENV KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS:-PLAINTEXT://kafka_server:9092,PLAINTEXT://localhost:9093}
-ENV KAFKA_LISTENERS=${KAFKA_LISTENERS:-PLAINTEXT://:9092,CONTROLLER://:9093}
-ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP:-CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL}
-
 RUN apt-get update
 RUN apt-get install -y wget \
     iputils-ping \
@@ -78,6 +73,13 @@ RUN mv $KAFKA_HOME/config/server.properties $KAFKA_HOME/config/server.properties
 COPY var/config/defaults/server.properties $KAFKA_HOME/config/server.properties
 RUN cat $KAFKA_HOME/config/server.properties | diff - $KAFKA_HOME/config/server.properties.bak
 
+# defaults are taken from config file
+ENV KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS:-PLAINTEXT://kafka_server:9092,PLAINTEXT://localhost:9093}
+ENV KAFKA_LISTENERS=${KAFKA_LISTENERS:-PLAINTEXT://:9092,CONTROLLER://:9093}
+ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP:-CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL}
+ENV KAFKA_CONTROLLER_LISTENER_NAMES=${KAFKA_CONTROLLER_LISTENER_NAMES:-CONTROLLER}
+ENV KAFKA_INTER_BROKER_LISTENER_NAME=${KAFKA_INTER_BROKER_LISTENER_NAME:-PLAINTEXT}
+
 RUN cat <<EOF > setup.sh
 #!/bin/bash
 set -eu
@@ -88,17 +90,22 @@ FILE="$KAFKA_DATA/KAFKA_CLUSTER_ID.txt"
 sed -i \
     "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/_kafka_data/kafka@g" \
     $KAFKA_HOME/config/server.properties
-    sed -i \
+sed -i \
     "s@advertised.listeners=PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093@advertised.listeners=\$KAFKA_ADVERTISED_LISTENERS@g" \
     $KAFKA_HOME/config/server.properties
-    sed -i \
+sed -i \
     "s@listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL@listener.security.protocol.map=\$KAFKA_LISTENER_SECURITY_PROTOCOL_MAP@g" \
     $KAFKA_HOME/config/server.properties
     sed -i \
     "s@listeners=PLAINTEXT://:9092,CONTROLLER://:9093@listeners=\$KAFKA_LISTENERS@g" \
     $KAFKA_HOME/config/server.properties
+sed -i \
+    "s@controller.listener.names=CONTROLLER@controller.listener.names=\$KAFKA_CONTROLLER_LISTENER_NAMES@g" \
+    $KAFKA_HOME/config/server.properties
+sed -i \
+    "s@inter.broker.listener.name=PLAINTEXT@inter.broker.listener.name=\$KAFKA_INTER_BROKER_LISTENER_NAME@g" \
+    $KAFKA_HOME/config/server.properties
 
-    
 if [ ! -f "\$FILE" ]; then
     $KAFKA_HOME/bin/kafka-storage.sh random-uuid > "\$FILE"
     echo "File created: \$FILE, Content: \$(cat \$FILE)"
