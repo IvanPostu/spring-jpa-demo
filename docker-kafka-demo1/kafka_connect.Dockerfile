@@ -96,9 +96,9 @@ RUN cat <<EOF > setup.sh
 #!/bin/bash
 set -eu
 
-# sed -i \
-#     "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
-#     $KAFKA_HOME/config/connect-standalone.properties
+sed -i \
+    "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
+    $KAFKA_HOME/config/connect-standalone.properties
 
 EOF
 
