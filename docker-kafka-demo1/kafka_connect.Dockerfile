@@ -70,6 +70,7 @@ ENV APP_HOME=/home/app_user
 ENV KAFKA_DATA=$APP_HOME/_kafka_data
 ENV KAFKA_HOME=$APP_HOME/kafka_2.13-4.0.0
 ENV PATH=$KAFKA_HOME:$PATH
+ENV PATH=$KAFKA_HOME/bin:$PATH
 
 RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties.bak
 # original config
@@ -118,10 +119,6 @@ offset.flush.interval.ms=10000
 EOF
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
-RUN sed -i \
-    "s@bootstrap.servers=localhost:9092@bootstrap.servers=$CONNECT_BOOTSTRAP_SERVERS@g" \
-    $KAFKA_HOME/config/connect-standalone.properties
-
 # https://kafka.apache.org/quickstart
 RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties
 RUN cat <<EOF > $KAFKA_HOME/config/connect-file-source.properties
@@ -140,8 +137,7 @@ EOF
 
 RUN cat <<EOF > setup.sh
 #!/bin/bash
-
-FILE="$KAFKA_DATA/KAFKA_CLUSTER_ID.txt"
+set -eu
 
 sed -i \
     "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
@@ -149,7 +145,9 @@ sed -i \
 
 EOF
 
-RUN echo -e "foo\nbar" > $KAFKA_HOME/test.txt
+# dummy data
+RUN echo -e "foo\nbar" > $APP_HOME/test.txt
 
-# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
-ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
+# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
+# ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
