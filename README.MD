@@ -34,6 +34,7 @@ psql -h localhost -p 5432 -U postgres -d demo_db
 
 # -W - to input the password
 psql -h 192.168.0.97 -p 5432 -U superadmin -d postgres -W
+psql -h localhost -p 5432 -U postgres -d postgres -W
 ```
 
 ## Setup IDE
