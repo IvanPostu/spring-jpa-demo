@@ -105,6 +105,6 @@ EOF
 # dummy data
 RUN echo -e "foo\nbar" > $APP_HOME/test.txt
 
-# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
-ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
+# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
 # ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
