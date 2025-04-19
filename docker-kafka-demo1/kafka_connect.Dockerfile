@@ -78,19 +78,14 @@ RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/co
 
 # https://kafka.apache.org/quickstart
 RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties
-RUN cat <<EOF > $KAFKA_HOME/config/connect-file-source.properties
-name=local-file-source
-connector.class=FileStreamSource
-tasks.max=1
-file=${APP_HOME}/test.txt
-topic=connect-test
-EOF
-RUN cat <<EOF > $KAFKA_HOME/config/connect-file-sink.properties
-name=local-file-sink
-connector.class=FileStreamSink
-tasks.max=1
-file=${APP_HOME}/test.sink.txt
-EOF
+
+RUN mv $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties.bak
+COPY --chown=app_user:app_user var/config/defaults/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties
+RUN cat $KAFKA_HOME/config/connect-file-source.properties | diff - $KAFKA_HOME/config/connect-file-source.properties.bak
+
+RUN mv $KAFKA_HOME/config/connect-file-sink.properties $KAFKA_HOME/config/connect-file-sink.properties.bak
+COPY --chown=app_user:app_user var/config/defaults/connect-file-sink.properties $KAFKA_HOME/config/connect-file-sink.properties
+RUN cat $KAFKA_HOME/config/connect-file-sink.properties | diff - $KAFKA_HOME/config/connect-file-sink.properties.bak
 
 RUN cat <<EOF > setup.sh
 #!/bin/bash
@@ -103,7 +98,7 @@ sed -i \
 EOF
 
 # dummy data
-RUN echo -e "foo\nbar" > $APP_HOME/test.txt
+RUN bash -c 'echo -e "Hello\nWorld"' > $APP_HOME/test.txt
 
 ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
 # ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
