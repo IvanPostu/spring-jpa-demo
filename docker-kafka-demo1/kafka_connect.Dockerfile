@@ -73,7 +73,7 @@ ENV PATH=$KAFKA_HOME:$PATH
 ENV PATH=$KAFKA_HOME/bin:$PATH
 
 RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties.bak
-COPY var/config/defaults/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties
+COPY --chown=app_user:app_user var/config/defaults/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
 # https://kafka.apache.org/quickstart

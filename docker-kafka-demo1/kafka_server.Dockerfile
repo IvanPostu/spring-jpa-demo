@@ -1,6 +1,9 @@
 FROM ubuntu:20.04
 
-ENV KAFKA_CFG_ADVERTISED_LISTENERS=${KAFKA_CFG_ADVERTISED_LISTENERS:-PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093}
+# defaults are taken from config file
+ENV KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS:-PLAINTEXT://kafka_server:9092,PLAINTEXT://localhost:9093}
+ENV KAFKA_LISTENERS=${KAFKA_LISTENERS:-PLAINTEXT://:9092,CONTROLLER://:9093}
+ENV KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP:-CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL}
 
 RUN apt-get update
 RUN apt-get install -y wget \
@@ -75,21 +78,27 @@ RUN mv $KAFKA_HOME/config/server.properties $KAFKA_HOME/config/server.properties
 COPY var/config/defaults/server.properties $KAFKA_HOME/config/server.properties
 RUN cat $KAFKA_HOME/config/server.properties | diff - $KAFKA_HOME/config/server.properties.bak
 
-# https://stackoverflow.com/a/27276110
-RUN sed -i \
-    "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/_kafka_data/kafka@g" \
-    $KAFKA_HOME/config/server.properties
-
 RUN cat <<EOF > setup.sh
 #!/bin/bash
 set -eu
 
 FILE="$KAFKA_DATA/KAFKA_CLUSTER_ID.txt"
 
+# https://stackoverflow.com/a/27276110
 sed -i \
-    "s@advertised.listeners=PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093@advertised.listeners=\$KAFKA_CFG_ADVERTISED_LISTENERS@g" \
+    "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=/home/app_user/_kafka_data/kafka@g" \
+    $KAFKA_HOME/config/server.properties
+    sed -i \
+    "s@advertised.listeners=PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093@advertised.listeners=\$KAFKA_ADVERTISED_LISTENERS@g" \
+    $KAFKA_HOME/config/server.properties
+    sed -i \
+    "s@listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL@listener.security.protocol.map=\$KAFKA_LISTENER_SECURITY_PROTOCOL_MAP@g" \
+    $KAFKA_HOME/config/server.properties
+    sed -i \
+    "s@listeners=PLAINTEXT://:9092,CONTROLLER://:9093@listeners=\$KAFKA_LISTENERS@g" \
     $KAFKA_HOME/config/server.properties
 
+    
 if [ ! -f "\$FILE" ]; then
     $KAFKA_HOME/bin/kafka-storage.sh random-uuid > "\$FILE"
     echo "File created: \$FILE, Content: \$(cat \$FILE)"
@@ -103,4 +112,5 @@ fi
 EOF
 
 ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties"]
+# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
 
