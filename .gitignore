@@ -214,3 +214,4 @@ spring-kafka-scripts/connect_data
 docker/data
 docker-kafka-demo1/_data
 **/var/temp
+temp.txt

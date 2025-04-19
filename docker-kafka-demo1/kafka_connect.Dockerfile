@@ -5,6 +5,7 @@ ENV CONNECT_BOOTSTRAP_SERVERS=${CONNECT_BOOTSTRAP_SERVERS:-localhost:90921}
 RUN apt-get update
 RUN apt-get install -y wget \
     iputils-ping \
+    curl \
     git \
     gpg \
     bash
