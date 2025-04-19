@@ -17,6 +17,11 @@ services:
       dockerfile: kafka_server.Dockerfile
     volumes:
       - kafka_server_volume:/home/app_user/_kafka_data
+    healthcheck:
+      test: ["CMD", "bash", "-c", "kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   kafka_connect:
     container_name: kafka_connect
     restart: no
@@ -31,6 +36,11 @@ services:
       - kafka_connect_volume:/home/app_user/_kafka_data
     depends_on:
       - kafka_server
+    healthcheck:
+      test: ["CMD", "bash", "-c", "curl http://localhost:8083 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   kafka-net:
