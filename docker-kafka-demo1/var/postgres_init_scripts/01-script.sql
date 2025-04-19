@@ -1,7 +1,10 @@
-create table fin_invoices (
-	invoice_id SERIAL PRIMARY KEY,
-	invoice_amount INT,
-	invoice_currency VARCHAR(3),
-	invoice_number VARCHAR(50),
-	invoice_date DATE
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (name, email) VALUES
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com');

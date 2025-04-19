@@ -18,4 +18,10 @@ docker network inspect kafka-net
 ping kafka_server
 
 docker run --rm -it kafka_connect
+
+curl -X POST http://localhost:8083/connectors \
+  -H "Content-Type: application/json" \
+  -d @postgres-jdbc-source.json
+
+psql -h postgres -p 5432 -U postgres -d demo_db -W
 ```

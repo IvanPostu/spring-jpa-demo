@@ -5,6 +5,8 @@ ENV CONNECT_BOOTSTRAP_SERVERS=${CONNECT_BOOTSTRAP_SERVERS:-localhost:90921}
 RUN apt-get update
 RUN apt-get install -y wget \
     iputils-ping \
+    postgresql-client \
+    jq \
     curl \
     git \
     gpg \
@@ -77,9 +79,6 @@ RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/conne
 COPY --chown=app_user:app_user var/config/defaults/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
-# https://kafka.apache.org/quickstart
-RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties
-
 RUN mv $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties.bak
 COPY --chown=app_user:app_user var/config/defaults/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties
 RUN cat $KAFKA_HOME/config/connect-file-source.properties | diff - $KAFKA_HOME/config/connect-file-source.properties.bak
@@ -100,6 +99,35 @@ EOF
 
 # dummy data
 RUN bash -c 'echo -e "Hello\nWorld"' > $APP_HOME/test.txt
+
+RUN cat <<EOF > $APP_HOME/postgres-jdbc-source.json
+{
+  "name": "jdbc-source-postgres-users",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:postgresql://postgres:5432/demo_db",
+    "connection.user": "postgres",
+    "connection.password": "postgres",
+
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+
+    "topic.prefix": "postgres-",
+    "table.whitelist": "users",
+
+    "poll.interval.ms": "10000",
+
+    "tasks.max": "1"
+  }
+}
+EOF
+
+RUN curl -O https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.8.2/kafka-connect-jdbc-10.8.2.jar
+RUN mv kafka-connect-jdbc-10.8.2.jar $KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.jar
+
+
+# https://kafka.apache.org/quickstart
+RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar,$KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.jar" >> $KAFKA_HOME/config/connect-standalone.properties
 
 ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
 # ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
