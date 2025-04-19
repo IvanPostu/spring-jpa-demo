@@ -23,5 +23,11 @@ curl -X POST http://localhost:8083/connectors \
   -H "Content-Type: application/json" \
   -d @postgres-jdbc-source.json
 
+curl -X GET http://localhost:8083/connectors
+
+curl --location --request GET 'http://localhost:8083/connector-plugins'
+
 psql -h postgres -p 5432 -U postgres -d demo_db -W
+
+# https://www.confluent.io/hub/
 ```

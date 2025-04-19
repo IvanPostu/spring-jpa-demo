@@ -129,6 +129,7 @@ RUN mv kafka-connect-jdbc-10.8.2.jar $KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.
 # https://kafka.apache.org/quickstart
 RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar,$KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.jar" >> $KAFKA_HOME/config/connect-standalone.properties
 
-ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties"]
+# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
 # ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
 # ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
