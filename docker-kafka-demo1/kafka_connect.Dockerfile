@@ -73,50 +73,7 @@ ENV PATH=$KAFKA_HOME:$PATH
 ENV PATH=$KAFKA_HOME/bin:$PATH
 
 RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties.bak
-# original config
-RUN cat <<EOF > $KAFKA_HOME/config/connect-standalone.properties
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# These are defaults. This file just demonstrates how to override some settings.
-bootstrap.servers=localhost:9092
-
-# The converters specify the format of data in Kafka and how to translate it into Connect data. Every Connect user will
-# need to configure these based on the format they want their data in when loaded from or stored into Kafka
-key.converter=org.apache.kafka.connect.json.JsonConverter
-value.converter=org.apache.kafka.connect.json.JsonConverter
-# Converter-specific settings can be passed in by prefixing the Converter's setting with the converter we want to apply
-# it to
-key.converter.schemas.enable=true
-value.converter.schemas.enable=true
-
-offset.storage.file.filename=/tmp/connect.offsets
-# Flush much faster than normal, which is useful for testing/debugging
-offset.flush.interval.ms=10000
-
-# Set to a list of filesystem paths separated by commas (,) to enable class loading isolation for plugins
-# (connectors, converters, transformations). The list should consist of top level directories that include 
-# any combination of: 
-# a) directories immediately containing jars with plugins and their dependencies
-# b) uber-jars with plugins and their dependencies
-# c) directories immediately containing the package directory structure of classes of plugins and their dependencies
-# Note: symlinks will be followed to discover dependencies or plugins.
-# Examples: 
-# plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,
-#plugin.path=
-EOF
+COPY var/config/defaults/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
 # https://kafka.apache.org/quickstart
@@ -139,15 +96,15 @@ RUN cat <<EOF > setup.sh
 #!/bin/bash
 set -eu
 
-sed -i \
-    "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
-    $KAFKA_HOME/config/connect-standalone.properties
+# sed -i \
+#     "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
+#     $KAFKA_HOME/config/connect-standalone.properties
 
 EOF
 
 # dummy data
 RUN echo -e "foo\nbar" > $APP_HOME/test.txt
 
-ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
-# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
+# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
 # ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
