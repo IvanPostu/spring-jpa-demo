@@ -13,4 +13,5 @@ kafka-topics.sh --bootstrap-server kafka_server:9092 --list
 
 docker network inspect kafka-net
 
+ping kafka_server
 ```

@@ -71,13 +71,7 @@ ENV KAFKA_DATA=$APP_HOME/_kafka_data
 ENV KAFKA_HOME=$APP_HOME/kafka_2.13-4.0.0
 ENV PATH=$KAFKA_HOME:$PATH
 
-# https://stackoverflow.com/a/27276110
-RUN sed -i \
-    "s@log.dirs=/tmp/kraft-combined-logs@log.dirs=$APP_HOME/_kafka_data/kafka@g" \
-    $KAFKA_HOME/config/server.properties
-
 RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties.bak
-
 # original config
 RUN cat <<EOF > $KAFKA_HOME/config/connect-standalone.properties
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -122,12 +116,11 @@ offset.flush.interval.ms=10000
 # plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,
 #plugin.path=
 EOF
-
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
-# RUN sed -i \
-#     "s@bootstrap.servers=localhost:9092@bootstrap.servers=$CONNECT_BOOTSTRAP_SERVERS@g" \
-#     $KAFKA_HOME/config/connect-standalone.properties
+RUN sed -i \
+    "s@bootstrap.servers=localhost:9092@bootstrap.servers=$CONNECT_BOOTSTRAP_SERVERS@g" \
+    $KAFKA_HOME/config/connect-standalone.properties
 
 # https://kafka.apache.org/quickstart
 RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties

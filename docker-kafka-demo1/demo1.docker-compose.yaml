@@ -2,6 +2,8 @@ services:
   kafka_server:
     container_name: kafka_server
     restart: unless-stopped
+    environment:
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CONTROLLER://kafka_server:9093,PLAINTEXT://${DOCKER_HOST_IP:-127.0.0.1}:9092
     networks:
       - kafka-net
     ports:
