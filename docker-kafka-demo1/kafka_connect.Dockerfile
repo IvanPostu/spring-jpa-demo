@@ -7,6 +7,7 @@ RUN apt-get install -y wget \
     iputils-ping \
     postgresql-client \
     jq \
+    zip \
     curl \
     git \
     gpg \
@@ -79,6 +80,10 @@ RUN mv $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/conne
 COPY --chown=app_user:app_user var/config/defaults/connect-standalone.properties $KAFKA_HOME/config/connect-standalone.properties
 RUN cat $KAFKA_HOME/config/connect-standalone.properties | diff - $KAFKA_HOME/config/connect-standalone.properties.bak
 
+RUN mv $KAFKA_HOME/config/connect-distributed.properties $KAFKA_HOME/config/connect-distributed.properties.bak
+COPY --chown=app_user:app_user var/config/defaults/connect-distributed.properties $KAFKA_HOME/config/connect-distributed.properties
+RUN cat $KAFKA_HOME/config/connect-distributed.properties | diff - $KAFKA_HOME/config/connect-distributed.properties.bak
+
 RUN mv $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties.bak
 COPY --chown=app_user:app_user var/config/defaults/connect-file-source.properties $KAFKA_HOME/config/connect-file-source.properties
 RUN cat $KAFKA_HOME/config/connect-file-source.properties | diff - $KAFKA_HOME/config/connect-file-source.properties.bak
@@ -94,42 +99,23 @@ set -eu
 sed -i \
     "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
     $KAFKA_HOME/config/connect-standalone.properties
+sed -i \
+    "s@bootstrap.servers=localhost:9092@bootstrap.servers=\$CONNECT_BOOTSTRAP_SERVERS@g" \
+    $KAFKA_HOME/config/connect-distributed.properties
 
 EOF
 
 # dummy data
-RUN bash -c 'echo -e "Hello\nWorld"' > $APP_HOME/test.txt
+# RUN bash -c 'echo -e "Hello\nWorld"' > $APP_HOME/test.txt
 
-RUN cat <<EOF > $APP_HOME/postgres-jdbc-source.json
-{
-  "name": "jdbc-source-postgres-users",
-  "config": {
-    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
-    "connection.url": "jdbc:postgresql://postgres:5432/demo_db",
-    "connection.user": "postgres",
-    "connection.password": "postgres",
-
-    "mode": "incrementing",
-    "incrementing.column.name": "id",
-
-    "topic.prefix": "postgres-",
-    "table.whitelist": "users",
-
-    "poll.interval.ms": "10000",
-
-    "tasks.max": "1"
-  }
-}
-EOF
-
-RUN curl -O https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.8.2/kafka-connect-jdbc-10.8.2.jar
-RUN mv kafka-connect-jdbc-10.8.2.jar $KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.jar
-
+RUN mkdir $APP_HOME/kafka_connectors
+COPY --chown=app_user:app_user var/connectors/confluentinc-kafka-connect-jdbc-10.8.3.zip $APP_HOME/kafka_connectors/confluentinc-kafka-connect-jdbc-10.8.3.zip
 
 # https://kafka.apache.org/quickstart
-RUN echo "plugin.path=$KAFKA_HOME/libs/connect-file-4.0.0.jar,$KAFKA_HOME/libs/kafka-connect-jdbc-10.8.2.jar" >> $KAFKA_HOME/config/connect-standalone.properties
+RUN echo "plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,$APP_HOME/kafka_connectors,$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties
+RUN echo "plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,$APP_HOME/kafka_connectors,$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-distributed.properties
 
-ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-distributed.sh $KAFKA_HOME/config/connect-distributed.properties"]
 # ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
 # ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
 # ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]

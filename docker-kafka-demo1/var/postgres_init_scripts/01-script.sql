@@ -1,10 +1,10 @@
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+create table public."users"(
+	id int primary key not null,
+	name varchar(50),
+	created_at TIMESTAMP default now()
 );
 
-INSERT INTO users (name, email) VALUES
-('Alice', 'alice@example.com'),
-('Bob', 'bob@example.com');
+
+INSERT INTO public."users"
+(id, "name")
+VALUES(0, 'jean');
