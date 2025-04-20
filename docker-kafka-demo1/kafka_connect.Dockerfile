@@ -105,17 +105,13 @@ sed -i \
 
 EOF
 
-# dummy data
-# RUN bash -c 'echo -e "Hello\nWorld"' > $APP_HOME/test.txt
-
 RUN mkdir $APP_HOME/kafka_connectors
-COPY --chown=app_user:app_user var/connectors/confluentinc-kafka-connect-jdbc-10.8.3.zip $APP_HOME/kafka_connectors/confluentinc-kafka-connect-jdbc-10.8.3.zip
+COPY --chown=app_user:app_user var/connectors/confluentinc-kafka-connect-jdbc-10.8.3.zip $APP_HOME/confluentinc-kafka-connect-jdbc-10.8.3.zip
+RUN unzip confluentinc-kafka-connect-jdbc-10.8.3.zip
+RUN cp confluentinc-kafka-connect-jdbc-10.8.3/lib/*jar $APP_HOME/kafka_connectors
 
 # https://kafka.apache.org/quickstart
 RUN echo "plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,$APP_HOME/kafka_connectors,$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-standalone.properties
 RUN echo "plugin.path=/usr/local/share/java,/usr/local/share/kafka/plugins,/opt/connectors,$APP_HOME/kafka_connectors,$KAFKA_HOME/libs/connect-file-4.0.0.jar" >> $KAFKA_HOME/config/connect-distributed.properties
 
-ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-distributed.sh $KAFKA_HOME/config/connect-distributed.properties"]
-# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && $KAFKA_HOME/bin/connect-standalone.sh $KAFKA_HOME/config/connect-standalone.properties $KAFKA_HOME/config/connect-file-source.properties $KAFKA_HOME/config/connect-file-sink.properties"]
-# ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && sleep 10h"]
-# ENTRYPOINT ["/bin/bash", "-c", "sleep 10h"]
+ENTRYPOINT ["/bin/bash", "-c", "/bin/bash setup.sh && export CLASSPATH=$APP_HOME/confluentinc-kafka-connect-jdbc-10.8.3/lib/postgresql-42.4.4.jar && $KAFKA_HOME/bin/connect-distributed.sh $KAFKA_HOME/config/connect-distributed.properties"]

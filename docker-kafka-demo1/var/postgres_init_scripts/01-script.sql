@@ -1,10 +1,9 @@
-create table public."users"(
-	id int primary key not null,
-	name varchar(50),
-	created_at TIMESTAMP default now()
-);
+CREATE TABLE sample (
+	id serial PRIMARY KEY , 
+	first_name VARCHAR (256) , 
+	last_name VARCHAR (256) , 
+	age INT ) ;
 
 
-INSERT INTO public."users"
-(id, "name")
-VALUES(0, 'jean');
+INSERT INTO sample(first_name, last_name, age) VALUES ('Saburo1', 'Suzuki1', 39) ;
+INSERT INTO sample(first_name, last_name, age) VALUES ('Saburo2', 'Suzuki2', 39) ;
